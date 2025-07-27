@@ -10,30 +10,28 @@
   --btn-border-color: transparent;
   --btn-box-shadow: none;
   --btn-font-weight: var(--font-normal);
-  --btn-hover-color: var(--color-secondary);
   --btn-justify-content: start;
   --btn-outline-size: 0;
   --btn-inline-size: var(--size-full);
   --btn-padding: var(--size-1) var(--size-2);
-  --btn-text-align: start;
 
-  &[aria-current=page] {
-    --btn-background: var(--color-secondary);
+  &[aria-current="page"] {
+    --btn-background: var(--color-border-light);
   }
 
   &:focus-visible {
-    --btn-background: var(--color-secondary);
+    --btn-background: var(--color-border-light);
   }
 
   &:is(summary) {
     &::after {
-      background-image: url("chevron-right.svg");
-      background-size: cover;
+      background-color: currentColor;
       block-size: var(--size-4);
       content: "";
-      filter: var(--color-filter-text);
       inline-size: var(--size-4);
       margin-inline-start: auto;
+      mask-image: url("chevron-right.svg");
+      mask-size: cover;
       min-inline-size: var(--size-4);
       transition: transform var(--time-200);
     }

@@ -1,0 +1,36 @@
+<div class="flex items-center gap">
+  <%= link_to root_path, class: "flex items-center gap mie-2" do %>
+    <span class="icon icon--audio-waveform" style="--icon-size: 1.5rem" aria-hidden="true"></span>
+    <span class="font-bold">SpeechstackAI</span>
+  <% end %>
+
+  <nav class="flex items-center gap text-sm text-subtle show@md" style="--column-gap: 1rem">
+    <%= link_to "Docs", "#", class: "text-primary" %>
+    <%= link_to "Components", "#" %>
+    <%= link_to "Blocks", "#" %>
+    <%= link_to "Charts", "#" %>
+    <%= link_to "Themes", "#" %>
+    <%= link_to "Colors", "#" %>
+  </nav>
+</div>
+
+<div class="flex items-center gap">
+  <div contents data-controller="popover" data-popover-placement-value="bottom-start">
+    <button type="button" class="btn btn--icon" data-popover-target="trigger" popovertarget="color_scheme_popover" aria-haspopup="true">
+      <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
+      <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
+      <span class="sr-only">Theme switcher</span>
+    </button>
+
+    <div popover id="color_scheme_popover" class="popover" data-popover-target="content">
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+        <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setLight" data-menu-target="item" role="menuitem">Light</button>
+        <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setDark" data-menu-target="item" role="menuitem">Dark</button>
+        <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setSystem" data-menu-target="item" role="menuitem">System</button>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn avatar">
+    <%= image_tag "robot.png", size: 48, alt: "CN" %>
+  </button>
+</div>

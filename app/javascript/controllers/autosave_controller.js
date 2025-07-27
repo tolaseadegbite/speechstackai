@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { FetchRequest } from "https://esm.sh/@rails/request.js@0.0.11?standalone"
+import { FetchRequest } from "https://esm.sh/@rails/request.js@0.0.12?standalone"
 
 const AUTOSAVE_INTERVAL = 3000
 
@@ -29,8 +29,7 @@ export default class extends Controller {
   }
 
   async #submitForm(form) {
-    const request = new FetchRequest(form.method, form.action, { body: new FormData(form) })
-    return await request.perform()
+    return await new FetchRequest(form.method, form.action, { body: new FormData(form) }).perform()
   }
 
   #updateAppearance(saving) {
@@ -44,7 +43,8 @@ export default class extends Controller {
   }
 
   #resetTimer() {
-    clearTimeout(this.#timer); this.#timer = null
+    clearTimeout(this.#timer)
+    this.#timer = null
   }
 
   get #dirty() {

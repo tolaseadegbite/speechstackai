@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
-import { computePosition, flip, shift, offset, autoUpdate } from "https://esm.sh/@floating-ui/dom@1.6.13?standalone"
+import { computePosition, flip, shift, offset, autoUpdate } from "https://esm.sh/@floating-ui/dom@1.7.2?standalone"
 
 export default class extends Controller {
-  static targets = [ "button", "menu" ]
+  static targets = [ "trigger", "content" ]
   static values  = { placement: { type: String, default: "bottom" } }
 
   #showTimer = null
@@ -13,7 +13,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.cleanup = autoUpdate(this.buttonTarget, this.menuTarget, this.orient)
+    this.cleanup = autoUpdate(this.triggerTarget, this.contentTarget, this.orient)
   }
 
   disconnect() {
@@ -21,31 +21,31 @@ export default class extends Controller {
   }
 
   show() {
-    this.menuTarget.showPopover()
+    this.contentTarget.showPopover({ source: this.triggerTarget })
   }
 
   hide() {
-    this.menuTarget.hidePopover()
+    this.contentTarget.hidePopover()
   }
 
   toggle() {
-    this.menuTarget.togglePopover()
+    this.contentTarget.togglePopover({ source: this.triggerTarget })
   }
 
-  showLater() {
+  debouncedShow() {
     clearTimeout(this.#hideTimer)
-    this.#showTimer = setTimeout(() => this.show(), 700)
+    this.#showTimer = setTimeout(() => this.show(), 150)
   }
 
-  hideLater() {
+  debouncedHide() {
     clearTimeout(this.#showTimer)
-    this.#hideTimer = setTimeout(() => this.hide(), 300)
+    this.#hideTimer = setTimeout(() => this.hide(), 150)
   }
 
   orient() {
-    computePosition(this.buttonTarget, this.menuTarget, this.#options).then(({x, y}) => {
-      this.menuTarget.style.insetInlineStart = `${x}px`
-      this.menuTarget.style.insetBlockStart  = `${y}px`
+    computePosition(this.triggerTarget, this.contentTarget, this.#options).then(({x, y}) => {
+      this.contentTarget.style.insetInlineStart = `${x}px`
+      this.contentTarget.style.insetBlockStart  = `${y}px`
     })
   }
 

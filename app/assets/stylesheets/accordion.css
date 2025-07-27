@@ -1,4 +1,4 @@
-.accordion {
+:where(.accordion) {
   details {
     border-block-end-width: var(--border);
     font-size: var(--text-sm);
@@ -31,18 +31,14 @@
       outline: var(--border-2) auto var(--color-selected-dark);
     }
 
-    &::-webkit-details-marker {
-      display: none;
-    }
-
     &::after {
-      background-image: url("chevron-down.svg");
-      background-size: cover;
+      background-color: currentColor;
       block-size: var(--size-4);
       content: "";
-      filter: var(--color-filter-text);
       inline-size: var(--size-4);
       margin-inline-start: auto;
+      mask-image: url("chevron-down.svg");
+      mask-size: cover;
       transition: transform var(--time-200);
     }
 

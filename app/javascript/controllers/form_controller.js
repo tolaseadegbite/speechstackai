@@ -1,11 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
+import debounce from "https://esm.sh/just-debounce-it@3.2.0?standalone"
 
 export default class extends Controller {
   static targets = [ "cancel" ]
 
-  submit({ params }) {
-    if (params.submitter) {
-      this.element.requestSubmit(this.#get(params.submitter))
+  initialize() {
+    this.debouncedSubmit = debounce(this.submit.bind(this), 300)
+  }
+
+  submit({ params: { submitter } }) {
+    if (submitter) {
+      this.element.requestSubmit(this.#find(submitter))
     } else {
       this.element.requestSubmit()
     }
@@ -19,11 +24,11 @@ export default class extends Controller {
     event.preventDefault()
   }
 
-  #get(id) {
+  #find(id) {
     return document.getElementById(id) || this.#notFound(id)
   }
 
   #notFound(id) {
-    throw new Error(`Element with ID "${id}" not found in the DOM`)
+    throw new Error(`Submitter with ID "${id}" not found`)
   }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Speechstackai" %></title>
+    <title><%= full_title(yield(:title)) %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -14,7 +14,7 @@
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%# <link rel="icon" href="/icon.svg" type="image/svg+xml"> %>
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%= stylesheet_link_tag "css-zero/reset", "data-turbo-track": "reload" %>
@@ -24,12 +24,12 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="header-layout">
-    <header id="header">
-      <div class="container">
-        <h1 class="font-bold text-2xl">Speechstackai</h1>
-      </div>
-    </header>
+  <body class="" data-controller="color-scheme">
+    <% auth_pages = controller_name == 'sessions' || controller_name == 'passwords' %>
+
+    <% if !auth_pages %>
+      <%= render "layouts/navigation/navbar" %>
+    <% end %>
 
     <main id="main">
       <% if notice.present? %>

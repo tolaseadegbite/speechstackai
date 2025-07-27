@@ -77,7 +77,7 @@
   }
 
   .active {
-    background-color: var(--color-secondary);
+    background-color: var(--color-border-light);
     color: inherit !important;
   }
 
@@ -96,14 +96,14 @@
 
 .ts-wrapper.single .ts-control {
   background-color: var(--color-bg) !important;
-  background-image: url("select-arrow.svg") !important;
+  background-image: url("chevron-down-zinc-500.svg") !important;
   background-position: center right var(--size-2) !important;
   background-repeat: no-repeat !important;
   background-size: var(--size-4) auto !important;
 }
 
 .ts-wrapper.multi .ts-control > .item {
-  background: var(--color-secondary);
+  background: var(--color-border-light);
   border-radius: var(--rounded-md);
   color: inherit;
   line-height: var(--leading-tight);

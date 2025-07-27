@@ -10,7 +10,6 @@
   overflow: hidden;
 
   &:is(.btn) {
-    --btn-icon-color: none;
     --btn-inline-size: var(--size);
     --btn-padding: 0;
     --btn-radius: var(--radius);
@@ -21,14 +20,13 @@
   }
 
   img {
-    align-content: center;
     aspect-ratio: var(--aspect-square);
     block-size: var(--size-full);
     inline-size: var(--size-full);
     object-fit: cover;
   }
 
-  span[role=img] {
+  span[role="img"] {
     align-items: center;
     background-color: var(--color-border-light);
     block-size: var(--size-full);

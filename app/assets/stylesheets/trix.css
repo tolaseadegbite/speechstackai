@@ -1,4 +1,4 @@
-@import url("https://esm.sh/trix@2.1.13/dist/trix.css");
+@import url("https://esm.sh/trix@2.1.15/dist/trix.css");
 
 /* Action Text */
 
@@ -48,16 +48,27 @@ trix-toolbar {
     color: var(--color-text);
 
     &.trix-active {
-      background-color: var(--color-secondary);
+      background-color: var(--color-border-light);
     }
 
     &.trix-button--icon::before {
-      filter: var(--color-filter-text);
       opacity: 1;
     }
 
     &.trix-button--icon:disabled::before {
       opacity: 0.125;
+    }
+
+    [data-color-scheme="light"] & {
+      &.trix-button--icon::before { filter: invert(0); }
+    }
+
+    [data-color-scheme="dark"] & {
+      &.trix-button--icon::before { filter: invert(1); }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      &.trix-button--icon::before { filter: invert(1); }
     }
   }
 
@@ -193,5 +204,15 @@ trix-editor {
     &::-moz-progress-bar {
       background-color: var(--color-primary);
     }
+  }
+}
+
+.trix--minimal {
+  .trix-button-group--file-tools {
+    display: none;
+  }
+
+  .trix-button-group--history-tools {
+    display: none;
   }
 }

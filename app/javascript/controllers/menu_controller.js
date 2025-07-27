@@ -18,14 +18,32 @@ export default class extends Controller {
     this.#observer.disconnect()
   }
 
-  prev() {
+  navigate(event) {
+    switch (event.key) {
+      case "ArrowUp":
+        this.#cancel(event)
+        this.#prev()
+        break
+      case "ArrowDown":
+        this.#cancel(event)
+        this.#next()
+        break
+    }
+  }
+
+  #cancel(event) {
+    event.stopPropagation()
+    event.preventDefault()
+  }
+
+  #prev() {
     if (this.indexValue > 0) {
       this.indexValue--
       this.#update()
     }
   }
 
-  next() {
+  #next() {
     if (this.indexValue < this.#lastIndex) {
       this.indexValue++
       this.#update()

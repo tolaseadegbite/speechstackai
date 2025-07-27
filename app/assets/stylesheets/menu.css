@@ -25,14 +25,12 @@
   --btn-border-color: transparent;
   --btn-box-shadow: none;
   --btn-font-weight: var(--font-normal);
-  --btn-hover-color: var(--color-secondary);
   --btn-justify-content: start;
   --btn-outline-size: 0;
   --btn-padding: var(--size-1_5) var(--size-2);
-  --btn-text-align: start;
 
   &:focus-visible {
-    --btn-background: var(--color-secondary);
+    --btn-background: var(--color-border-light);
   }
 }
 
