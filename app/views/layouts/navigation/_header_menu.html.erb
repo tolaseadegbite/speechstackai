@@ -30,7 +30,21 @@
       </div>
     </div>
   </div>
-  <button type="button" class="btn avatar">
-    <%= image_tag "robot.png", size: 48, alt: "CN" %>
-  </button>
+
+  <div contents data-controller="popover" data-popover-placement-value="bottom-start">
+    <button type="button" class="btn avatar" data-popover-target="trigger" popovertarget="popover" aria-haspopup="true">
+      <%= image_tag "robot.png", size: 48, alt: "CN" %>
+    </button>
+
+    <div popover id="popover" class="popover" style="--popover-size: 8rem;" data-popover-target="content">
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+        <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <%= link_to "Usage analytics", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <hr class="menu__separator" role="separator"/>
+        <% if user_signed_in? %>
+          <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
