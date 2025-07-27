@@ -33,7 +33,7 @@
 
 #header {
   align-items: center;
-  background-color: rgb(from var(--color-border-light) r g b / .5);
+  background-color: rgb(from var(--color-border-light) r g b / 0);
   border-block-end-width: var(--border);
   block-size: var(--size-16);
   column-gap: var(--size-4);
