@@ -1,7 +1,9 @@
-<div class="p-4 i-full bg-main rounded-md shadow-md" style="max-inline-size: 25rem;">
+<div class="p-4 i-full bg-main" style="max-inline-size: 25rem;">
   <div class="text-center">
     <div class="mbe-5">
-      <span class="icon icon--audio-waveform p-8" aria-hidden="true"></span>
+      <%= link_to root_path, class: "block" do %>
+        <span class="icon icon--audio-waveform p-8" aria-hidden="true"></span>
+      <% end %>
     </div>
     <h1 class="font-semibold text-2xl mbe-5">Sign in to SpeechstackAI without password</h1>
   </div>

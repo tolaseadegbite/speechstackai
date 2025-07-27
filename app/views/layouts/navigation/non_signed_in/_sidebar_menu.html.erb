@@ -1,17 +1,7 @@
 <div class="sidebar-menu">
-  <%= link_to "#", class: "btn sidebar-menu__button" do %>
-    <div class="flex shrink-0 overflow-hidden rounded-lg bg-black text-reversed">
-      <span class="icon icon--boom-box m-2"></span>
-    </div>
-    <div class="flex flex-col text-start leading-tight overflow-hidden">
-      <span class="overflow-ellipsis font-semibold">Zero Inc</span>
-      <span class="overflow-ellipsis text-xs">Enterprise</span>
-    </div>
-    <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
-  <% end %>
   <div class="sidebar-menu__content">
     <div class="sidebar-menu__group">
-      <div class="sidebar-menu__group-label">Platform</div>
+      <div class="sidebar-menu__group-label">MENU</div>
       <div class="sidebar-menu__items">
         <details open>
           <summary class="btn sidebar-menu__button">
@@ -83,14 +73,9 @@
       </nav>
     </div>
   </div>
-  <%= link_to "#", class: "btn sidebar-menu__button mbs-auto" do %>
-    <div class="flex shrink-0 overflow-hidden rounded-lg">
-      <%= image_tag "robot.png", size: 32, alt: "CN" %>
-    </div>
-    <div class="flex flex-col text-start leading-tight overflow-hidden">
-      <span class="overflow-ellipsis max-i-full font-semibold">Lázaro Nixon</span>
-      <span class="overflow-ellipsis max-i-full text-xs">lazaronixon@hotmail.com</span>
-    </div>
-    <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
-  <% end %>
+
+  <div class="flex items-center gap mbs-auto">
+    <%= link_to "Sign in", sign_in_path, class: "btn i-full" %>
+    <%= link_to "Sign up", sign_up_path, class: "btn btn--primary i-full" %>
+  </div>
 </div>

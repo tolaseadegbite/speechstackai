@@ -57,6 +57,7 @@ img.icon {
 .icon--italic { --svg: url("italic.svg"); }
 .icon--bold { --svg: url("bold.svg"); }
 .icon--circle-slash { --svg: url("circle-slash.svg"); }
+.icon--user { --svg: url("user.svg"); }
 .icon--audio-waveform { --svg: url("audio-waveform.svg"); }
 .icon--boom-box { --svg: url("boom-box.svg"); }
 .icon--gallery-vertical-end { --svg: url("gallery-vertical-end.svg"); }

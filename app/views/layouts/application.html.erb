@@ -26,6 +26,8 @@
 
   <% auth_pages = controller_name.in?(['sessions', 'passwords', 'registrations', 'passwordlesses', 'password_resets']) %>
 
+  <% static_pages = controller_name.in?(['static_pages']) %>
+
   <body class="<%= 'min-b-screen flex flex-col justify-center items-center p-4' if auth_pages %> bg-main" data-controller="color-scheme">
 
     <% if notice.present? %>
@@ -35,9 +37,12 @@
     <% end %>
 
 
-    <%# Your existing logic for navigation and main content remains the same %>
-    <% if !auth_pages %>
-      <%= render "layouts/navigation/navbar" %>
+    <% if !user_signed_in? && !auth_pages && static_pages %>
+      <%= render "layouts/navigation/non_signed_in/navbar" %>
+    <% else %>
+      <div class="text-center p-4">
+        <!-- Dummy Text/Placeholder as requested -->
+      </div>
     <% end %>
 
     <% if auth_pages %>
