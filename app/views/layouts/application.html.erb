@@ -24,20 +24,31 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="" data-controller="color-scheme">
-    <% auth_pages = controller_name == 'sessions' || controller_name == 'passwords' %>
+  <% auth_pages = controller_name.in?(['sessions', 'passwords', 'registrations', 'passwordlesses', 'password_resets']) %>
 
+  <body class="<%= 'min-b-screen flex flex-col justify-center items-center p-4' if auth_pages %> bg-main" data-controller="color-scheme">
+
+    <% if notice.present? %>
+      <div popover class="flash flash--positive" data-controller="element-removal" data-action="animationend->element-removal#remove" role="status"><%= notice %></div>
+    <% elsif alert.present? %>
+      <div popover class="flash flash--negative" data-controller="element-removal" data-action="animationend->element-removal#remove" role="alert"><%= alert %></div>
+    <% end %>
+
+
+    <%# Your existing logic for navigation and main content remains the same %>
     <% if !auth_pages %>
       <%= render "layouts/navigation/navbar" %>
     <% end %>
 
-    <main id="main">
-      <% if notice.present? %>
-        <div popover class="flash" style="--flash-position: 5rem;" data-controller="element-removal" data-action="animationend->element-removal#remove" role="alert"><%= notice %></div>
-      <% end %>
-      <div class="container">
-        <%= yield %>
-      </div>
-    </main>
+    <% if auth_pages %>
+      <%= yield %>
+    <% else %>
+      <main id="main">
+        <%# We can remove the old flash logic from here %>
+        <div class="container">
+          <%= yield %>
+        </div>
+      </main>
+    <% end %>
   </body>
 </html>

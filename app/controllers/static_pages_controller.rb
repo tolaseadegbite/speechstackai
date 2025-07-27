@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   # allow_unauthenticated_access only: [:homepage, :pricing, :documentation, :playground, :about]
+  skip_before_action :authenticate, only: [:homepage, :pricing, :documentation, :playground, :about]
   def homepage
   end
 

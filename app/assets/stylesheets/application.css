@@ -9,3 +9,6 @@
  * Consider organizing styles into separate files for maintainability.
  */
  
+.min-b-screen {
+  min-block-size: 100vh; /* 100vh = 100% of the viewport height */
+}

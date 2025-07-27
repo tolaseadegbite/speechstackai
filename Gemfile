@@ -63,3 +63,16 @@ group :test do
 end
 
 gem "css-zero", "~> 1.2", github: "lazaronixon/css-zero"
+gem "authentication-zero", "~> 4.0"
+# Use Pwned to check if a password has been found in any of the huge data breaches [https://github.com/philnash/pwned]
+gem "pwned"
+# Use OmniAuth to support multi-provider authentication [https://github.com/omniauth/omniauth]
+gem "omniauth"
+# Provides a mitigation against CVE-2015-9284 [https://github.com/cookpad/omniauth-rails_csrf_protection]
+gem "omniauth-rails_csrf_protection"
+# Use rotp for generating and validating one time passwords [https://github.com/mdp/rotp]
+gem "rotp"
+# Use rqrcode for creating and rendering QR codes into various formats [https://github.com/whomwah/rqrcode]
+gem "rqrcode"
+# Use webauthn for making rails become a conformant web authn relying party [https://github.com/cedarcode/webauthn-ruby]
+gem "webauthn"

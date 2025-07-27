@@ -1,4 +1,45 @@
 Rails.application.routes.draw do
+  get  "sign_in", to: "sessions#new"
+  post "sign_in", to: "sessions#create"
+  get  "sign_up", to: "registrations#new"
+  post "sign_up", to: "registrations#create"
+  resources :sessions, only: [:index, :show, :destroy]
+  resource  :password, only: [:edit, :update]
+  # root "home#index"
+  namespace :two_factor_authentication do
+    namespace :challenge do
+      resource :security_keys,  only: [:new, :create]
+      resource :totp,           only: [:new, :create]
+      resource :recovery_codes, only: [:new, :create]
+    end
+    namespace :profile do
+      resources :security_keys
+      resource  :totp,           only: [:new, :create, :update]
+      resources :recovery_codes, only: [:index, :create]
+    end
+  end
+  get  "/auth/failure",            to: "sessions/omniauth#failure"
+  get  "/auth/:provider/callback", to: "sessions/omniauth#create"
+  post "/auth/:provider/callback", to: "sessions/omniauth#create"
+  post "users/:user_id/masquerade", to: "masquerades#create", as: :user_masquerade
+  resource :invitation, only: [:new, :create]
+  namespace :sessions do
+    resource :passwordless, only: [:new, :edit, :create]
+    resource :sudo, only: [:new, :create]
+  end
+  resources :sessions, only: [ :index, :show, :destroy ]
+  resource  :password, only: [ :edit, :update ]
+  namespace :identity do
+    resource :email,              only: [:edit, :update]
+    resource :email_verification, only: [:show, :create]
+    resource :password_reset,     only: [:new, :edit, :create, :update]
+    resource :email,              only: [ :edit, :update ]
+    resource :email_verification, only: [ :show, :create ]
+    resource :password_reset,     only: [ :new, :edit, :create, :update ]
+  end
+  namespace :authentications do
+    resources :events, only: :index
+  end
   resource :session
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -14,8 +55,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "static_pages#homepage"
 
-  get "static_pages/playground", to: "static_pages#playground", as: :playground
-  get "static_pages/pricing", to: "static_pages#pricing", as: :pricing
-  get "static_pages/documentation", to: "static_pages#documentation", as: :documentation
-  get "static_pages/about", to: "static_pages#about", as: :about
+  get "/playground", to: "static_pages#playground", as: :playground
+  get "/pricing", to: "static_pages#pricing", as: :pricing
+  get "/documentation", to: "static_pages#documentation", as: :documentation
+  get "/about", to: "static_pages#about", as: :about
+  get "/account", to: "home#index", as: :account_settings
 end
