@@ -16,20 +16,18 @@
 
 <div class="flex items-center gap">
 
-  <% if !user_signed_in? %>
-    <div contents data-controller="popover" data-popover-placement-value="bottom-start">
-      <button type="button" class="btn btn--toggle btn--icon rounded-full" data-popover-target="trigger" popovertarget="popover" aria-haspopup="true">
-        <span class="icon icon--user" style="--icon-size: 1.2rem" aria-hidden="true"></span>
-      </button>
+  <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+    <button type="button" class="btn btn--toggle btn--icon rounded-lg" data-popover-target="trigger" popovertarget="popover" aria-haspopup="true">
+      <span class="icon icon--user" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+    </button>
 
-      <div popover id="popover" class="popover" style="--popover-size: 8rem;" data-popover-target="content">
-        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
-          <%= link_to "Sign in", sign_in_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%= link_to "Sign up", sign_up_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-        </div>
+    <div popover id="popover" class="popover" style="--popover-size: 8rem;" data-popover-target="content">
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+        <%= link_to "Sign in", sign_in_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <%= link_to "Sign up", sign_up_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
       </div>
     </div>
-  <% end %>
+  </div>
 
   <!--<div contents data-controller="popover" data-popover-placement-value="bottom-start">
     <button type="button" class="btn btn--icon" data-popover-target="trigger" popovertarget="color_scheme_popover" aria-haspopup="true">

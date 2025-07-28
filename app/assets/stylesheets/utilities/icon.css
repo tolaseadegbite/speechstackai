@@ -59,7 +59,13 @@ img.icon {
 .icon--circle-slash { --svg: url("circle-slash.svg"); }
 .icon--user { --svg: url("user.svg"); }
 .icon--audio-waveform { --svg: url("audio-waveform.svg"); }
+.icon--home { --svg: url("home.svg"); }
+.icon--vc { --svg: url("vc.svg"); }
+.icon--bell { --svg: url("bell.svg"); }
+.icon--rotate-3d { --svg: url("rotate-3d.svg"); }
+.icon--voices { --svg: url("voices.svg"); }
 .icon--boom-box { --svg: url("boom-box.svg"); }
+.icon--audio-lines { --svg: url("audio-lines.svg"); }
 .icon--gallery-vertical-end { --svg: url("gallery-vertical-end.svg"); }
 .icon--square-terminal { --svg: url("square-terminal.svg"); }
 .icon--bot { --svg: url("bot.svg"); }

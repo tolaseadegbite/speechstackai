@@ -1,0 +1,116 @@
+<div class="sidebar-menu">
+  <%= link_to root_path, class: "flex items-center gap mbs-4 mis-1" do %>
+    <span class="icon icon--audio-waveform" style="--icon-size: 1.5rem" aria-hidden="true"></span>
+    <span class="font-bold">SpeechstackAI</span>
+  <% end %>
+  
+  <%= link_to "#", class: "btn sidebar-menu__button" do %>
+    <div class="flex shrink-0 overflow-hidden rounded-lg bg-black text-reversed">
+      <span class="icon icon--boom-box m-2"></span>
+    </div>
+    <div class="flex flex-col text-start leading-tight overflow-hidden">
+      <span class="overflow-ellipsis font-semibold">Fresh24 FM</span>
+      <span class="overflow-ellipsis text-xs">Enterprise</span>
+    </div>
+    <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
+  <% end %>
+
+  <div class="sidebar-menu__content">
+    <div class="sidebar-menu__group">
+
+      <div class="sidebar-menu__items">  
+        <nav class="">
+          <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+            <span class="icon icon--home" aria-hidden="true"></span>
+            Home
+          <% end %>
+          <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+            <span class="icon icon--voices" aria-hidden="true"></span>
+            Voices
+          <% end %>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sidebar-menu__group">
+      <div class="sidebar-menu__group-label">PLAYGROUND</div>
+      <div class="sidebar-menu__items">  
+        <nav class="">
+          <%= link_to "#", class: "btn sidebar-menu__button mbe-1", aria: { current: "page" } do %>
+            <span class="icon icon--audio-lines" aria-hidden="true"></span>
+            Speech to Text
+          <% end %>
+          <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+            <span class="icon icon--vc" aria-hidden="true"></span>
+            Voice Conversion
+          <% end %>
+          <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+            <span class="icon icon--rotate-3d" aria-hidden="true"></span>
+            Sound Effects
+          <% end %>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="mbs-auto flex flex-col">
+
+    <div contents 
+         data-controller="popover" 
+         data-popover-placement-value="right-center" 
+         data-action="click@window->popover#clickOutside">
+
+      <%= button_tag type: "button", 
+                     class: "btn sidebar-menu__button dashboard-theme",
+                     data: { action: "click->popover#toggle", popover_target: "trigger" }, 
+                     aria: { haspopup: "true" } do %>
+        <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
+        <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
+        <span class="sr-only">Theme switcher</span>
+        Theme
+      <% end %>
+
+      <%= tag.div popover: true, id: "dashboard-theme-switcher-popover", class: "popover", style: "--popover-size: 12rem;", data: { popover_target: "content" } do %>
+        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+          <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setLight" data-menu-target="item" role="menuitem">Light</button>
+          <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setDark" data-menu-target="item" role="menuitem">Dark</button>
+          <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setSystem" data-menu-target="item" role="menuitem">System</button>
+        </div>
+      <% end %>
+    </div>
+
+    <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+      <span class="icon icon--bell" aria-hidden="true"></span>
+      Notifications
+    <% end %>
+
+    <div contents 
+         data-controller="popover" 
+         data-popover-placement-value="right-start" 
+         data-action="click@window->popover#clickOutside">
+
+      <%= button_tag type: "button", 
+                     class: "btn sidebar-menu__button", 
+                     data: { action: "click->popover#toggle", popover_target: "trigger" }, 
+                     aria: { haspopup: "true" } do %>
+        <div class="flex shrink-0 overflow-hidden rounded-lg">
+          <%= image_tag "robot.png", size: 32, alt: "User Avatar" %>
+        </div>
+        <div class="flex flex-col text-start leading-tight overflow-hidden">
+          <span class="overflow-ellipsis max-i-full font-semibold">Lázaro Nixon</span>
+          <span class="overflow-ellipsis max-i-full text-xs"><%= current_user.email %></span>
+        </div>
+        <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
+      <% end %>
+
+      <%= tag.div popover: true, id: "user-menu-popover", class: "popover", style: "--popover-size: 12rem;", data: { popover_target: "content" } do %>
+        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+          <%= link_to "Account Settings", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= link_to "API Keys", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <hr class="menu__separator" role="separator"/>
+          <%= link_to "Log out", "#", class: "btn menu__item", data: { menu_target: "item", turbo_method: :delete }, role: "menuitem" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

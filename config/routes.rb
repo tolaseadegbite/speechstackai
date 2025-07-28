@@ -55,9 +55,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "static_pages#homepage"
 
-  get "/playground", to: "static_pages#playground", as: :playground
-  get "/pricing", to: "static_pages#pricing", as: :pricing
-  get "/documentation", to: "static_pages#documentation", as: :documentation
-  get "/about", to: "static_pages#about", as: :about
+  get "/playground", to: "static_pages#playground"
+  get "/text_to_speech", to: "speech_synthesis#index"
+  get "/pricing", to: "static_pages#pricing"
+  get "/documentation", to: "static_pages#documentation"
+  get "/about", to: "static_pages#about"
   get "/settings", to: "home#index"
 end
