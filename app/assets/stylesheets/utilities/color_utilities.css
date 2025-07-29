@@ -148,17 +148,17 @@
 .bg-green-950 { background-color: var(--green-950); }
 
 /* Blue Colors */
-.bg-blue-50 { background-color: var(--green-50); }
-.bg-blue-100 { background-color: var(--green-100); }
-.bg-blue-200 { background-color: var(--green-200); }
-.bg-blue-300 { background-color: var(--green-300); }
-.bg-blue-400 { background-color: var(--green-400); }
-.bg-blue-500 { background-color: var(--green-500); }
-.bg-blue-600 { background-color: var(--green-600); }
-.bg-blue-700 { background-color: var(--green-700); }
-.bg-blue-800 { background-color: var(--green-800); }
-.bg-blue-900 { background-color: var(--green-900); }
-.bg-blue-950 { background-color: var(--green-950); }
+.bg-blue-50 { background-color: var(--blue-50); }
+.bg-blue-100 { background-color: var(--blue-100); }
+.bg-blue-200 { background-color: var(--blue-200); }
+.bg-blue-300 { background-color: var(--blue-300); }
+.bg-blue-400 { background-color: var(--blue-400); }
+.bg-blue-500 { background-color: var(--blue-500); }
+.bg-blue-600 { background-color: var(--blue-600); }
+.bg-blue-700 { background-color: var(--blue-700); }
+.bg-blue-800 { background-color: var(--blue-800); }
+.bg-blue-900 { background-color: var(--blue-900); }
+.bg-blue-950 { background-color: var(--blue-950); }
 
 /* Emerald Colors */
 .bg-emerald-50 { background-color: var(--emerald-50); }

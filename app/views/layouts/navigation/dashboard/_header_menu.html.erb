@@ -10,8 +10,8 @@
       <%= link_to "Feedback", "", class: "btn" %>
       <%= link_to "Documentation", "", class: "btn" %>
     </div>
-
-    <div contents data-controller="popover" data-popover-placement-value="bottom-start">
+    
+    <div contents data-controller="popover" data-popover-placement-value="bottom-center">
       <button type="button" class="btn btn--icon hide@md" data-popover-target="trigger" popovertarget="color_scheme_popover" aria-haspopup="true">
         <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
         <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
@@ -26,13 +26,30 @@
         </div>
       </div>
     </div>
+    
+    <%# Notifications dropdown %>
+    <div contents 
+         data-controller="popover" 
+         data-popover-placement-value="bottom-center" <%# Placement for header %>
+         data-action="click@window->popover#clickOutside">
 
+      <button type="button" class="btn btn--icon hide@md" 
+              data-action="click->popover#toggle" data-popover-target="trigger" aria-haspopup="true">
+        <span class="icon icon--bell" aria-hidden="true"></span>
+      </button>
+
+      <%= tag.div popover: true, id: "header-notifications-popover", class: "popover popover--notifications", style: "--popover-size: 27rem;", data: { popover_target: "content" } do %>
+        <%= render "layouts/sidebar/dashboard/notifications_list" %>
+      <% end %>
+    </div>
+
+    <%# User profile dropdown %>
     <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-      <button type="button" class="btn p-0 rounded-lg hide@md" data-popover-target="trigger" popovertarget="popover" aria-haspopup="true">
+      <button type="button" class="btn p-0 rounded-lg hide@md" data-popover-target="trigger" popovertarget="md_user_popover" aria-haspopup="true">
         <%= image_tag "robot.png", size: 32, class: "rounded-lg", alt: "User Avatar" %>
       </button>
 
-      <div popover id="popover" class="popover" style="--popover-size: 12rem;" data-popover-target="content">
+      <div popover id="md_user_popover" class="popover" style="--popover-size: 12rem;" data-popover-target="content">
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
           <%= link_to "Account settings", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "API Keys", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>

@@ -12,3 +12,28 @@
 .min-b-screen {
   min-block-size: 100vh; /* 100vh = 100% of the viewport height */
 }
+ 
+.min-b-screen-80 {
+  min-block-size: 80vh; /* 100vh = 80% of the viewport height */
+}
+
+/* Style for the popover that holds the notifications */
+.popover--notifications {
+  /* Remove default popover padding to allow content to go edge-to-edge */
+  --popover-padding: 0; 
+}
+
+/* The scrollable list inside the popover */
+.popover__scrollable-list {
+  /* Set a max-height. When content exceeds this, a scrollbar will appear. */
+  max-block-size: 78vh; /* 60% of the viewport height is a good starting point */
+  overflow-y: auto;
+}
+
+.popover__item {
+  transition: background-color var(--time-150);
+}
+
+.popover__item:hover {
+  background-color: var(--color-border-light);
+}

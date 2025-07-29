@@ -1,5 +1,17 @@
-@media (width <= 40rem) {
-    .dashboard-theme {
-        display: none;
-    }
+/* Hides element on screens LARGER than 48rem */
+@media (width >= 48rem) {
+  .hide\@md { 
+    display: none; 
+  } 
+}
+
+/* Hides element by default (mobile-first), then displays it on screens LARGER than 48rem */
+.display-md {
+  display: none;
+}
+@media (width >= 48rem) {
+  .display-md {
+    /* Use 'flex' because your buttons are flex containers */
+    display: flex; 
+  }
 }

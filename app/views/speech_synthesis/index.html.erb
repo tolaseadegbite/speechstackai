@@ -1,0 +1,50 @@
+<div class="grid grid-cols-12 min-b-screen-80">
+
+  <div class="col-span-8 overflow-y-auto">
+    <div>
+        <div>
+            <%= text_area_tag "text_area_with_auto_sizing", nil, placeholder: "Start typing here or paste any text you want to turn to a natural speech...", rows: 24, class: "input p-10 border-0", style: "--input-rows: 3lh; outline: 0; resize: none" %>
+        </div>
+
+        <div class="flex items-center justify-between p-10">
+            <div>
+                <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+
+                <button type="button" class="btn btn--icon rounded-lg">
+                    <span class="icon icon--download" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+                </button>
+
+                <%= button_tag "Generate speech", class: "btn btn--primary" %>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="col-span-4 p-4 overflow-y-auto" style="border-left: 1px solid var(--color-border);">
+    <div class="tabs" style="max-inline-size: 400px" data-controller="tabs">
+        <div class="tabs__list" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
+            <button type="button" id="trigger_account"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_account">Settings</button>
+            <button type="button" id="trigger_password" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_password">History</button>
+        </div>
+
+        <div hidden id="tab_account" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_account">
+            
+            <div class="mb-3 mis-1">
+                <p class="font-semibold mbe-2">Voice</p>
+
+                <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), data: { controller: "combobox" } %>
+            </div>
+
+        </div>
+
+        <div hidden id="tab_password" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_password">
+            cdbcsjdgc
+        </div>
+    </div>
+  </div>
+
+</div>

@@ -1,4 +1,5 @@
 <div class="sidebar-menu">
+  <%# -- TOP AND MIDDLE SECTIONS (UNCHANGED) -- %>
   <%= link_to root_path, class: "flex items-center gap mbs-4 mis-1" do %>
     <span class="icon icon--audio-waveform" style="--icon-size: 1.5rem" aria-hidden="true"></span>
     <span class="font-bold">SpeechstackAI</span>
@@ -17,7 +18,6 @@
 
   <div class="sidebar-menu__content">
     <div class="sidebar-menu__group">
-
       <div class="sidebar-menu__items">  
         <nav class="">
           <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
@@ -31,7 +31,6 @@
         </nav>
       </div>
     </div>
-
     <div class="sidebar-menu__group">
       <div class="sidebar-menu__group-label">PLAYGROUND</div>
       <div class="sidebar-menu__items">  
@@ -53,24 +52,21 @@
     </div>
   </div>
 
-  <div class="mbs-auto flex flex-col">
+  <%# --- START OF MODIFIED BOTTOM SECTION --- %>
 
+  <%# Theme switcher popover %>
+  <div class="mbs-auto flex flex-col">
     <div contents 
          data-controller="popover" 
          data-popover-placement-value="right-center" 
          data-action="click@window->popover#clickOutside">
-
-      <%= button_tag type: "button", 
-                     class: "btn sidebar-menu__button dashboard-theme",
-                     data: { action: "click->popover#toggle", popover_target: "trigger" }, 
-                     aria: { haspopup: "true" } do %>
+      <%= button_tag type: "button", class: "btn sidebar-menu__button display-md", data: { action: "click->popover#toggle", popover_target: "trigger" }, aria: { haspopup: "true" } do %>
         <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
         <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
         <span class="sr-only">Theme switcher</span>
         Theme
       <% end %>
-
-      <%= tag.div popover: true, id: "dashboard-theme-switcher-popover", class: "popover", style: "--popover-size: 12rem;", data: { popover_target: "content" } do %>
+      <%= tag.div popover: true, id: "dashboard-theme-switcher-popover", class: "popover", data: { popover_target: "content" } do %>
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
           <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setLight" data-menu-target="item" role="menuitem">Light</button>
           <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setDark" data-menu-target="item" role="menuitem">Dark</button>
@@ -79,20 +75,34 @@
       <% end %>
     </div>
 
-    <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
-      <span class="icon icon--bell" aria-hidden="true"></span>
-      Notifications
-    <% end %>
+    <%# Notifications Popover %>
+    <div contents 
+       data-controller="popover" 
+       data-popover-placement-value="right-center" 
+       data-action="click@window->popover#clickOutside">
 
+      <%= button_tag type: "button", 
+                    class: "btn sidebar-menu__button mbe-1 display-md", 
+                    data: { action: "click->popover#toggle", popover_target: "trigger" }, 
+                    aria: { haspopup: "true" } do %>
+        <span class="icon icon--bell" aria-hidden="true"></span>
+        Notifications
+      <% end %>
+
+      <%= tag.div popover: true, id: "notifications-popover", class: "popover popover--notifications", style: "--popover-size: 29rem;", data: { popover_target: "content" } do %>
+        
+        <%= render "layouts/sidebar/dashboard/notifications_list" %>
+
+      <% end %>
+    </div>
+
+
+    <%# User Profile Popover %>
     <div contents 
          data-controller="popover" 
          data-popover-placement-value="right-start" 
          data-action="click@window->popover#clickOutside">
-
-      <%= button_tag type: "button", 
-                     class: "btn sidebar-menu__button", 
-                     data: { action: "click->popover#toggle", popover_target: "trigger" }, 
-                     aria: { haspopup: "true" } do %>
+      <%= button_tag type: "button", class: "btn sidebar-menu__button", data: { action: "click->popover#toggle", popover_target: "trigger" }, aria: { haspopup: "true" } do %>
         <div class="flex shrink-0 overflow-hidden rounded-lg">
           <%= image_tag "robot.png", size: 32, alt: "User Avatar" %>
         </div>
@@ -102,15 +112,15 @@
         </div>
         <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
       <% end %>
-
       <%= tag.div popover: true, id: "user-menu-popover", class: "popover", style: "--popover-size: 12rem;", data: { popover_target: "content" } do %>
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
           <%= link_to "Account Settings", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "API Keys", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <hr class="menu__separator" role="separator"/>
-          <%= link_to "Log out", "#", class: "btn menu__item", data: { menu_target: "item", turbo_method: :delete }, role: "menuitem" %>
+          <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
         </div>
       <% end %>
     </div>
   </div>
+  <%# --- END OF BOTTOM SECTION --- %>
 </div>

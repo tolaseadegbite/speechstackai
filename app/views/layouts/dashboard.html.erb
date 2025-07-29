@@ -40,13 +40,12 @@
         <%= render "layouts/navigation/dashboard/sidebar_menu" %>
       </aside>
 
-      <main id="main" style="padding: 0 !important;">
+      <main id="main" style="padding: 0 !important; gap: 0;">
         <div class="header-layout">
           <header class="" id="header">
             <%= render "layouts/navigation/dashboard/mobile_menu" %>
             <%= render "layouts/navigation/dashboard/header_menu" %>
           </header>
-        </div>
         <%= yield %>
       </main>
     </div>
