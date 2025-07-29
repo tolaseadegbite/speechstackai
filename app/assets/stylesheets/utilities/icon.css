@@ -24,6 +24,7 @@ img.icon {
 *****************************************************************/
 .icon--chevron-left { --svg: url("chevron-left.svg"); }
 .icon--chevron-right { --svg: url("chevron-right.svg"); }
+.icon--chevron-down { --svg: url("chevron-down.svg"); }
 .icon--ellipsis { --svg: url("ellipsis.svg"); }
 .icon--chevrons-up-down { --svg: url("chevrons-up-down.svg"); }
 .icon--menu { --svg: url("menu.svg"); }
@@ -59,7 +60,16 @@ img.icon {
 .icon--circle-slash { --svg: url("circle-slash.svg"); }
 .icon--user { --svg: url("user.svg"); }
 .icon--audio-waveform { --svg: url("audio-waveform.svg"); }
+.icon--more-horizontal { --svg: url("more-horizontal.svg"); }
+.icon--panel-left-open { --svg: url("panel-left-open.svg"); }
 .icon--home { --svg: url("home.svg"); }
+.icon--settings { --svg: url("settings.svg"); }
+.icon--apps { --svg: url("apps.svg"); }
+.icon--heart { --svg: url("heart.svg"); }
+.icon--circle-pause { --svg: url("circle-pause.svg"); }
+.icon--play-circle { --svg: url("play-circle.svg"); }
+.icon--pause-circle { --svg: url("pause-circle.svg"); }
+.icon--history { --svg: url("history.svg"); }
 .icon--vc { --svg: url("vc.svg"); }
 .icon--bell { --svg: url("bell.svg"); }
 .icon--rotate-3d { --svg: url("rotate-3d.svg"); }

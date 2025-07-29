@@ -66,7 +66,7 @@
         <span class="sr-only">Theme switcher</span>
         Theme
       <% end %>
-      <%= tag.div popover: true, id: "dashboard-theme-switcher-popover", class: "popover", data: { popover_target: "content" } do %>
+      <%= tag.div popover: true, id: "dashboard-theme-switcher-popover", class: "popover", style: "--popover-size: 12rem;", data: { popover_target: "content" } do %>
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
           <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setLight" data-menu-target="item" role="menuitem">Light</button>
           <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setDark" data-menu-target="item" role="menuitem">Dark</button>
@@ -114,8 +114,13 @@
       <% end %>
       <%= tag.div popover: true, id: "user-menu-popover", class: "popover", style: "--popover-size: 12rem;", data: { popover_target: "content" } do %>
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
-          <%= link_to "Account Settings", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= link_to "Settings", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "API Keys", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= link_to "Webhooks", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= link_to "Usage analytics", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <hr class="menu__separator" role="separator"/>
+          <%= link_to "Docs and resources", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= link_to "Terms and privacy", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <hr class="menu__separator" role="separator"/>
           <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
         </div>

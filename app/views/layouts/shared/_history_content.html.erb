@@ -1,0 +1,34 @@
+<%# Search Input %>
+<div class="pbs-4">
+  <input type="search" class="input i-full" placeholder="Search history...">
+</div>
+
+<%# History List %>
+<div class="flex flex-col gap-4 pbs-4">
+  <%# Date Pill/Separator %>
+  <div class="flex justify-center">
+    <div class="btn rounded-lg bg-shade">3/23/2025</div>
+  </div>
+
+  <%# History Item (Example 1) %>
+  <button type="button" class="voice-list-item text-start p-2">
+    <div class="flex flex-col gap-half">
+      <p>This is a test of the amazing twelvelabs.</p>
+      <div class="flex items-center gap-2 text-sm text-subtle">
+        <span class="voice-swatch" style="--icon-size: 1rem; background-image: radial-gradient(circle, #FBCFE8, #F9A8D4);" aria-hidden="true"></span>
+        <span>Andreas · 09:03 PM</span>
+      </div>
+    </div>
+  </button>
+  
+  <%# History Item (Example 2) %>
+  <button type="button" class="voice-list-item text-start p-2">
+    <div class="flex flex-col gap-half">
+      <p class="overflow-ellipsis">Settle into a comfortable position and gently clos...</p>
+      <div class="flex items-center gap-2 text-sm text-subtle">
+        <span class="voice-swatch" style="--icon-size: 1rem; background-image: radial-gradient(circle, #FBCFE8, #F9A8D4);" aria-hidden="true"></span>
+        <span>Andreas · 08:56 PM</span>
+      </div>
+    </div>
+  </button>
+</div>

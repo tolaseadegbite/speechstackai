@@ -2,7 +2,21 @@
 @media (width >= 48rem) {
   .hide\@md { 
     display: none; 
-  } 
+  }
+}
+
+/* Hides element on screens LARGER than 64rem */
+@media (width >= 64rem) {
+  .responsive-padding {
+    padding: 2rem;
+  }
+}
+
+/* Hides element on screens Less than 64rem */
+@media (width <= 64rem) {
+  .responsive-padding {
+    padding: 1.25rem;
+  }
 }
 
 /* Hides element by default (mobile-first), then displays it on screens LARGER than 48rem */

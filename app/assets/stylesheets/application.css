@@ -37,3 +37,20 @@
 .popover__item:hover {
   background-color: var(--color-border-light);
 }
+
+#settings-column {
+  border-inline-start: none;
+}
+
+@media (width >= 64rem) {
+  #settings-column {
+    border-inline-start: 1px solid var(--color-border);
+  }
+}
+
+/* Voice library */
+
+/* The purple gradient for the icon wrapper. */
+.bg-gradient-purple {
+  background-image: linear-gradient(135deg, #C4B5FD, #A78BFA);
+}

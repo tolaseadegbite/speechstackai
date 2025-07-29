@@ -1,50 +1,90 @@
-<div class="grid grid-cols-12 min-b-screen-80">
+<div class="grow min-b-0 grid@lg grid-cols-12@lg">
 
-  <div class="col-span-8 overflow-y-auto">
+  <%# --- LEFT COLUMN --- %>
+  <div class="col-span-8@md overflow-y-auto">
     <div>
+      <div>
+        <%= text_area_tag "text_area_with_auto_sizing", nil, placeholder: "Start typing here or paste any text you want to turn to a natural speech...", rows: 24, class: "input responsive-padding border-0 ", style: "--input-rows: 3lh; outline: 0; resize: none" %>
+      </div>
+
+      <%# Desktop Footer (Show only on lg) %>
+      <div class="flex items-center justify-between responsive-padding show@lg">
         <div>
-            <%= text_area_tag "text_area_with_auto_sizing", nil, placeholder: "Start typing here or paste any text you want to turn to a natural speech...", rows: 24, class: "input p-10 border-0", style: "--input-rows: 3lh; outline: 0; resize: none" %>
+          <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
         </div>
+        <div class="flex items-center gap-4">
+          <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+          <button type="button" class="btn btn--icon rounded-lg">
+            <span class="icon icon--download" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+          </button>
+          <%= button_tag "Generate speech", class: "btn btn--primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <div class="flex items-center justify-between p-10">
-            <div>
-                <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
+  <%# --- RIGHT COLUMN (Contains both Mobile and Desktop UI) --- %>
+  <div id="settings-column" class="col-span-4@md overflow-y-auto">
+    
+    <%# --- DESKTOP UI (Visible on LG screens) --- %>
+    <div class="show@lg i-full flex-col">
+        <div class="p-4"> 
+            <div class="tabs" data-controller="tabs">
+                <div class="tabs__list" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
+                    <button type="button" id="trigger_account"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_account">Settings</button>
+                    <button type="button" id="trigger_password" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_password">History</button>
+                </div>
+                <div hidden id="tab_account" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_account">
+                    <div class="mb-3 mis-1">
+                        <p class="font-semibold mbe-2">Voice</p>
+                        <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", data: { controller: "combobox" } %>
+                    </div>
+                </div>
+                <div hidden id="tab_password" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_password">
+                    <%= render "layouts/shared/history_content" %>
+                </div>
             </div>
+        </div>
+    </div>
+    
+    <%# --- MOBILE UI (Hidden on LG screens) - REFACTORED AND DRY --- %>
+    <div class="responsive-padding flex flex-col gap-3 hide@lg">
+      <div class="flex justify-between">
 
-            <div class="flex items-center gap-4">
-                <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
-
-                <button type="button" class="btn btn--icon rounded-lg">
-                    <span class="icon icon--download" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+        <%# 1. Voice Library Sheet Trigger %>
+        <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
+              label: "Voice Library",
+              content_partial: "layouts/shared/voice_library_content",
+              trigger: capture do %>
+                <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
+                  <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
+                  Arápáregángan
                 </button>
-
-                <%= button_tag "Generate speech", class: "btn btn--primary" %>
-            </div>
+              <% end
+            } %>
+        
+        <div>
+            <%# History Sheet Trigger %>
+            <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
+                  label: "History",
+                  content_partial: "layouts/shared/history_content",
+                  trigger: capture do %>
+                    <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
+                      <span class="icon icon--history" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+                    </button>
+                  <% end
+                } %>
         </div>
+      </div>
+
+      <div>
+          <%= button_tag "Generate speech", class: "btn btn--primary block i-full" %>
+      </div>
+
+      <div class="flex justify-between">
+          <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
+          <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+      </div>
     </div>
   </div>
-
-  <div class="col-span-4 p-4 overflow-y-auto" style="border-left: 1px solid var(--color-border);">
-    <div class="tabs" style="max-inline-size: 400px" data-controller="tabs">
-        <div class="tabs__list" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
-            <button type="button" id="trigger_account"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_account">Settings</button>
-            <button type="button" id="trigger_password" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_password">History</button>
-        </div>
-
-        <div hidden id="tab_account" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_account">
-            
-            <div class="mb-3 mis-1">
-                <p class="font-semibold mbe-2">Voice</p>
-
-                <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), data: { controller: "combobox" } %>
-            </div>
-
-        </div>
-
-        <div hidden id="tab_password" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_password">
-            cdbcsjdgc
-        </div>
-    </div>
-  </div>
-
 </div>
