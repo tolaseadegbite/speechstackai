@@ -11,7 +11,7 @@
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <%# <link rel="icon" href="/icon.svg" type="image/svg+xml"> %>
@@ -33,7 +33,7 @@
   <body class="<%= 'min-b-screen flex flex-col justify-center items-center p-4' if auth_pages %> bg-main" data-controller="color-scheme">
 
     <% if notice.present? %>
-      <div popover class="flash flash--positive" data-controller="element-removal" data-action="animationend->element-removal#remove" role="status"><%= notice %></div>
+      <div popover class="flash flash--positive" style="z-index: 9999;" data-controller="element-removal" data-action="animationend->element-removal#remove" role="status"><%= notice %></div>
     <% elsif alert.present? %>
       <div popover class="flash flash--negative" data-controller="element-removal" data-action="animationend->element-removal#remove" role="alert"><%= alert %></div>
     <% end %>

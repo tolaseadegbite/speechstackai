@@ -38,7 +38,7 @@
         <span class="icon icon--bell" aria-hidden="true"></span>
       </button>
 
-      <%= tag.div popover: true, id: "header-notifications-popover", class: "popover popover--notifications", style: "--popover-size: 27rem;", data: { popover_target: "content" } do %>
+      <%= tag.div popover: true, id: "header-notifications-popover", class: "popover popover--notifications", style: "--popover-size: 22rem;", data: { popover_target: "content" } do %>
         <%= render "layouts/sidebar/dashboard/notifications_list" %>
       <% end %>
     </div>
@@ -56,7 +56,7 @@
           <%= link_to "Webhooks", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "Subscription", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <hr class="menu__separator" role="separator"/>
-          <%= link_to "Sign out", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
         </div>
       </div>
     </div>

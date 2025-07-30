@@ -3,19 +3,27 @@
   .hide\@md { 
     display: none; 
   }
+
+  .popover--notifications {
+    --popover-size: 27rem !important;
+  }
 }
 
 /* Hides element on screens LARGER than 64rem */
 @media (width >= 64rem) {
   .responsive-padding {
-    padding: 2rem;
+    padding: 6.5dvh;
   }
 }
 
 /* Hides element on screens Less than 64rem */
 @media (width <= 64rem) {
   .responsive-padding {
-    padding: 1.25rem;
+    padding: 4dvh 3dvh 0;
+  }
+
+  .wrapper {
+    overflow: hidden;
   }
 }
 

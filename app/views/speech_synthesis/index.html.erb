@@ -1,10 +1,10 @@
-<div class="grow min-b-0 grid@lg grid-cols-12@lg">
+<div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper">
 
   <%# --- LEFT COLUMN --- %>
   <div class="col-span-8@md overflow-y-auto">
     <div>
       <div>
-        <%= text_area_tag "text_area_with_auto_sizing", nil, placeholder: "Start typing here or paste any text you want to turn to a natural speech...", rows: 24, class: "input responsive-padding border-0 ", style: "--input-rows: 3lh; outline: 0; resize: none" %>
+        <%= text_area_tag "text_area_with_auto_sizing", nil, placeholder: "Start typing here or paste any text you want to turn to a natural speech...", rows: 24, class: "input tts-input responsive-padding border-0 ", style: "--input-rows: 3lh; outline: 0; resize: none" %>
       </div>
 
       <%# Desktop Footer (Show only on lg) %>
@@ -30,19 +30,19 @@
     <div class="show@lg i-full flex-col">
         <div class="p-4"> 
             <div class="tabs" data-controller="tabs">
-                <div class="tabs__list" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
-                    <button type="button" id="trigger_account"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_account">Settings</button>
-                    <button type="button" id="trigger_password" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_password">History</button>
-                </div>
-                <div hidden id="tab_account" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_account">
-                    <div class="mb-3 mis-1">
-                        <p class="font-semibold mbe-2">Voice</p>
-                        <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", data: { controller: "combobox" } %>
-                    </div>
-                </div>
-                <div hidden id="tab_password" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_password">
-                    <%= render "layouts/shared/history_content" %>
-                </div>
+              <div class="tabs__list" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
+                  <button type="button" id="trigger_account"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_account">Settings</button>
+                  <button type="button" id="trigger_password" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_password">History</button>
+              </div>
+              <div hidden id="tab_account" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_account">
+                  <div class="mb-3 mis-1">
+                      <p class="font-semibold mbe-2">Voice</p>
+                      <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", data: { controller: "combobox" } %>
+                  </div>
+              </div>
+              <div hidden id="tab_password" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_password">
+                  <%= render "layouts/shared/history_content" %>
+              </div>
             </div>
         </div>
     </div>
@@ -53,15 +53,15 @@
 
         <%# 1. Voice Library Sheet Trigger %>
         <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
-              label: "Voice Library",
-              content_partial: "layouts/shared/voice_library_content",
-              trigger: capture do %>
-                <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
-                  <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
-                  Arápáregángan
-                </button>
-              <% end
-            } %>
+          label: "Voice Library",
+          content_partial: "layouts/shared/voice_library_content",
+          trigger: capture do %>
+            <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
+              <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
+              Arápáregángan
+            </button>
+          <% end
+        } %>
         
         <div>
             <%# History Sheet Trigger %>
