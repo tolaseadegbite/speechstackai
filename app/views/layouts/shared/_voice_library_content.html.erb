@@ -1,7 +1,7 @@
 <%# --- START: The Fixed Header Section --- %>
 <div class="shrink-0">
   <%# Call to Action: Explore Voice Library %>
-  <div class="flex items-start gap-3 p-4 mbe-2 bg-shade rounded-lg relative">
+  <div class="flex items-start gap-3 p-4 bg-shade rounded-lg relative">
     <div class="p-3 bg-gradient-purple text-reversed rounded-lg shadow-md">
       <span class="icon icon--apps" style="--icon-size: 1.5rem" aria-hidden="true"></span>
     </div>
@@ -9,7 +9,6 @@
       <p class="font-semibold">Explore Voice Library</p>
       <p class="text-sm text-subtle">Find high quality voices from the community. Perfect for any occasion.</p>
     </div>
-    <%# The close button has been removed from here %>
   </div>
 
   <%# Search Input %>
@@ -19,13 +18,7 @@
 
   <%# Filter Button %>
   <div class="pbs-2 pbe-2">
-    <button type="button" class="btn i-full justify-between">
-      <span class="flex items-center gap-2">
-        <span class="icon icon--heart" aria-hidden="true"></span>
-        All saved voices
-      </span>
-      <span class="icon icon--chevron-down" aria-hidden="true"></span>
-    </button>
+    <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", include_blank: "All saved voices", data: { controller: "combobox" } %>
   </div>
 </div>
 <%# --- END: The Fixed Header Section --- %>
@@ -53,7 +46,7 @@
   <% voice_data_list.each do |voice| %>
     <%= button_tag type: "button", class: "voice-list-item text-start p-2 mie-2" do %>
       <div class="flex items-center gap-4">
-        <span class="voice-swatch shrink-0" style="--icon-size: 2.5rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
+        <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
         <div class="flex flex-col overflow-hidden">
           <p class="font-semibold"><%= voice[:name] %></p>
           <p class="text-sm text-subtle overflow-ellipsis"><%= voice[:desc] %></p>

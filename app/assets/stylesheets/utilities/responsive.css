@@ -12,7 +12,7 @@
 /* Hides element on screens LARGER than 64rem */
 @media (width >= 64rem) {
   .responsive-padding {
-    padding: 6.5dvh;
+    padding: 5dvh 6.5dvh;
   }
 
   .fixed-right-col\@lg {

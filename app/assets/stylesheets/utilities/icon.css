@@ -49,6 +49,12 @@ img.icon {
 .icon--user { --svg: url("user.svg"); }
 .icon--credit-card { --svg: url("credit-card.svg"); }
 .icon--settings { --svg: url("settings.svg"); }
+.icon--megaphone { --svg: url("megaphone.svg"); }
+.icon--podcast { --svg: url("podcast.svg"); }
+.icon--voicemail { --svg: url("voicemail.svg"); }
+.icon--newspaper { --svg: url("newspaper.svg"); }
+.icon--message-square-text { --svg: url("message-square-text.svg"); }
+.icon--graduation-cap { --svg: url("graduation-cap.svg"); }
 .icon--circle-check { --svg: url("circle-check.svg"); }
 .icon--circle-user { --svg: url("circle-user.svg"); }
 .icon--sliders-vertical { --svg: url("sliders-vertical.svg"); }
