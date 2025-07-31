@@ -53,6 +53,8 @@ img.icon {
 .icon--circle-user { --svg: url("circle-user.svg"); }
 .icon--sliders-vertical { --svg: url("sliders-vertical.svg"); }
 .icon--zap { --svg: url("zap.svg"); }
+.icon--rotate-ccw { --svg: url("rotate-ccw.svg"); }
+.icon--rotate-cw { --svg: url("rotate-cw.svg"); }
 .icon--app-window { --svg: url("app-window.svg"); }
 .icon--code { --svg: url("code.svg"); }
 .icon--italic { --svg: url("italic.svg"); }

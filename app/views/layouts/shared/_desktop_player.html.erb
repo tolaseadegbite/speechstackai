@@ -1,0 +1,54 @@
+<%# --- Desktop Player (Visible on LG and up) --- %>
+<div class="audio-player flex items-center show@lg i-full gap-4 p-4">
+
+  <!-- Left Section: Info -->
+  <div class="flex flex-col shrink-0">
+    <p class="text-sm font-medium whitespace-nowrap overflow-ellipsis" style="max-inline-size: 30ch;">Settle into a comfortable position and gently cl...</p>
+    <div class="flex items-center gap-half text-sm mbs-1">
+      <div class="rounded-full" style="inline-size: 1.25rem; block-size: 1.25rem; background: linear-gradient(180deg, #FDBFDE 0%, #E66FB2 100%);"></div>
+      <span class="text-subtle font-medium">Tolase</span>
+      <span class="text-subtle">·</span>
+      <svg class="text-subtle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <span class="text-subtle">3/23/2025</span>
+    </div>
+  </div>
+  
+  <!-- Middle Section: Player -->
+  <div class="flex items-center grow gap-4 min-i-0">
+    <!-- Progress Bar -->
+    <div class="flex items-center grow gap-2">
+      <span class="text-xs text-subtle whitespace-nowrap">0:04</span>
+      <div class="relative i-full bg-shade rounded-full" style="block-size: 4px;">
+        <div class="absolute b-full bg-black rounded-full" style="inline-size: 20%;"></div>
+      </div>
+      <span class="text-xs text-subtle whitespace-nowrap">0:20</span>
+    </div>
+
+    <!-- Player Controls -->
+    <div class="flex items-center gap-1">
+      <button class="p-2 bg-transparent border-0 text-primary">
+        <span class="icon icon--rotate-ccw"  width="20" height="20" aria-hidden="true"></span>
+      </button>
+
+      <button class="bg-black text-reversed rounded-full p-2 border-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
+          <path d="M5 3l14 9-14 9V3z"/>
+        </svg>
+      </button>
+      
+      <button class="p-2 bg-transparent border-0 text-primary">
+        <span class="icon icon--rotate-cw"  width="20" height="20" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Right Section: Actions -->
+  <div class="flex items-center gap-2 shrink-0">
+    <button class="p-2 bg-transparent border-0 text-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+    </button>
+    <button class="p-2 bg-transparent border-0 text-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+  </div>
+</div>

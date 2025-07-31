@@ -121,3 +121,12 @@
   background-color: var(--color-border-light);
   cursor: pointer;
 }
+
+/* ADD THIS BLOCK AT THE TOP */
+dialog.sheet:not([open]) {
+  display: none;
+}
+
+dialog.sheet[open] {
+  display: flex;
+}

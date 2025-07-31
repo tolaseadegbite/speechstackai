@@ -37,7 +37,7 @@
         <nav class="">
           <%= link_to "#", class: "btn sidebar-menu__button mbe-1", aria: { current: "page" } do %>
             <span class="icon icon--audio-lines" aria-hidden="true"></span>
-            Speech to Text
+            Text to Speech
           <% end %>
           <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
             <span class="icon icon--vc" aria-hidden="true"></span>
@@ -112,7 +112,7 @@
         </div>
         <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
       <% end %>
-      <%= tag.div popover: true, id: "user-menu-popover", class: "popover", style: "--popover-size: 15rem;", data: { popover_target: "content" } do %>
+      <%= tag.div popover: true, id: "user-menu-popover", class: "popover overflow-hidden", style: "--popover-size: 15rem;", data: { popover_target: "content" } do %>
 
         <div class="p-2">
           <%= render "layouts/shared/credits_card" %>

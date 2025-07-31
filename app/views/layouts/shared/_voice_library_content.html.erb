@@ -1,6 +1,4 @@
 <%# --- START: The Fixed Header Section --- %>
-<%# We remove `sticky` because its parent is no longer the scroller. %>
-<%# The `shrink-0` class prevents this header from shrinking in the flex container. %>
 <div class="shrink-0">
   <%# Call to Action: Explore Voice Library %>
   <div class="flex items-start gap-3 p-4 mbe-2 bg-shade rounded-lg relative">
@@ -11,10 +9,7 @@
       <p class="font-semibold">Explore Voice Library</p>
       <p class="text-sm text-subtle">Find high quality voices from the community. Perfect for any occasion.</p>
     </div>
-    <button type="button" class="btn btn--plain mis-auto" data-action="click->dialog#close">
-      <span class="icon icon--x" aria-hidden="true"></span>
-      <span class="sr-only">Close</span>
-    </button>
+    <%# The close button has been removed from here %>
   </div>
 
   <%# Search Input %>
@@ -35,7 +30,8 @@
 </div>
 <%# --- END: The Fixed Header Section --- %>
 
-<div class="flex flex-col grow overflow-y-auto">
+<%# --- START: The Scrollable List Section --- %>
+<div class="flex flex-col grow overflow-y-auto mis-1">
   <div class="flex justify-between items-center mbe-2 mie-2">
     <p class="font-semibold">Default</p>
     <%= link_to "View all", "#", class: "btn text-sm" %>
@@ -46,13 +42,18 @@
       { name: "Aria", desc: "A middle-aged female with an African-...", color1: "#BFDBFE", color2: "#93C5FD" },
       { name: "Bill", desc: "Friendly and comforting voice ready to...", color1: "#C7D2FE", color2: "#A5B4FC" },
       { name: "Brian", desc: "Middle-aged man with a resonant and...", color1: "#FDE68A", color2: "#FCD34D" },
+      { name: "Callum", desc: "Deceptively gravelly, yet unsettling edge.", color1: "#FBCFE8", color2: "#F9A8D4" },
+      { name: "Alice", desc: "Clear and engaging, friendly woman with...", color1: "#A7F3D0", color2: "#6EE7B7" },
+      { name: "Aria", desc: "A middle-aged female with an African-...", color1: "#BFDBFE", color2: "#93C5FD" },
+      { name: "Bill", desc: "Friendly and comforting voice ready to...", color1: "#C7D2FE", color2: "#A5B4FC" },
+      { name: "Brian", desc: "Middle-aged man with a resonant and...", color1: "#FDE68A", color2: "#FCD34D" },
       { name: "Callum", desc: "Deceptively gravelly, yet unsettling edge.", color1: "#FBCFE8", color2: "#F9A8D4" }
     ] 
   %>
   <% voice_data_list.each do |voice| %>
     <%= button_tag type: "button", class: "voice-list-item text-start p-2 mie-2" do %>
       <div class="flex items-center gap-4">
-        <span class="voice-swatch" style="--icon-size: 2.5rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
+        <span class="voice-swatch shrink-0" style="--icon-size: 2.5rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
         <div class="flex flex-col overflow-hidden">
           <p class="font-semibold"><%= voice[:name] %></p>
           <p class="text-sm text-subtle overflow-ellipsis"><%= voice[:desc] %></p>

@@ -3,20 +3,29 @@
   - trigger: A block that defines the button HTML.
   - content_partial: The path to the partial to render inside the sheet.
   - label: A string for the aria-label.
+  - id_prefix: (Optional) A string to prefix IDs within the content partial.
 %>
+<% id_prefix ||= nil %> <%# Set a default value to prevent errors if not passed %>
+
 <div contents data-controller="dialog">
-  <%# The trigger button is passed in as a block %>
   <%= trigger %>
 
   <dialog 
-      class="sheet sheet--bottom"
-      data-dialog-target="content" 
-      data-action="click->dialog#closeOnClickOutside" 
-      aria-label="<%= label %>">
-      
-      <div class="sheet__content flex flex-col p-5">
-        <%# Render the content partial that was passed in %>
-        <%= render content_partial %>
-      </div>
+    class="sheet sheet--bottom flex flex-col pbe-4 overflow-hidden"
+    data-dialog-target="content" 
+    data-action="click->dialog#closeOnClickOutside" 
+    aria-label="<%= label %>">
+    
+    <div class="relative shrink-0">
+      <button type="button" class="btn btn--plain absolute text-subtle" style="top: 0.2rem; right: 1rem;" data-action="click->dialog#close">
+        <span class="icon icon--x" aria-hidden="true"></span>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+
+    <div class="sheet__content sheet_wrapper pis-3 pie-4 pbs-0 grow flex flex-col min-b-0">
+      <%# Pass the id_prefix down to the content partial %>
+      <%= render partial: content_partial, locals: { id_prefix: id_prefix } %>
+    </div>
   </dialog>
 </div>

@@ -1,13 +1,13 @@
-<div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper">
+<%# The main page container, which grows to fill the layout's <main> area %>
+<div data-controller="player-visibility" class="flex flex-col grow min-b-0">
 
-  <%# --- LEFT COLUMN --- %>
-  <div class="col-span-8@md overflow-y-auto">
-    <div>
+  <div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper">
+
+    <%# --- LEFT COLUMN: TEXT AREA --- %>
+    <div class="col-span-8@md">
       <div>
         <%= text_area_tag "text_area_with_auto_sizing", nil, placeholder: "Start typing here or paste any text you want to turn to a natural speech...", rows: 24, class: "input tts-input responsive-padding border-0 ", style: "--input-rows: 3lh; outline: 0; resize: none" %>
       </div>
-
-      <%# Desktop Footer (Show only on lg) %>
       <div class="flex items-center justify-between responsive-padding show@lg">
         <div>
           <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
@@ -15,76 +15,77 @@
         <div class="flex items-center gap-4">
           <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
           <button type="button" class="btn btn--icon rounded-lg">
-            <span class="icon icon--download" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+            <svg class="text-subtle" xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           </button>
           <%= button_tag "Generate speech", class: "btn btn--primary" %>
         </div>
       </div>
     </div>
-  </div>
 
-  <%# --- RIGHT COLUMN (Contains both Mobile and Desktop UI) --- %>
-  <div id="settings-column" class="col-span-4@md overflow-y-auto">
-    
-    <%# --- DESKTOP UI (Visible on LG screens) --- %>
-    <div class="show@lg i-full flex-col">
-        <div class="p-4"> 
-            <div class="tabs" data-controller="tabs">
-              <div class="tabs__list" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
-                  <button type="button" id="trigger_account"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_account">Settings</button>
-                  <button type="button" id="trigger_password" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_password">History</button>
-              </div>
-              <div hidden id="tab_account" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_account">
-                  <div class="mb-3 mis-1">
-                      <p class="font-semibold mbe-2">Voice</p>
-                      <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", data: { controller: "combobox" } %>
-                  </div>
-              </div>
-              <div hidden id="tab_password" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_password">
-                  <%= render "layouts/shared/history_content" %>
-              </div>
-            </div>
+    <%# --- RIGHT COLUMN: SETTINGS & VOICE LIBRARY --- %>
+    <%# The `fixed-right-col@lg` class gives this column a fixed height only on desktop. %>
+    <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
+
+      <%# --- DESKTOP TABS --- %>
+      <%# This container and its children must grow to fill the fixed height from the parent. %>
+      <div class="show@lg p-4 flex flex-col grow min-h-0">
+        <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">
+          <div class="tabs__list shrink-0" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
+            <button type="button" id="trigger_voice_library"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_voice_library">Voice Library</button>
+            <button type="button" id="trigger_history" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="history_tab">History</button>
+          </div>
+          
+          <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_voice_library" class="grow flex flex-col min-h-0">
+            <%= render partial: "layouts/shared/voice_library_content", locals: { id_prefix: "desktop" } %>
+          </div>
+          
+          <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_history">
+            <%= render "layouts/shared/history_content" %>
+          </div>
         </div>
-    </div>
-    
-    <%# --- MOBILE UI (Hidden on LG screens) - REFACTORED AND DRY --- %>
-    <div class="responsive-padding flex flex-col gap-3 hide@lg">
-      <div class="flex justify-between">
-
-        <%# 1. Voice Library Sheet Trigger %>
-        <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
-          label: "Voice Library",
-          content_partial: "layouts/shared/voice_library_content",
-          trigger: capture do %>
-            <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
-              <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
-              Arápáregángan
-            </button>
-          <% end
-        } %>
-        
-        <div>
-            <%# History Sheet Trigger %>
+      </div>
+      
+      <%# --- MOBILE UI --- %>
+      <div class="responsive-padding flex flex-col gap-3 hide@lg">
+        <div class="flex justify-between">
+          <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
+            label: "Voice Library",
+            content_partial: "layouts/shared/voice_library_content",
+            id_prefix: "mobile",
+            trigger: capture do %>
+              <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
+                <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
+                Arápáregángan
+              </button>
+            <% end
+          } %>
+          <div>
             <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
-                  label: "History",
-                  content_partial: "layouts/shared/history_content",
-                  trigger: capture do %>
-                    <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
-                      <span class="icon icon--history" style="--icon-size: 1.2rem" aria-hidden="true"></span>
-                    </button>
-                  <% end
-                } %>
+                label: "History",
+                content_partial: "layouts/shared/history_content",
+                trigger: capture do %>
+                  <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                  </button>
+                <% end
+              } %>
+          </div>
         </div>
-      </div>
-
-      <div>
-          <%= button_tag "Generate speech", class: "btn btn--primary block i-full" %>
-      </div>
-
-      <div class="flex justify-between">
-          <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
-          <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+        <div>
+            <%= button_tag "Generate speech", class: "btn btn--primary block i-full" %>
+        </div>
+        <div class="flex justify-between">
+            <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
+            <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+        </div>
       </div>
     </div>
   </div>
+
+  <%# --- RESPONSIVE AUDIO PLAYER --- %>
+  <div data-player-visibility-target="playerContainer" class="fixed-player" hidden>
+    <%= render "layouts/shared/desktop_player" %>
+    <%= render "layouts/shared/mobile_player" %>
+  </div>
+
 </div>

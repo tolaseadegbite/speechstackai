@@ -14,16 +14,16 @@
   .responsive-padding {
     padding: 6.5dvh;
   }
+
+  .fixed-right-col\@lg {
+    min-block-size: 90vh;
+  }
 }
 
 /* Hides element on screens Less than 64rem */
 @media (width <= 64rem) {
   .responsive-padding {
     padding: 4dvh 3dvh 0;
-  }
-
-  .wrapper {
-    overflow: hidden;
   }
 }
 
