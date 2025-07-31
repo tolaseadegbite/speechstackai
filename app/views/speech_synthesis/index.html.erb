@@ -1,132 +1,87 @@
 <% provide(:title, "Text to Speech") %>
 
-<%# The main page container, which grows to fill the layout's <main> area %>
 <div data-controller="player-visibility" class="flex flex-col grow min-b-0">
 
-  <div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper">
+  <div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper" data-controller="sample-text">
 
     <%# --- LEFT COLUMN: TEXT AREA & SAMPLES --- %>
-    <%# We wrap the column in the Stimulus controller. %>
-    <div class="col-span-8@md" data-controller="sample-text">
+    <div class="col-span-8@md">
       <div>
-        <%# Add the data-target so the controller can find the textarea. %>
         <%= text_area_tag "text_area_with_auto_sizing", nil, 
-            placeholder: "Start typing here or paste any text you want to turn to a natural speech...", 
-            rows: 24, 
+            placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
             class: "input tts-input responsive-padding border-0", 
             style: "--input-rows: 3lh; outline: 0; resize: none",
-            data: { sample_text_target: "output" } %>
+            data: { 
+              sample_text_target: "output",
+              action: "input->sample-text#handleInput" 
+            } %>
       </div>
 
       <%# --- START: Sample Texts Section --- %>
-      <div id="sample_texts" class="responsive-padding">
-        <h2 class="text-md text-subtle mbe-2">Get started with</h2>
-        
-        <%# 1) REMOVED OVERFLOW: Using `flex-wrap` will make the buttons wrap to the next line. %>
-        <div class="flex flex-wrap gap-2">
-          
+      <div id="sample_texts" class="responsive-padding hidden" data-sample-text-target="samples">
+        <h2 class="text-sm text-subtle mbe-2">Get started with</h2>
+        <div class="flex flex-wrap gap-1">
           <% sample_text_list = [
-              { label: "Advertisement",  icon: "megaphone",      text: "Tired of slow internet? Switch to FiberLink today for lightning-fast speeds and uninterrupted streaming. Visit our website to learn more!" },
-              { label: "Narration",      icon: "book-open",      text: "In a world shrouded in mist and ancient secrets, a young hero must embark on a journey to uncover the truth about her past and save her kingdom from an encroaching darkness." },
-              { label: "Podcast Intro",  icon: "podcast",            text: "Welcome back to Tech Forward, the podcast where we explore the cutting edge of technology. In today's episode, we're talking about the future of artificial intelligence." },
-              { label: "E-Learning",     icon: "graduation-cap", text: "Module 3: The Water Cycle. In this lesson, we will explore the processes of evaporation, condensation, and precipitation. Please complete the quiz at the end of the section." },
-              { label: "Announcement",   icon: "megaphone",           text: "Attention all staff: The quarterly all-hands meeting has been rescheduled to Friday at 10 AM in the main conference room. Your attendance is required." },
-              { label: "Voicemail",      icon: "voicemail",          text: "You've reached the voicemail of Alex. I'm currently unavailable, but please leave your name, number, and a brief message, and I'll get back to you as soon as possible." },
+              { label: "Advert",  icon: "megaphone",      text: "Tired of slow internet? Switch to FiberLink today for lightning-fast speeds and uninterrupted streaming. Visit our website to learn more!" },
               { label: "Dialogue",       icon: "message-square-text", text: "'I can't believe you found it,' she whispered, her eyes wide with disbelief. He simply smiled, 'I told you I'd search the entire galaxy for it.'" },
-              { label: "News Report",    icon: "newspaper",          text: "Good evening. Tonight's top story: international leaders have reached a landmark agreement on climate change, pledging to significantly reduce carbon emissions over the next decade." }
+              { label: "News Report",    icon: "newspaper",      text: "Good evening. Tonight's top story: international leaders have reached a landmark agreement on climate change, pledging to significantly reduce carbon emissions over the next decade." },
+              { label: "Narration",      icon: "book-open",      text: "In a world shrouded in mist and ancient secrets, a young hero must embark on a journey to uncover the truth about her past and save her kingdom from an encroaching darkness." },
+              { label: "V-mail",      icon: "voicemail",      text: "You've reached the voicemail of Alex. I'm currently unavailable, but please leave your name, number, and a brief message, and I'll get back to you as soon as possible." },
+              { label: "Podcast Intro",  icon: "podcast",        text: "Welcome back to Tech Forward, the podcast where we explore the cutting edge of technology. In today's episode, we're talking about the future of artificial intelligence." },
+              { label: "E-Learning",     icon: "graduation-cap", text: "Module 3: The Water Cycle. In this lesson, we will explore the processes of evaporation, condensation, and precipitation. Please complete the quiz at the end of the section." },
+              { label: "Announcement",   icon: "megaphone",      text: "Attention all staff: The quarterly all-hands meeting has been rescheduled to Friday at 10 AM in the main conference room. Your attendance is required." }
             ] 
           %>
-
           <% sample_text_list.each do |sample| %>
-            <%# 3) ADDED HOVER ACTIONS: We now have three actions: mouseover, mouseleave, and click. %>
-            <%= button_tag type: "button", 
-                          class: "btn shrink-0 flex items-center gap-2 text-xs",
-                          data: { 
-                            action: "
-                              mouseover->sample-text#showPlaceholder
-                              mouseleave->sample-text#hidePlaceholder
-                              click->sample-text#insert
-                            ", 
-                            sample_text_text_param: sample[:text] 
-                          } do %>
-              
-              <%# 2) ICONS ONLY: The colored swatch `div` has been removed. %>
+            <%= button_tag type: "button", class: "btn shrink-0 flex items-center gap-2 text-xs", data: { action: "mouseover->sample-text#showPlaceholder mouseleave->sample-text#hidePlaceholder click->sample-text#insert", sample_text_text_param: sample[:text] } do %>
               <span class="icon icon--<%= sample[:icon] %> text-subtle" style="--icon-size: 0.9rem" aria-hidden="true"></span>
-              
               <span class="font-medium"><%= sample[:label] %></span>
             <% end %>
           <% end %>
-
         </div>
       </div>
       <%# --- END: Sample Texts Section --- %>
 
-      <%# --- GENERATE SPEECH INFO & BUTTONS --- %>
-      <div id="generate_speech_info" class="flex items-center justify-between responsive-padding show@lg">
-        <div><p class="text-subtle text-xs font-semibold">10,000 credits remaining</p></div>
-        <div class="flex items-center gap-4">
-          <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
-          <button type="button" class="btn btn--icon rounded-lg"><svg class="text-subtle" xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>
-          <%= button_tag "Generate speech", class: "btn btn--primary" %>
+      <%# --- DESKTOP GENERATE SPEECH INFO --- %>
+      <div id="generate_speech_info" class="show@lg">
+        <div hidden data-sample-text-target="desktopInfo">
+          <div class="flex items-center justify-between responsive-padding">
+            <div><p class="text-subtle text-xs font-semibold">10,000 credits remaining</p></div>
+            <div class="flex items-center gap-2">
+              <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+              <button type="button" class="btn btn--icon rounded-lg"><svg class="text-subtle" xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>
+              <div><%= button_tag "Generate speech", class: "btn btn--primary" %></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <%# --- RIGHT COLUMN: SETTINGS & VOICE LIBRARY --- %>
-    <%# The `fixed-right-col@lg` class gives this column a fixed height only on desktop. %>
     <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
-
-      <%# --- DESKTOP TABS --- %>
-      <%# This container and its children must grow to fill the fixed height from the parent. %>
       <div class="show@lg p-4 flex flex-col grow min-h-0">
         <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">
-          <div class="tabs__list shrink-0" data-action="keydown.left->tabs#prev keydown.right->tabs#next" role="tablist">
-            <button type="button" id="trigger_voice_library"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_voice_library">Voice Library</button>
-            <button type="button" id="trigger_history" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="history_tab">History</button>
-          </div>
-          
-          <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_voice_library" class="grow flex flex-col min-h-0">
-            <%= render partial: "layouts/shared/voice_library_content", locals: { id_prefix: "desktop" } %>
-          </div>
-          
-          <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_history">
-            <%= render "layouts/shared/history_content" %>
-          </div>
+          <div class="tabs__list shrink-0"><button type="button" id="trigger_voice_library"  class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_voice_library">Voice Library</button><button type="button" id="trigger_history" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="history_tab">History</button></div>
+          <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_voice_library" class="grow flex flex-col min-h-0"><%= render partial: "layouts/shared/voice_library_content", locals: { id_prefix: "desktop" } %></div>
+          <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_history"><%= render "layouts/shared/history_content" %></div>
         </div>
       </div>
       
       <%# --- MOBILE UI --- %>
-      <div class="responsive-padding flex flex-col gap-3 hide@lg">
-        <div class="flex justify-between">
-          <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
-            label: "Voice Library",
-            content_partial: "layouts/shared/voice_library_content",
-            id_prefix: "mobile",
-            trigger: capture do %>
-              <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
-                <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
-                Arápáregángan
-              </button>
-            <% end
-          } %>
-          <div>
-            <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: {
-                label: "History",
-                content_partial: "layouts/shared/history_content",
-                trigger: capture do %>
-                  <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-                  </button>
-                <% end
-              } %>
+      <div class="hide@lg">
+        <%# This wrapper div is visible by default on mobile, satisfying the new requirement %>
+        <div data-sample-text-target="mobileInfo">
+          <div class="responsive-padding flex flex-col gap-3">
+            <div class="flex justify-between">
+              <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { label: "Voice Library", content_partial: "layouts/shared/voice_library_content", id_prefix: "mobile", trigger: capture do %><button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal"><span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>Arápáregángan</button><% end } %>
+              <div><%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { label: "History", content_partial: "layouts/shared/history_content", trigger: capture do %><button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal"><svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button><% end } %></div>
+            </div>
+            <div><%= button_tag "Generate speech", class: "btn btn--primary block i-full" %></div>
+            <div class="flex justify-between">
+                <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
+                <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
+            </div>
           </div>
-        </div>
-        <div>
-            <%= button_tag "Generate speech", class: "btn btn--primary block i-full" %>
-        </div>
-        <div class="flex justify-between">
-            <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
-            <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
         </div>
       </div>
     </div>

@@ -14,15 +14,15 @@
  }
  
 .min-b-screen {
-  min-block-size: 100vh; /* 100vh = 100% of the viewport height */
+  min-block-size: 100dvh; /* 100vh = 100% of the viewport height */
 }
  
 .min-b-screen-80 {
-  min-block-size: 80vh; /* 100vh = 80% of the viewport height */
+  min-block-size: 80dvh; /* 100vh = 80% of the viewport height */
 }
  
 .min-b-screen-90, .fixed-right-col {
-  min-block-size: 90vh; /* 90vh = 90% of the viewport height */
+  min-block-size: 90dvh; /* 90vh = 90% of the viewport height */
 }
 
 /* Style for the popover that holds the notifications */
@@ -34,7 +34,7 @@
 /* The scrollable list inside the popover */
 .popover__scrollable-list {
   /* Set a max-height. When content exceeds this, a scrollbar will appear. */
-  max-block-size: 78vh; /* 78% of the viewport height is a good starting point */
+  max-block-size: 78dvh; /* 78% of the viewport height is a good starting point */
   overflow-y: auto;
 }
 
@@ -84,4 +84,15 @@
   inline-size: 1.5rem;
   block-size: 1.5rem;
   border-radius: var(--rounded-full);
+}
+
+/* Combines a fade-in and a slide-in-from-bottom effect */
+.animate-fade-slide-in-up {
+  /* The 'forwards' keyword ensures the element stays in its final state */
+  animation: var(--animate-fade-in) forwards, var(--animate-slide-in-up) forwards;
+}
+
+/* Combines a fade-out and a slide-out-to-bottom effect */
+.animate-fade-slide-out-down {
+  animation: var(--animate-fade-out) forwards, var(--animate-slide-out-down) forwards;
 }

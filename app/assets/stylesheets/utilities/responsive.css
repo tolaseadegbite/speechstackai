@@ -16,7 +16,7 @@
   }
 
   .fixed-right-col\@lg {
-    min-block-size: 90vh;
+    min-block-size: 90dvh;
   }
 }
 
