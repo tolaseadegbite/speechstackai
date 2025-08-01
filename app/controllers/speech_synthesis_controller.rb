@@ -1,4 +1,7 @@
 class SpeechSynthesisController < DashboardController
-  def index
+  def text_to_speech
+  end
+
+  def voice_changer
   end
 end

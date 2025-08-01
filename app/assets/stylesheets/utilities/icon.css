@@ -25,6 +25,7 @@ img.icon {
 .icon--chevron-left { --svg: url("chevron-left.svg"); }
 .icon--chevron-right { --svg: url("chevron-right.svg"); }
 .icon--chevron-down { --svg: url("chevron-down.svg"); }
+.icon--chevron-up { --svg: url("chevron-up.svg"); }
 .icon--ellipsis { --svg: url("ellipsis.svg"); }
 .icon--chevrons-up-down { --svg: url("chevrons-up-down.svg"); }
 .icon--menu { --svg: url("menu.svg"); }
@@ -47,6 +48,7 @@ img.icon {
 .icon--smile { --svg: url("smile.svg"); }
 .icon--calculator { --svg: url("calculator.svg"); }
 .icon--user { --svg: url("user.svg"); }
+.icon--play { --svg: url("play.svg"); }
 .icon--credit-card { --svg: url("credit-card.svg"); }
 .icon--settings { --svg: url("settings.svg"); }
 .icon--megaphone { --svg: url("megaphone.svg"); }

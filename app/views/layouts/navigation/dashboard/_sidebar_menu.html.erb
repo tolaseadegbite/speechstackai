@@ -35,13 +35,13 @@
       <div class="sidebar-menu__group-label">PLAYGROUND</div>
       <div class="sidebar-menu__items">  
         <nav class="">
-          <%= link_to "#", class: "btn sidebar-menu__button mbe-1", aria: { current: "page" } do %>
+          <%= link_to text_to_speech_path, class: "btn sidebar-menu__button mbe-1", aria: { current: "page" } do %>
             <span class="icon icon--audio-lines" aria-hidden="true"></span>
             Text to Speech
           <% end %>
-          <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+          <%= link_to voice_changer_path, class: "btn sidebar-menu__button mbe-1" do %>
             <span class="icon icon--vc" aria-hidden="true"></span>
-            Voice Conversion
+            Voice Changer
           <% end %>
           <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
             <span class="icon icon--rotate-3d" aria-hidden="true"></span>

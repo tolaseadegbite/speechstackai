@@ -56,7 +56,8 @@ Rails.application.routes.draw do
   root "static_pages#homepage"
 
   get "/playground", to: "static_pages#playground"
-  get "/text_to_speech", to: "speech_synthesis#index"
+  get "/text_to_speech", to: "speech_synthesis#text_to_speech"
+  get "/voice_changer", to: "speech_synthesis#voice_changer"
   get "/pricing", to: "static_pages#pricing"
   get "/documentation", to: "static_pages#documentation"
   get "/about", to: "static_pages#about"

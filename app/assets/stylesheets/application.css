@@ -74,7 +74,7 @@
   
   /* Styling */
   background-color: var(--color-bg); /* Uses your main background color variable */
-  border-top: 1px solid var(--color-border);
+  /* border-top: 1px solid var(--color-border); */
 }
 
 .sample-icon-wrapper {
@@ -95,4 +95,44 @@
 /* Combines a fade-out and a slide-out-to-bottom effect */
 .animate-fade-slide-out-down {
   animation: var(--animate-fade-out) forwards, var(--animate-slide-out-down) forwards;
+}
+
+.fixed-player.is-minimized [data-player-visibility-target="collapsible"] {
+  display: none;
+}
+
+/* By default, the 'expand' (chevron-up) icon is hidden. */
+.expand-icon {
+  display: none;
+}
+
+/* When the player has the 'is-minimized' class... */
+.fixed-player.is-minimized .minimize-icon {
+  /* ...hide the 'minimize' (chevron-down) icon. */
+  display: none;
+}
+
+.fixed-player.is-minimized .expand-icon {
+  /* ...and show the 'expand' (chevron-up) icon. */
+  display: inline-block; /* Use inline-block for proper rendering of an icon */
+}
+
+.progress-bar-container {
+  cursor: pointer;
+}
+
+/* When the player is minimized... */
+.fixed-player.is-minimized .progress-bar-container {
+  /* ...add vertical padding to create a larger click target. */
+  padding-block: 1rem;
+}
+
+.fixed-player.is-minimized .progress-bar {
+  /* ...center the progress bar and give it a fixed width. */
+  inline-size: 200px;
+  margin-inline: auto;
+}
+
+.dropzone {
+max-inline-size: var(--max-i-lg);
 }
