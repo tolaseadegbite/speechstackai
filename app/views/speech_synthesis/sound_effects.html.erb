@@ -1,0 +1,49 @@
+<%#
+  File: app/views/speech_synthesis/sound_effects.html.erb
+%>
+<% provide(:title, "Sound Effects") %>
+<% content_for :page_header, "Sound Effects" %>
+
+<%# 
+  This main container uses a vertical flex layout and has the background gradient.
+  It grows to fill the available space in your application's layout.
+%>
+<div class="grow flex flex-col min-b-0 sfx-background">
+  
+  <%# This wrapper centers the content vertically and horizontally. %>
+  <div class="sfx-content-wrapper p-4">
+
+    <%# This container sets the max-width for the entire tabbed interface. %>
+    <div class="i-full" style="max-width: var(--max-i-3xl);">
+
+      <%# The Stimulus controller for managing the tabs. %>
+      <div class="tabs" data-controller="tabs">
+        
+        <%# Tab Triggers %>
+        <div class="tabs__list justify-center">
+          <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="sfx_generate_tab">Generate</button>
+          <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="sfx_history_tab">History</button>
+        </div>
+        
+        <%# Tab Panels container %>
+        <div class="pbs-4">
+
+          <%# --- GENERATE TAB PANEL --- %>
+          <div id="sfx_generate_tab" data-tabs-target="tab" role="tabpanel">
+            <%# The Stimulus controller for prompt filling is now attached here. %>
+            <div class="flex flex-col gap-4" data-controller="sound-effects-prompt-filler">
+              <%= render "speech_synthesis/partials/sound_effects/input_card" %>
+              <%= render "speech_synthesis/partials/sound_effects/examples_card" %>
+            </div>
+          </div>
+          
+          <%# --- HISTORY TAB PANEL --- %>
+          <div hidden id="sfx_history_tab" data-tabs-target="tab" role="tabpanel">
+            <%= render "speech_synthesis/partials/sound_effects/history_card" %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

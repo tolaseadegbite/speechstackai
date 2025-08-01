@@ -1,0 +1,72 @@
+<%#
+  File: app/views/speech_synthesis/partials/sound_effects/_history_card.html.erb
+%>
+<%# THE FIX 1: The card is now a vertical flex container with a fixed height. %>
+<div class="sfx-card border-0 flex flex-col history-card" style="padding: var(--size-3);">
+  
+  <%# --- START: Fixed Header Section --- %>
+  <%# THE FIX 2: The header does not shrink, so it stays fixed at the top. %>
+  <div class="shrink-0">
+    <h3 class="font-semibold mbe-4">Recent Sound Effects</h3>
+  </div>
+  <%# --- END: Fixed Header Section --- %>
+  
+
+  <%# --- START: Scrollable List Section --- %>
+  <%# THE FIX 3: This container grows to fill all remaining space and adds a scrollbar when needed. %>
+  <div class="grow overflow-y-auto pt-3">
+    
+    <%# --- Mock Data for the History List --- %>
+    <% history_items_by_date = {
+        "3/24/2025" => [
+          { prompt: "A powerful cinematic explosion with debris falling.", time: "02:15 PM" },
+          { prompt: "Gentle stream flowing over smooth rocks in a quiet forest.", time: "01:30 PM" },
+          { prompt: "Typing on a clicky mechanical keyboard in a quiet room.", time: "11:55 AM" },
+          { prompt: "A spaceship's hyperdrive charging up and jumping to lightspeed.", time: "10:21 AM" },
+          { prompt: "A domestic cat purring contentedly, close-up.", time: "09:05 AM" },
+          { prompt: "The satisfying pop of a champagne cork and fizzing bubbles.", time: "08:45 AM" }
+        ],
+        "3/23/2025" => [
+          { prompt: "Ocean waves crashing against a rocky shore, with the sound of seagulls in the distance.", time: "08:57 PM" },
+          { prompt: "Peaceful forest ambience with birds chirping, leaves rustling in a gentle breeze, and a distant stream.", time: "08:52 PM" },
+          { prompt: "A heavy rainstorm with loud thunderclaps and the sound of wind howling.", time: "04:15 PM" },
+          { prompt: "Sizzling bacon in a hot frying pan.", time: "03:22 PM" },
+          { prompt: "A medieval blacksmith hammering a glowing sword on an anvil.", time: "01:10 PM" },
+          { prompt: "Low, suspenseful drone for a horror movie scene.", time: "12:45 PM" },
+          { prompt: "A window shattering from an impact.", time: "10:17 AM" },
+          { prompt: "A subway train arriving at a busy station, doors opening.", time: "09:30 AM" }
+        ],
+        "3/21/2025" => [
+          { prompt: "The powerful sound of a sports car engine revving loudly, followed by tires screeching.", time: "05:50 PM" },
+          { prompt: "A heavy wooden door creaking open slowly in an old, abandoned house.", time: "05:48 PM" },
+          { prompt: "The roar of a large stadium crowd cheering loudly after a goal is scored.", time: "03:11 PM" },
+          { prompt: "A huge dragon roaring, echoing through a mountain valley.", time: "02:00 PM" },
+          { prompt: "The distinct sound of popping popcorn in a microwave.", time: "01:05 PM" },
+          { prompt: "A lone wolf howling at the full moon on a cold night.", time: "12:00 PM" }
+        ]
+      }
+    %>
+
+    <%# The loops and content inside the scrollable area remain exactly the same. %>
+    <% history_items_by_date.each do |date, items| %>
+      <p class="text-sm text-subtle pbs-2"><%= date %></p>
+      <div class="flex flex-col gap-2">
+        <% items.each do |item| %>
+          <div class="flex items-center justify-between gap-4 p-2 rounded-md hover:bg-shade">
+            <div class="flex items-center gap-3 min-i-0">
+              <span class="icon icon--volume-2 text-subtle" aria-hidden="true"></span>
+              <p class="text-sm overflow-ellipsis"><%= item[:prompt] %></p>
+            </div>
+            <div class="flex items-center gap-4 shrink-0">
+              <span class="text-sm text-subtle"><%= item[:time] %></span>
+              <button type="button" class="btn btn--icon btn--subtle"><span class="icon icon--play" aria-hidden="true"></span></button>
+              <button type="button" class="btn btn--icon btn--subtle"><span class="icon icon--download" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    
+  </div>
+  <%# --- END: Scrollable List Section --- %>
+</div>

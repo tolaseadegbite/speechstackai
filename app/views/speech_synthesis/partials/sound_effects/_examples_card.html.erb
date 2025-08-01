@@ -1,0 +1,37 @@
+<div class="sfx-card">
+  <div class="flex flex-col gap-3">
+    <p class="text-center text-sm text-subtle font-medium">Try a sound effect example</p>
+    <div class="flex flex-wrap justify-center gap-1">
+
+      <%# THE FIX 1: The data now has two keys: a short `label` and a long `prompt`. %>
+      <% sfx_examples = [
+          { label: "Creaky door",            icon: "door-open",     prompt: "A heavy wooden door creaking open slowly in an old, abandoned house." },
+          { label: "Ocean waves",            icon: "waves",         prompt: "Ocean waves crashing against a rocky shore, with the sound of seagulls in the distance." },
+          { label: "Robot sounds",           icon: "bot",           prompt: "Futuristic robot sounds, including beeps, whirring servos, and mechanical movements." },
+          { label: "Heavy rainstorm",        icon: "cloud-rain-wind", prompt: "A heavy rainstorm with loud thunderclaps and the sound of wind howling." },
+          { label: "Forest ambience",        icon: "trees",         prompt: "Peaceful forest ambience with birds chirping, leaves rustling in a gentle breeze, and a distant stream." },
+          { label: "Helicopter flyby",       icon: "wind",          prompt: "A helicopter flying by overhead, with the sound of its rotors chopping through the air." },
+          { label: "Car engine revving",     icon: "car",           prompt: "The powerful sound of a sports car engine revving loudly, followed by tires screeching." },
+          { label: "Stadium crowd cheering", icon: "users",         prompt: "The roar of a large stadium crowd cheering loudly after a goal is scored." }
+        ] 
+      %>
+      
+      <% sfx_examples.each do |example| %>
+        <button type="button" class="btn btn--subtle shrink-0 flex items-center gap-2 text-xs"
+                data-action="
+                  mouseover->sound-effects-prompt-filler#showPlaceholder
+                  mouseleave->sound-effects-prompt-filler#hidePlaceholder
+                  click->sound-effects-prompt-filler#insert
+                "
+                <%# THE FIX 2: The `text-param` now uses the new `prompt` key. %>
+                data-sound-effects-prompt-filler-text-param="<%= example[:prompt] %>">
+
+          <span class="icon icon--<%= example[:icon] %>" aria-hidden="true"></span>
+          
+          <%# The button's visible text still uses the short `label` key. %>
+          <span><%= example[:label] %></span>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>

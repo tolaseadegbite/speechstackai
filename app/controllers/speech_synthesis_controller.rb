@@ -4,4 +4,7 @@ class SpeechSynthesisController < DashboardController
 
   def voice_changer
   end
+
+  def sound_effects
+  end
 end

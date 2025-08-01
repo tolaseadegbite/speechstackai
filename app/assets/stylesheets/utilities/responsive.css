@@ -25,6 +25,7 @@
   .responsive-padding {
     padding: 4dvh 3dvh 0;
   }
+  
 }
 
 /* Hides element by default (mobile-first), then displays it on screens LARGER than 48rem */

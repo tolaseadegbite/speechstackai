@@ -34,19 +34,33 @@
     <div class="sidebar-menu__group">
       <div class="sidebar-menu__group-label">PLAYGROUND</div>
       <div class="sidebar-menu__items">  
-        <nav class="">
-          <%= link_to text_to_speech_path, class: "btn sidebar-menu__button mbe-1", aria: { current: "page" } do %>
+        <nav>
+
+          <%# --- THE FIX: Updated Text to Speech Link --- %>
+          <%# Adds `aria-current="page"` if the current page matches the link's path. %>
+          <%= link_to text_to_speech_path, 
+                      class: "btn sidebar-menu__button mbe-1", 
+                      aria: (current_page?(text_to_speech_path) ? { current: "page" } : {}) do %>
             <span class="icon icon--audio-lines" aria-hidden="true"></span>
             Text to Speech
           <% end %>
-          <%= link_to voice_changer_path, class: "btn sidebar-menu__button mbe-1" do %>
+          
+          <%# --- THE FIX: Updated Voice Changer Link --- %>
+          <%= link_to voice_changer_path, 
+                      class: "btn sidebar-menu__button mbe-1", 
+                      aria: (current_page?(voice_changer_path) ? { current: "page" } : {}) do %>
             <span class="icon icon--vc" aria-hidden="true"></span>
             Voice Changer
           <% end %>
-          <%= link_to "#", class: "btn sidebar-menu__button mbe-1" do %>
+          
+          <%# --- THE FIX: Updated Sound Effects Link --- %>
+          <%= link_to sound_effects_path, 
+                      class: "btn sidebar-menu__button mbe-1", 
+                      aria: (current_page?(sound_effects_path) ? { current: "page" } : {}) do %>
             <span class="icon icon--rotate-3d" aria-hidden="true"></span>
             Sound Effects
           <% end %>
+
         </nav>
       </div>
     </div>

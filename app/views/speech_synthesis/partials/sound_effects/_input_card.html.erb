@@ -1,0 +1,21 @@
+<%#
+  File: app/views/speech_synthesis/partials/sound_effects/_input_card.html.erb
+%>
+<div class="sfx-card">
+  <%= form_with url: "#", method: :post, class: "flex flex-col gap-3" do |f| %>
+    <div class="relative">
+      <%# THE FIX: The data-target now matches the new controller name. %>
+      <%= f.text_area :description,
+          placeholder: "Describe your sound effect and then click generate...",
+          rows: 4,
+          class: "input border-0 p-0 i-full",
+          style: "background: transparent; resize: none; outline: 0;",
+          data: { sound_effects_prompt_filler_target: "output" } %>
+      
+      <p class="text-xs text-subtle" style="position: absolute; bottom: 0; right: 0;">0/500</p>
+    </div>
+    <div class="flex">
+      <%= f.button "Generate Sound Effect", class: "btn btn--secondary" %>
+    </div>
+  <% end %>
+</div>

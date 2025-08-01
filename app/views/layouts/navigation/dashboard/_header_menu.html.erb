@@ -1,8 +1,6 @@
 <div class="flex justify-between items-center container">
-  <div class="flex items-center gap">
-    <%= link_to root_path, class: "flex items-center gap mie-2" do %>
-      <span class="font-bold">Text to Speech</span>
-    <% end %>
+  <div class="flex items-center">
+    <span class="font-bold"><%= yield(:page_header) || "Dashboard" %></span>
   </div>
 
   <div class="flex items-center items-center gap">
