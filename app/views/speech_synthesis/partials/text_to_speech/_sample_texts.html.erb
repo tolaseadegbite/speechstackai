@@ -1,26 +1,31 @@
-<%#
-  Renders the interactive list of sample text buttons.
-  - Required parent controller: `sample-text`
-%>
 <div id="sample_texts" class="responsive-padding hidden" data-sample-text-target="samples">
-  <h2 class="text-sm text-subtle mbe-2">Get started with</h2>
+  <h2 class="text-sm text-subtle mbe-2">Ẹ bẹ̀rẹ̀ pẹ̀lú</h2>
   <div class="flex flex-wrap gap-1">
+
     <% sample_text_list = [
-        { label: "Advert",        icon: "megaphone",           text: "Tired of slow internet? Switch to FiberLink today for lightning-fast speeds and uninterrupted streaming. Visit our website to learn more!" },
-        { label: "Dialogue",      icon: "message-square-text", text: "'I can't believe you found it,' she whispered, her eyes wide with disbelief. He simply smiled, 'I told you I'd search the entire galaxy for it.'" },
-        { label: "News Report",   icon: "newspaper",           text: "Good evening. Tonight's top story: international leaders have reached a landmark agreement on climate change, pledging to significantly reduce carbon emissions over the next decade." },
-        { label: "Narration",     icon: "book-open",           text: "In a world shrouded in mist and ancient secrets, a young hero must embark on a journey to uncover the truth about her past and save her kingdom from an encroaching darkness." },
-        { label: "V-mail",        icon: "voicemail",           text: "You've reached the voicemail of Alex. I'm currently unavailable, but please leave your name, number, and a brief message, and I'll get back to you as soon as possible." },
-        { label: "Podcast Intro", icon: "podcast",             text: "Welcome back to Tech Forward, the podcast where we explore the cutting edge of technology. In today's episode, we're talking about the future of artificial intelligence." },
-        { label: "E-Learning",    icon: "graduation-cap",      text: "Module 3: The Water Cycle. In this lesson, we will explore the processes of evaporation, condensation, and precipitation. Please complete the quiz at the end of the section." },
-        { label: "Announcement",  icon: "megaphone",           text: "Attention all staff: The quarterly all-hands meeting has been rescheduled to Friday at 10 AM in the main conference room. Your attendance is required." }
+        { label: "Ìpolówó", icon: "megaphone", text: "Ṣé íntánẹ́ẹ̀tì tó lọ́ra ti sú ọ? Ẹ yí padà sí Fáíbálinkì lónìí fún íntánẹ́ẹ̀tì tó yára bíi mànàmáná àti wíwo fídíò láìsí ìdíwọ́. Ẹ bẹ ìkànnì wa wò fún àlàyé kíkún!" },
+        
+        { label: "Ìjíròrò", icon: "message-square-text", text: "“Ṣe wàá wá síbi ayẹyẹ ọjọ́ ìbí mi ní ọ̀sẹ̀ tó ń bọ̀?” Bùsọ́lá béèrè. “Dájúdájú! Kí ni kí n mú wá?” Títí fèsì." },
+
+        { label: "Ìròyìn", icon: "newspaper", text: "Ẹ kú ìrọ̀lẹ́. Ìròyìn pàtàkì ti alẹ́ yìí ni pé: àwọn aṣíwájú àgbáyé ti ṣe àdéhùn mánigbàgbé lórí àyípadà ojú ọjọ́, wọ́n sì ti ṣèlérí láti dínku afẹ́fẹ́ kábọ́nù tó ń jáde kù gidigidi ní ọdún mẹ́wàá tó ń bọ̀." },
+        { label: "Àròsọ", icon: "book-open", text: "Lọ́jọ́ kan, bí Adé ti ń rìn lọ sí ọjà, ó rí àpò owó kan lórí ilẹ̀. Ó wò yíká, kò rí ẹni kankan, nítorí náà ó gbé e." },
+
+        { label: "Ifọ̀rọ̀ránṣẹ́", icon: "voicemail", text: "Ẹ ti kan ohùn ìdáhùn Ìyanu Adéṣínà. Mi ò wà nítòsí báyìí, ṣùgbọ́n ẹ jọ̀wọ́, ẹ fi orúkọ yín, nọ́mbà yín, àti ìránṣẹ́ kúkúrú sílẹ̀, màá sì pè yín padà bí ó bá ti yá tó." },
+
+        { label: "Ìbẹ̀rẹ̀ Pọ́dkáàsì", icon: "podcast", text: "Ẹ káàbọ̀ padà sí orí ètò 'ẹ̀rọ ìgbàlódé', pọ́díkáàsì tí a ti ń sọ̀rọ̀ lóríi àwọn ìdàgbàsókè tuntun nínúu ẹ̀rọ ìgbàlódé. Lórí ètò tòní, a ó máa sọ̀rọ̀ nípa ọjọ́ iwájú ọgbọ́n àtọwọ́dá." },
+
+        { label: "Ẹ̀kọ́ Orí Ayélujára", icon: "graduation-cap", text: "Ẹ káàbọ̀ sí ẹ̀kọ́ 'Bí A Ṣe Ń Lo Kọ̀ǹpútà'. Ẹ̀kọ́ àkọ́kọ́: Mọ àwọn apá pàtàkì inú kọ̀ǹpútà rẹ." },
+
+        { label: "Ìkéde", icon: "megaphone", text: "Ìkéde sí gbogbo òṣìṣẹ́: A ti sún ìpàdé gbogbo-gbòò wa ti àṣekẹfà sí ọjọ́ Ẹtì ní aago mẹ́wàá àárọ̀ ní gbọ̀gan ìpàdé. Dandan ni kí ẹ wà níbẹ̀." }
       ] 
     %>
+
     <% sample_text_list.each do |sample| %>
       <%= button_tag type: "button", class: "btn shrink-0 flex items-center gap-2 text-xs", data: { action: "mouseover->sample-text#showPlaceholder mouseleave->sample-text#hidePlaceholder click->sample-text#insert", sample_text_text_param: sample[:text] } do %>
         <span class="icon icon--<%= sample[:icon] %> text-subtle" style="--icon-size: 0.9rem" aria-hidden="true"></span>
         <span class="font-medium"><%= sample[:label] %></span>
       <% end %>
     <% end %>
+    
   </div>
 </div>

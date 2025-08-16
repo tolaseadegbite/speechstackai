@@ -13,34 +13,21 @@
 
   <%# Search Input %>
   <div class="pbs-2">
-    <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", data: { controller: "combobox" } %>
-  </div>
-
-  <%# Filter Button %>
-  <div class="pbs-2 pbe-2">
-    <%= select_tag :frameworks, options_for_select(["Arápáregángan", "Oladeji", "Ngozi", "Musa"]), class: "i-full", include_blank: "All saved voices", data: { controller: "combobox" } %>
+    <%= select_tag :frameworks, options_for_select(["Adéṣínà", "Abọ́sẹ̀dé"]), class: "i-full", data: { controller: "combobox" } %>
   </div>
 </div>
 <%# --- END: The Fixed Header Section --- %>
 
 <%# --- START: The Scrollable List Section --- %>
-<div class="flex flex-col grow overflow-y-auto mis-1">
+<div class="flex flex-col grow overflow-y-auto mis-1 mbs-2">
   <div class="flex justify-between items-center mbe-2 mie-2">
     <p class="font-semibold">Default</p>
-    <%= link_to "View all", "#", class: "btn text-sm" %>
+    <%#= link_to "View all", "#", class: "btn text-sm" %>
   </div>
 
   <% voice_data_list = [
-      { name: "Alice", desc: "Clear and engaging, friendly woman with...", color1: "#A7F3D0", color2: "#6EE7B7" },
-      { name: "Aria", desc: "A middle-aged female with an African-...", color1: "#BFDBFE", color2: "#93C5FD" },
-      { name: "Bill", desc: "Friendly and comforting voice ready to...", color1: "#C7D2FE", color2: "#A5B4FC" },
-      { name: "Brian", desc: "Middle-aged man with a resonant and...", color1: "#FDE68A", color2: "#FCD34D" },
-      { name: "Callum", desc: "Deceptively gravelly, yet unsettling edge.", color1: "#FBCFE8", color2: "#F9A8D4" },
-      { name: "Alice", desc: "Clear and engaging, friendly woman with...", color1: "#A7F3D0", color2: "#6EE7B7" },
-      { name: "Aria", desc: "A middle-aged female with an African-...", color1: "#BFDBFE", color2: "#93C5FD" },
-      { name: "Bill", desc: "Friendly and comforting voice ready to...", color1: "#C7D2FE", color2: "#A5B4FC" },
-      { name: "Brian", desc: "Middle-aged man with a resonant and...", color1: "#FDE68A", color2: "#FCD34D" },
-      { name: "Callum", desc: "Deceptively gravelly, yet unsettling edge.", color1: "#FBCFE8", color2: "#F9A8D4" }
+      { name: "Adéṣínà", desc: "A clear, articulate young yoruba man", color1: "#A7F3D0", color2: "#6EE7B7" },
+      { name: "Abọ́sẹ̀dé", desc: "A clear, articulate young yoruba woman", color1: "#BFDBFE", color2: "#93C5FD" }
     ] 
   %>
   <% voice_data_list.each do |voice| %>

@@ -2,7 +2,7 @@
 <% content_for :page_header, "Text to Speech" %>
 
 <div data-controller="player-visibility" class="flex flex-col grow min-b-0">
-  <div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto" data-controller="sample-text">
+  <%= form_with url: "", method: :post, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text" } do |f| %>
 
     <%# --- LEFT COLUMN --- %>
     <div class="col-span-8@md">
@@ -43,7 +43,7 @@
       
       <%= render "speech_synthesis/partials/text_to_speech/mobile_info_bar" %>
     </div>
-  </div>
+  <% end %>
 
   <%# --- RESPONSIVE AUDIO PLAYER --- %>
   <div data-player-visibility-target="playerContainer" class="fixed-player border-bs border-shade" hidden>
