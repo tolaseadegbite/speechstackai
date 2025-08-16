@@ -19,10 +19,28 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+sqlite: &sqlite
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 development:
-  <<: *default
-  database: speechstackai_development
+  primary:
+    <<: *default
+    database: speechstackai_development
+  queue:
+    <<: *sqlite
+    database: storage/speechstackai_development_queue.sqlite3
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *sqlite
+    database: storage/speechstackai_development_cable.sqlite3
+    migrations_paths: db/cable_migrate
+  cache:
+    <<: *sqlite
+    database: storage/speechstackai_development_cache.sqlite3
+    migrations_paths: db/cache_migrate
+
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -83,7 +101,7 @@ production:
     <<: *default
     database: speechstackai_production
     username: speechstackai
-    password: <%= ENV["SPEECHSTACKAI_DATABASE_PASSWORD"] %>
+    password: <%= ENV["speechstackai_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: speechstackai_production_cache

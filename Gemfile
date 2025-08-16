@@ -6,6 +6,7 @@ gem "rails", "~> 8.0.2"
 gem "propshaft"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
+gem "sqlite3",                              "2.5.0"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -55,6 +56,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "hotwire-spark"
+  gem "letter_opener_web", "~> 3.0"
 end
 
 group :test do
@@ -77,3 +79,5 @@ gem "rotp"
 gem "rqrcode"
 # Use webauthn for making rails become a conformant web authn relying party [https://github.com/cedarcode/webauthn-ruby]
 gem "webauthn"
+gem "aws-sdk-s3", "~> 1"
+gem "mission_control-jobs"
