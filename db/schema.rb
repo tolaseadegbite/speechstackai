@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_16_135624) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_16_171416) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_16_135624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "generated_audio_clips", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "text"
+    t.string "voice"
+    t.string "original_voice_s3_key"
+    t.string "s3_key"
+    t.string "service"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_generated_audio_clips_on_user_id"
   end
 
   create_table "recovery_codes", force: :cascade do |t|
@@ -74,11 +87,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_16_135624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "credits", default: 100, null: false
+    t.string "name"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name", unique: true
   end
 
   add_foreign_key "events", "users"
+  add_foreign_key "generated_audio_clips", "users"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "security_keys", "users"
   add_foreign_key "sessions", "users"

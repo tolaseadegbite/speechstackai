@@ -25,6 +25,14 @@
   min-block-size: 90dvh; /* 90vh = 90% of the viewport height */
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
 /* Style for the popover that holds the notifications */
 .popover--notifications {
   /* Remove default popover padding to allow content to go edge-to-edge */

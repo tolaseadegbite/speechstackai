@@ -58,6 +58,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "static_pages#homepage"
 
+  post "text-to-speech", to: "speech_synthesis#create", as: :create_speech_synthesis
+
   get "/playground", to: "static_pages#playground"
   get "/text_to_speech", to: "speech_synthesis#text_to_speech"
   get "/voice_changer", to: "speech_synthesis#voice_changer"

@@ -1,0 +1,2 @@
+class GeneratedAudioClipsController < DashboardController
+end

@@ -1,0 +1,24 @@
+<%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2", id: dom_id(audio) do %>
+  <div class="flex flex-col gap-half text-sm">
+    <p class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></p>
+    <div class="flex items-center gap-2 text-sm text-subtle">
+      <span class="voice-swatch" style="--icon-size: 1rem; background-image: radial-gradient(circle, #FBCFE8, #F9A8D4);" aria-hidden="true"></span>
+      <span><%= audio.voice %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-4 shrink-0 mis-2">
+    <% s3_url = presigned_s3_url(audio.s3_key) %>
+    <button type="button" class="btn--icon cursor-pointer"
+            data-action="audio-player#play"
+            data-audio-player-url-param="<%= s3_url %>"
+            data-audio-player-title-param="<%= audio.text.truncate(40) %>"
+            data-audio-player-author-param="<%= audio.voice %>"
+            data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>">
+      <span class="icon icon--play-circle" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+    </button>
+    <a href="<%= s3_url %>" download="<%= "audio_#{audio.id}.mp3" %>" class="icon-btn">
+      <span class="icon icon--download" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+    </a>
+  </div>
+<% end %>

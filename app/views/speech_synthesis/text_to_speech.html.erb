@@ -1,16 +1,18 @@
 <% provide(:title, "Text to Speech") %>
 <% content_for :page_header, "Text to Speech" %>
 
-<div data-controller="player-visibility" class="flex flex-col grow min-b-0">
-  <%= form_with url: "", method: :post, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text" } do |f| %>
+<%= turbo_stream_from current_user, "history" %>
+
+<div class="flex flex-col grow min-b-0">
+  <%= form_with model: @generated_audio_clip, url: create_speech_synthesis_path, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit" } do |f| %>
 
     <%# --- LEFT COLUMN --- %>
     <div class="col-span-8@md">
       <div>
-        <%= text_area_tag "text_area_with_auto_sizing", nil, 
+        <%= f.text_area :text, 
           placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
           class: "input tts-input responsive-padding border-0", 
-          style: "--input-rows: 3lh; outline: 0; resize: none",
+          style: "--input-rows: 3lh; outline: 0; resize: none", 
           data: { 
             sample_text_target: "output",
             action: "input->sample-text#handleInput" 
@@ -31,23 +33,17 @@
           
           <%# THE FIX: Path reverted to the shared directory. %>
           <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_voice_library" class="grow flex flex-col min-h-0">
-            <%= render partial: "layouts/shared/voice_library_content", locals: { id_prefix: "desktop" } %>
+            <%= render partial: "layouts/shared/voice_library_content", locals: { id_prefix: "desktop", f: f } %>
           </div>
           
           <%# THE FIX: Path reverted to the shared directory. %>
           <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_history" class="grow flex flex-col min-h-0">
-            <%= render "layouts/shared/history_content" %>
+            <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips %>
           </div>
         </div>
       </div>
       
-      <%= render "speech_synthesis/partials/text_to_speech/mobile_info_bar" %>
+      <%= render "speech_synthesis/partials/text_to_speech/mobile_info_bar", f: f %>
     </div>
   <% end %>
-
-  <%# --- RESPONSIVE AUDIO PLAYER --- %>
-  <div data-player-visibility-target="playerContainer" class="fixed-player border-bs border-shade" hidden>
-    <%= render "layouts/shared/desktop_player" %>
-    <%= render "layouts/shared/mobile_player" %>
-  </div>
 </div>

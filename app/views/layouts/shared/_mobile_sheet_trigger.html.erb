@@ -4,6 +4,7 @@
   - content_partial: The path to the partial to render inside the sheet.
   - label: A string for the aria-label.
   - id_prefix: (Optional) A string to prefix IDs within the content partial.
+  - f: (Optional) The form builder object, to be passed down.
 %>
 <% id_prefix ||= nil %>
 
@@ -11,12 +12,12 @@
 <div contents data-controller="dialog">
   <%= trigger %>
 
-  <dialog 
+  <dialog
     class="sheet sheet--bottom flex flex-col pbe-4 overflow-hidden"
-    data-dialog-target="content" 
-    data-action="click->dialog#closeOnClickOutside" 
+    data-dialog-target="content"
+    data-action="click->dialog#closeOnClickOutside"
     aria-label="<%= label %>">
-    
+
     <div class="relative shrink-0">
       <button type="button" class="btn btn--plain absolute text-subtle" style="top: 0.2rem; right: 1rem;" data-action="click->dialog#close">
         <span class="icon icon--x" aria-hidden="true"></span>
@@ -25,8 +26,10 @@
     </div>
 
     <div class="sheet__content sheet_wrapper pis-3 pie-4 pbs-0 grow flex flex-col min-b-0">
-      <%# The history items are rendered inside here %>
-      <%= render partial: content_partial, locals: { id_prefix: id_prefix } %>
+      <% final_locals = { id_prefix: id_prefix } %>
+      <% final_locals[:f] = f if local_assigns.key?(:f) %>
+
+      <%= render partial: content_partial, locals: final_locals %>
     </div>
   </dialog>
 </div>

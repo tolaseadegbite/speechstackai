@@ -24,14 +24,12 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-main" data-controller="color-scheme">
+  <body class="bg-main" data-controller="color-scheme audio-player">
     <%# --- This layout is for SIGNED-IN users --- %>
 
-    <% if notice.present? %>
-      <div popover class="flash flash--positive" style="z-index: 9999;" data-controller="element-removal" data-action="animationend->element-removal#remove" role="status"><%= notice %></div>
-    <% elsif alert.present? %>
-      <div popover class="flash flash--negative" data-controller="element-removal" data-action="animationend->element-removal#remove" role="alert"><%= alert %></div>
-    <% end %>
+    <div id="flash_messages">
+      <%= render "layouts/shared/flash" %>
+    </div>
 
     <%#= render "layouts/navigation/navbar" %>
 
@@ -47,6 +45,12 @@
             <%= render "layouts/navigation/dashboard/header_menu" %>
           </header>
         <%= yield %>
+
+        <%# --- RESPONSIVE AUDIO PLAYER --- %>
+        <div data-controller="player-visibility" hidden class="fixed-player border-bs border-shade" data-player-visibility-target="playerContainer">
+          <%= render "layouts/shared/desktop_player" %>
+          <%= render "layouts/shared/mobile_player" %>
+        </div>
       </main>
     </div>
   </body>

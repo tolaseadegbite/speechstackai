@@ -1,0 +1,6 @@
+<%# 1. Update the flash messages container with a new notice. %>
+<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
+
+<%# 2. Reset the entire form. This is a built-in browser action that Hotwire can trigger. %>
+<%# It's the simplest way to clear all fields. %>
+<%= turbo_stream.action "reset", "text_to_speech_form" %>

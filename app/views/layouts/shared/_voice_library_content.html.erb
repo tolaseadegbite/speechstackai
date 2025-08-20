@@ -13,36 +13,32 @@
 
   <%# Search Input %>
   <div class="pbs-2">
-    <%= select_tag :frameworks, options_for_select(["Adéṣínà", "Abọ́sẹ̀dé"]), class: "i-full", data: { controller: "combobox" } %>
+    <%= f.select :voice, available_voices.map { |v| v[:name] }, {}, class: "i-full" %>
   </div>
 </div>
 <%# --- END: The Fixed Header Section --- %>
 
-<%# --- START: The Scrollable List Section --- %>
+<%# --- START: The Scrollable List Section (For Previews) --- %>
 <div class="flex flex-col grow overflow-y-auto mis-1 mbs-2">
   <div class="flex justify-between items-center mbe-2 mie-2">
     <p class="font-semibold">Default</p>
-    <%#= link_to "View all", "#", class: "btn text-sm" %>
   </div>
 
-  <% voice_data_list = [
-      { name: "Adéṣínà", desc: "A clear, articulate young yoruba man", color1: "#A7F3D0", color2: "#6EE7B7" },
-      { name: "Abọ́sẹ̀dé", desc: "A clear, articulate young yoruba woman", color1: "#BFDBFE", color2: "#93C5FD" }
-    ] 
-  %>
-  <% voice_data_list.each do |voice| %>
+  <%# This loop is now just for displaying the preview buttons %>
+  <% available_voices.each do |voice| %>
     <%= button_tag type: "button", class: "voice-list-item text-start p-2 mie-2" do %>
-      <div class="flex items-center gap-4">
-        <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
-        <div class="flex flex-col overflow-hidden">
-          <p class="font-semibold"><%= voice[:name] %></p>
-          <p class="text-sm text-subtle overflow-ellipsis"><%= voice[:desc] %></p>
+        <div class="flex items-center gap-4">
+          <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
+          <div class="flex flex-col overflow-hidden">
+            <p class="font-semibold"><%= voice[:name] %></p>
+            <p class="text-sm text-subtle overflow-ellipsis"><%= voice[:desc] %></p>
+          </div>
+          <div class="mis-auto shrink-0 flex items-center gap-2">
+            <%# We can add a Stimulus action here later to play the audio %>
+            <span class="icon icon--play-circle" style="--icon-size: 1.5rem" aria-hidden="true"></span>
+            <span class="icon icon--more-horizontal" style="--icon-size: 1.5rem" aria-hidden="true"></span>
+          </div>
         </div>
-        <div class="mis-auto shrink-0 flex items-center gap-2">
-          <span class="icon icon--play-circle" style="--icon-size: 1.5rem" aria-hidden="true"></span>
-          <span class="icon icon--more-horizontal" style="--icon-size: 1.5rem" aria-hidden="true"></span>
-        </div>
-      </div>
     <% end %>
   <% end %>
 </div>
