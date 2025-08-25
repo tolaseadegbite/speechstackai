@@ -7,7 +7,6 @@ class GenerateAudioClipJob < ApplicationJob
     audio_clip = arguments.first
     audio_clip&.failed!
     Rails.logger.error "GenerateAudioClipJob failed for audio_clip #{audio_clip&.id}: #{exception.message}"
-    # Optional: You could broadcast a failure notice to the user here if you want.
   end
 
   def perform(audio_clip)
@@ -39,17 +38,15 @@ class GenerateAudioClipJob < ApplicationJob
     ApplicationRecord.transaction do
       audio_clip.update!(
         s3_key: data[:s3_key],
-        service: "yoruba-tts-modal",
+        service: "african-tts",
         status: :processed
       )
       deduct_credit(user)
     end
 
-    # --- THIS IS THE NEW KEY PART ---
-    # After the transaction is successful, broadcast the new item to the user's history list.
-    audio_clip.broadcast_prepend_to [user, "history"],
+    audio_clip.broadcast_prepend_to [ user, "history" ],
       target: "history-list",
-      partial: "speech_synthesis/partials/history_item",
+      partial: "layouts/shared/history_item",
       locals: { audio: audio_clip }
   end
 

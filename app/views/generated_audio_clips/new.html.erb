@@ -1,0 +1,14 @@
+<% title = @service_type.humanize.titleize %>
+<% provide(:title, title) %>
+<% content_for :page_header, title %>
+
+<% turbo_stream_from current_user, "history" %>
+
+<% case @service_type %>
+<% when "text_to_speech" %>
+  <%= render "text_to_speech_page" %>
+<% when "voice_changer" %>
+  <%= render "voice_changer_page" %>
+<% when "sound_effects" %>
+  <%= render "sound_effects_page" %>
+<% end %>

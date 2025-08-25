@@ -1,0 +1,40 @@
+<%= form_with model: generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit" } do |f| %>
+
+  <%# --- LEFT COLUMN --- %>
+  <div class="col-span-8@md">
+    <%# This section can be simplified later, for now it works %>
+    <div>
+      <%= f.text_area :text,
+        placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
+        class: "input tts-input responsive-padding border-0",
+        style: "--input-rows: 3lh; outline: 0; resize: none",
+        data: {
+          sample_text_target: "output",
+          action: "input->sample-text#handleInput"
+        } %>
+      <%= render "generated_audio_clips/partials/text_to_speech/sample_texts" %>
+      <%= render "generated_audio_clips/partials/text_to_speech/desktop_info_bar" %>
+    </div>
+  </div>
+
+  <%# --- RIGHT COLUMN --- %>
+  <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
+    <div class="show@lg p-4 flex flex-col grow min-h-0">
+      <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">
+        <div class="tabs__list shrink-0">
+          <button type="button" id="trigger_voice_library" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_voice_library">Voice Library</button>
+          <button type="button" id="trigger_history" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="history_tab">History</button>
+        </div>
+
+        <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_voice_library" class="grow flex flex-col min-h-0">
+          <%= render partial: "layouts/shared/voice_library_content", locals: { id_prefix: "desktop", f: f } %>
+        </div>
+
+        <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" aria-labelledby="trigger_history" class="grow flex flex-col min-h-0">
+          <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips %>
+        </div>
+      </div>
+    </div>
+    <%= render "generated_audio_clips/partials/text_to_speech/mobile_info_bar", f: f %>
+  </div>
+<% end %>

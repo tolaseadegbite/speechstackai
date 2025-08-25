@@ -9,16 +9,16 @@
 
   <div class="flex items-center gap-4 shrink-0 mis-2">
     <% s3_url = presigned_s3_url(audio.s3_key) %>
-    <button type="button" class="btn--icon cursor-pointer"
+    <button type="button" class="btn btn--icon btn--subtle"
             data-action="audio-player#play"
             data-audio-player-url-param="<%= s3_url %>"
             data-audio-player-title-param="<%= audio.text.truncate(40) %>"
             data-audio-player-author-param="<%= audio.voice %>"
             data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>">
-      <span class="icon icon--play-circle" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+      <span class="btn btn-icon icon icon--play" aria-hidden="true"></span>
     </button>
-    <a href="<%= s3_url %>" download="<%= "audio_#{audio.id}.mp3" %>" class="icon-btn">
-      <span class="icon icon--download" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+    <a href="<%= s3_url %>" download="<%= "audio_#{audio.id}.mp3" %>" class="btn btn--icon btn--subtle cursor-pointer">
+      <span class="icon icon--download" aria-hidden="true"></span>
     </a>
   </div>
 <% end %>
