@@ -10,8 +10,6 @@ class GenerateAudioClipJob < ApplicationJob
   end
 
   def perform(audio_clip)
-    # ... (user check, body creation, API call) ...
-    # This part remains the same.
     user = audio_clip.user
 
     unless user.credits > 0
@@ -19,8 +17,17 @@ class GenerateAudioClipJob < ApplicationJob
       return
     end
 
+    # Check if a voice record is actually associated with the clip.
+    # The `&.` safe navigation operator prevents an error if audio_clip.voice is nil.
+    voice_name = audio_clip.voice&.name
+    unless voice_name
+      raise "GenerateAudioClipJob failed for audio_clip #{audio_clip.id}: No associated Voice record found."
+    end
+
     endpoint = Rails.application.credentials.modal.generate
-    body = { text: audio_clip.text, voice: audio_clip.voice }
+
+    # Build the body using the `name` from the associated Voice record.
+    body = { text: audio_clip.text, voice: voice_name }
 
     response = ModalApiClient.generate(endpoint, body)
 

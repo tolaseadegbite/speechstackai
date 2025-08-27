@@ -13,7 +13,7 @@
 
   <%# Search Input %>
   <div class="pbs-2">
-    <%= f.select :voice, GeneratedAudioClip.voices.keys, { prompt: "Choose a voice" }, data: { controller: "combobox", voice_selector_target: "select", action: "change->voice-selector#select" } %>
+    <%= f.select :voice_id, @voices.collect { |v| ["#{v.name} (#{v.languages.first&.name} #{v.gender.downcase})", v.id] }, { prompt: "Choose a voice" }, class: "i-full", data: { controller: "combobox", voice_selector_target: "select", action: "change->voice-selector#select" } %>
   </div>
 </div>
 <%# --- END: The Fixed Header Section --- %>

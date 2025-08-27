@@ -1,0 +1,18 @@
+<% content_for :title, "Voices" %>
+<% content_for :page_header, "Voices" %>
+
+<div class="p-4">
+  <div class="flex items-center justify-between mbe-4">
+    <h1 class="font-semibold text-2xl">All Voices</h1>
+    <%= link_to "New voice", new_voice_path, class: "btn btn--primary" %>
+  </div>
+
+  <div id="voices" class="flex flex-col" style="gap: 2rem;">
+    <% @voices.each do |voice| %>
+      <div class="flex flex-col items-start gap">
+        <%= render voice %>
+        <%= link_to "Show this voice", voice, class: "btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>

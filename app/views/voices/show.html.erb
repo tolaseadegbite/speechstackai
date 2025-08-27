@@ -1,0 +1,10 @@
+<%= render @voice %>
+<% content_for :page_header, @voice.name %>
+
+<div class="p-4">
+  <div class="flex flex-wrap items-center gap mbs-6" style="--row-gap: .5rem">
+    <%= link_to "Edit this voice", edit_voice_path(@voice), class: "btn" %>
+    <%= link_to "Back to voices", voices_path, class: "btn" %>
+    <%= button_to "Destroy this voice", @voice, method: :delete, class: "btn" %>
+  </div>
+</div>

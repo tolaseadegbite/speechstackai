@@ -1,0 +1,28 @@
+<div id="<%= dom_id voice %>" class="flex flex-col gap p-4">
+  <div class="flex flex-col gap-half">
+    <h4 class="font-medium leading-none">Name:</h4>
+    <p class="leading-none"><%= voice.name %></p>
+  </div>
+  <div class="flex flex-col gap-half">
+    <h4 class="font-medium leading-none">Name:</h4>
+    <p class="leading-none"><%= voice.description %></p>
+  </div>
+  <div class="flex flex-col gap-half">
+    <h4 class="font-medium leading-none">Language:</h4>
+    <% if voice.languages.any? %>
+      <% voice.languages.each do |language| %>
+        <p class="leading-none"><%= language.name %></p>
+      <% end %>
+    <% else %>
+      <p class="leading-none">No language specified</p>
+    <% end %>
+  </div>
+  <div class="flex flex-col gap-half">
+    <h4 class="font-medium leading-none">Gender:</h4>
+    <p class="leading-none"><%= voice.gender %></p>
+  </div>
+  <div class="flex flex-col gap-half">
+    <h4 class="font-medium leading-none">User:</h4>
+    <p class="leading-none"><%= voice.user.name %></p>
+  </div>
+</div>

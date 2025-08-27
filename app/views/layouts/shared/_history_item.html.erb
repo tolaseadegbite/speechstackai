@@ -3,7 +3,9 @@
     <p class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></p>
     <div class="flex items-center gap-2 text-sm text-subtle">
       <span class="voice-swatch" style="--icon-size: 1rem; background-image: radial-gradient(circle, #FBCFE8, #F9A8D4);" aria-hidden="true"></span>
-      <span><%= audio.voice %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
+      
+      <span><%= audio.voice.name %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
+    
     </div>
   </div>
 
@@ -13,7 +15,9 @@
             data-action="audio-player#play"
             data-audio-player-url-param="<%= s3_url %>"
             data-audio-player-title-param="<%= audio.text.truncate(40) %>"
-            data-audio-player-author-param="<%= audio.voice %>"
+            
+            data-audio-player-author-param="<%= audio.voice.name %>"
+            
             data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>">
       <span class="btn btn-icon icon icon--play" aria-hidden="true"></span>
     </button>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_16_171416) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_26_221858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,14 +30,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_16_171416) do
   create_table "generated_audio_clips", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "text"
-    t.string "voice"
     t.string "original_voice_s3_key"
     t.string "s3_key"
     t.string "service"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "voice_id"
     t.index ["user_id"], name: "index_generated_audio_clips_on_user_id"
+    t.index ["voice_id"], name: "index_generated_audio_clips_on_voice_id"
+  end
+
+  create_table "language_voices", force: :cascade do |t|
+    t.bigint "language_id", null: false
+    t.bigint "voice_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["language_id"], name: "index_language_voices_on_language_id"
+    t.index ["voice_id"], name: "index_language_voices_on_voice_id"
+  end
+
+  create_table "languages", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_languages_on_name", unique: true
+    t.index ["user_id"], name: "index_languages_on_user_id"
   end
 
   create_table "recovery_codes", force: :cascade do |t|
@@ -93,11 +112,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_16_171416) do
     t.index ["name"], name: "index_users_on_name", unique: true
   end
 
+  create_table "voices", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "gender", null: false
+    t.string "description"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_voices_on_user_id"
+  end
+
   add_foreign_key "events", "users"
   add_foreign_key "generated_audio_clips", "users"
+  add_foreign_key "generated_audio_clips", "voices"
+  add_foreign_key "language_voices", "languages"
+  add_foreign_key "language_voices", "voices"
+  add_foreign_key "languages", "users"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "security_keys", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "sign_in_tokens", "users"
   add_foreign_key "users", "accounts"
+  add_foreign_key "voices", "users"
 end

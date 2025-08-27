@@ -7,6 +7,6 @@
 <%# --- START: The Scrollable List Section --- %>
 <div id="history-list" class="flex flex-col gap-4 grow overflow-y-auto pbs-2">
   
-  <%= render partial: "layouts/shared/history_item", collection: current_user.generated_audio_clips.order(id: :desc), as: :audio %>
+  <%= render partial: "layouts/shared/history_item", collection: current_user.generated_audio_clips.includes(:voice).order(id: :desc), as: :audio %>
 </div>
 <%# --- END: The Scrollable List Section --- %>

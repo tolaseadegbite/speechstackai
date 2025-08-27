@@ -1,8 +1,9 @@
 class GeneratedAudioClipsController < DashboardController
   def new
     @service_type = params[:service_type]
-    @generated_audio_clips = current_user.generated_audio_clips.order(created_at: :desc)
+    @generated_audio_clips = current_user.generated_audio_clips.includes(:voice).order(created_at: :desc)
     @generated_audio_clip = GeneratedAudioClip.new
+    @voices = Voice.includes(:languages).order(:name)
   end
 
   def create
@@ -24,11 +25,14 @@ class GeneratedAudioClipsController < DashboardController
       end
 
       flash.now[:notice] = "Your audio is being generated and will appear in your history shortly."
+      @voices = Voice.includes(:languages).order(:name)
+
       respond_to do |format|
         format.turbo_stream
       end
     else
-      # The failure path is already perfect.
+      @generated_audio_clips = current_user.generated_audio_clips.includes(:voice).order(created_at: :desc)
+      @voices = Voice.includes(:languages).order(:name)
       render :new, status: :unprocessable_entity
     end
   end
@@ -37,8 +41,6 @@ class GeneratedAudioClipsController < DashboardController
 
   def audio_clip_params
     # THE FIX: Permit all possible attributes for all your services.
-    params.require(:generated_audio_clip).permit(
-      :text, :voice, :service_type
-    )
+    params.require(:generated_audio_clip).permit(:text, :voice_id, :service_type)
   end
 end

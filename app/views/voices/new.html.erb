@@ -1,0 +1,12 @@
+<% content_for :title, "New voice" %>
+<% content_for :page_header, "New voice" %>
+
+<div class="p-4">
+  <h1 class="font-semibold text-2xl mbe-4">Add a new voice</h1>
+
+  <%= render "form", voice: @voice %>
+
+  <div class="inline-flex flex-wrap items-center gap mbs-2" style="--row-gap: .5rem">
+    <%= link_to "Back to voices", voices_path, class: "btn" %>
+  </div>
+</div>

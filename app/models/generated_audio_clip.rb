@@ -1,23 +1,16 @@
 class GeneratedAudioClip < ApplicationRecord
   attr_accessor :service_type
 
-  validates :text, presence: true
-  validates :voice, presence: true
-
+  # Associations
   belongs_to :user
 
-  enum :voice, {
-    "Abọ́sẹ̀dé": "Abọ́sẹ̀dé",
-    "Adéṣínà": "Adéṣínà",
-    "Àrẹ̀mú":   "Àrẹ̀mú",
-    "Ewe-Male": "Ewe-Male",
-    "Hausa-Male": "Hausa-Male",
-    "Lingala-Male": "Lingala-Male",
-    "Twi-Akuapem": "Twi-Akuapem",
-    "Twi-Asante": "Twi-Asante"
-  }
+  belongs_to :voice, optional: true
 
-  validates :voice, presence: true, inclusion: { in: voices.keys }
+  # Validations
+  validates :text, presence: true
+
+  # This validation will ONLY run if the text_to_speech? method returns true.
+  validates :voice, presence: true, if: :text_to_speech?
 
   enum :status, {
     pending: 0,
@@ -25,4 +18,10 @@ class GeneratedAudioClip < ApplicationRecord
     failed: 2,
     no_credits: 3
   }
+
+  private
+
+  def text_to_speech?
+    service_type == "text_to_speech"
+  end
 end
