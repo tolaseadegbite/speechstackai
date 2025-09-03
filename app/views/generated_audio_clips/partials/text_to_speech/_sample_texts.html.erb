@@ -1,22 +1,22 @@
 <div id="sample_texts" class="responsive-padding hidden" data-sample-text-target="samples">
-  <h2 class="text-sm text-subtle mbe-2">Ẹ bẹ̀rẹ̀ pẹ̀lú</h2>
+  <h2 class="text-sm text-subtle mbe-2">Ẹ bẹ̀rẹ̀ pẹ̀lú / Dzì ɖe egɔme / Fúndá ná / Fiase mfi / Faase mfi</h2>
   <div class="flex flex-wrap gap-1">
 
     <% sample_text_list = [
-        { label: "Ìpolówó", icon: "megaphone", text: "Ṣé íntánẹ́ẹ̀tì tó lọ́ra ti sú ọ? Ẹ yí padà sí Fáíbálinkì lónìí fún íntánẹ́ẹ̀tì tó yára bíi mànàmáná àti wíwo fídíò láìsí ìdíwọ́. Ẹ bẹ ìkànnì wa wò fún àlàyé kíkún!" },
+        { label: "Ìpolówó (Yoruba)", icon: "megaphone", text: "Ṣé íntánẹ́ẹ̀tì tó lọ́ra ti sú ọ? Ẹ yí padà sí Fáíbálinkì lónìí fún íntánẹ́ẹ̀tì tó yára bíi mànàmáná àti wíwo fídíò láìsí ìdíwọ́. Ẹ bẹ ìkànnì wa wò fún àlàyé kíkún!" },
         
-        { label: "Ìjíròrò", icon: "message-square-text", text: "“Ṣe wàá wá síbi ayẹyẹ ọjọ́ ìbí mi ní ọ̀sẹ̀ tó ń bọ̀?” Bùsọ́lá béèrè. “Dájúdájú! Kí ni kí n mú wá?” Títí fèsì." },
+        { label: "Ŋlɔmi (Ewe)", icon: "message-square-text", text: "“Àmɛ ka woŋlɔ agbalẽ gbɔŋlɔa?” Kofíe bia. “Èyí míewɔna le agbalẽ me gbɔŋlɔŋlɔnya me.”" },
 
-        { label: "Ìròyìn", icon: "newspaper", text: "Ẹ kú ìrọ̀lẹ́. Ìròyìn pàtàkì ti alẹ́ yìí ni pé: àwọn aṣíwájú àgbáyé ti ṣe àdéhùn mánigbàgbé lórí àyípadà ojú ọjọ́, wọ́n sì ti ṣèlérí láti dínku afẹ́fẹ́ kábọ́nù tó ń jáde kù gidigidi ní ọdún mẹ́wàá tó ń bọ̀." },
-        { label: "Àròsọ", icon: "book-open", text: "Lọ́jọ́ kan, bí Adé ti ń rìn lọ sí ọjà, ó rí àpò owó kan lórí ilẹ̀. Ó wò yíká, kò rí ẹni kankan, nítorí náà ó gbé e." },
+        { label: "Likápo (Lingala)", icon: "newspaper", text: "Bokóli malámu. Masolo ya mikóló ya lelo: Bakonzi ya mokili mobimba bayókaná na ntángo ya mbóngwana ya malili, mpe basílísí kobóngola ndéngé nini bakokí kokitisa bozálisí ya gaz ya carbon na mikolo nsambo ya mikolo míngi." },
+        { label: "Adwísinim (Asante-Twi)", icon: "book-open", text: "Da koro, Adwoa rekɔ gua so no, ɔhwɛɛ sika kotoku bi a ɛda fam. Ɔhwɛɛ ne ho, nanso wammíhu obiara, enti ɔfaa no." },
 
-        { label: "Ifọ̀rọ̀ránṣẹ́", icon: "voicemail", text: "Ẹ ti kan ohùn ìdáhùn Ìyanu Adéṣínà. Mi ò wà nítòsí báyìí, ṣùgbọ́n ẹ jọ̀wọ́, ẹ fi orúkọ yín, nọ́mbà yín, àti ìránṣẹ́ kúkúrú sílẹ̀, màá sì pè yín padà bí ó bá ti yá tó." },
+        { label: "Nkaghyira (Akuapem-Twi)", icon: "voicemail", text: "Woato Yaa Asantewaa nneɛma a ɛbɛma woanya anigye. Mennim sɛ metumi aboa wo, nanso mesrɛ wo, fa wo din, wo nɔma, ne nsɛm tiawa. Mɛfrɛ wo bio mpofirim." },
 
-        { label: "Ìbẹ̀rẹ̀ Pọ́dkáàsì", icon: "podcast", text: "Ẹ káàbọ̀ padà sí orí ètò 'ẹ̀rọ ìgbàlódé', pọ́díkáàsì tí a ti ń sọ̀rọ̀ lóríi àwọn ìdàgbàsókè tuntun nínúu ẹ̀rọ ìgbàlódé. Lórí ètò tòní, a ó máa sọ̀rọ̀ nípa ọjọ́ iwájú ọgbọ́n àtọwọ́dá." },
+        { label: "Fimfim (Hausa)", icon: "podcast", text: "Barka da zuwa shirin 'Zamanin Fasaha', podcast mai bincike kan sabbin abubuwa a fasahar zamani. A shirinmu na yau, za mu tattauna kan makomar hankali na wucin gadi." },
 
-        { label: "Ẹ̀kọ́ Orí Ayélujára", icon: "graduation-cap", text: "Ẹ káàbọ̀ sí ẹ̀kọ́ 'Bí A Ṣe Ń Lo Kọ̀ǹpútà'. Ẹ̀kọ́ àkọ́kọ́: Mọ àwọn apá pàtàkì inú kọ̀ǹpútà rẹ." },
+        { label: "Ẹ̀kọ́ Orí Ayélujára (Yoruba)", icon: "graduation-cap", text: "Ẹ káàbọ̀ sí ẹ̀kọ́ 'Bí A Ṣe Ń Lo Kọ̀ǹpútà'. Ẹ̀kọ́ àkọ́kọ́: Mọ àwọn apá pàtàkì inú kọ̀ǹpútà rẹ." },
 
-        { label: "Ìkéde", icon: "megaphone", text: "Ìkéde sí gbogbo òṣìṣẹ́: A ti sún ìpàdé gbogbo-gbòò wa ti àṣekẹfà sí ọjọ́ Ẹtì ní aago mẹ́wàá àárọ̀ ní gbọ̀gan ìpàdé. Dandan ni kí ẹ wà níbẹ̀." }
+        { label: "Ndzidzɔ (Ewe)", icon: "megaphone", text: "Ŋgɔŋlɔ na amɛwó katã: Míewɔ míaƒe kpekpe gã la le Kwasiɖa gbɔna, ga asieke (9:00 AM) le kpekpeƒe. Ele be míawɔ." }
       ] 
     %>
 
