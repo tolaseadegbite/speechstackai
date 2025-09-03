@@ -10,39 +10,43 @@
       <p class="text-sm text-subtle">Find high quality voices from the community. Perfect for any occasion.</p>
     </div>
   </div>
-
-  <%# Search Input %>
-  <div class="pbs-2">
-    <%= f.select :voice_id, @voices.collect { |v| ["#{v.name} (#{v.languages.first&.name} #{v.gender.downcase})", v.id] }, { prompt: "Choose a voice" }, class: "i-full", data: { controller: "combobox", voice_selector_target: "select", action: "change->voice-selector#select" } %>
-  </div>
 </div>
 <%# --- END: The Fixed Header Section --- %>
 
-<%# --- START: The Scrollable List Section (For Previews) --- %>
-<div class="flex flex-col grow overflow-y-auto mis-1 mbs-2">
+<%# --- START: The Scrollable List Section (Voice Selection) --- %>
+<div class="flex flex-col grow overflow-y-auto mis-1 mbs-2 pbs-2">
   <div class="flex justify-between items-center mbe-2 mie-2">
     <p class="font-semibold">Default</p>
   </div>
 
-  <%# This loop is now just for displaying the preview buttons %>
-  <% available_voices.each do |voice| %>
-    <%= button_tag type: "button", class: "voice-list-item text-start p-2 mie-2" do %>
-        <div class="flex items-center gap-4">
-          <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, <%= voice[:color1] %>, <%= voice[:color2] %>);" aria-hidden="true"></span>
-          <div class="flex flex-col overflow-hidden">
-            <p class="font-semibold"><%= voice[:name] %></p>
-            <p class="text-sm text-subtle overflow-ellipsis"><%= voice[:desc] %></p>
-          </div>
-          <div class="mis-auto shrink-0 flex items-center gap-2">
-            <%# We can add a Stimulus action here later to play the audio %>
-            <div class="btn btn--icon btn--subtle">
-              <span class="icon icon--play" aria-hidden="true"></span>
-            </div>
-            <div class="btn btn--icon btn--subtle">
-              <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-            </div>
-          </div>
+  <%# This loop renders each voice as a selectable card. %>
+  <% @voices.each do |voice| %>
+    <%# The entire label is a clickable area for the hidden radio button inside it. %>
+    <%= f.label :voice_id, value: voice.id, class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2" do %>
+      
+      <%# This radio button is visually hidden but provides the core functionality. %>
+      <%= f.radio_button :voice_id, voice.id, class: "sr-only", data: { action: "voice-selector#select" } %>
+
+      <%# --- Visual Content of the Card --- %>
+      <div class="flex items-center gap-4 w-full">
+        <%# NOTE: Using placeholder colors. You'll need to add color attributes to your Voice model or a helper. %>
+        <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, #A5B4FC, #6366F1);" aria-hidden="true"></span>
+        
+        <div class="flex flex-col overflow-hidden">
+          <p class="font-semibold"><%= voice.name %></p>
+          <%# NOTE: Using available data for description. You might want a dedicated 'description' attribute on your Voice model. %>
+          <p class="text-sm text-subtle overflow-ellipsis"><%= "#{voice.languages.first&.name} - #{voice.gender.capitalize}" %></p>
         </div>
+
+        <div class="mis-auto shrink-0 flex items-center gap-2">
+          <button type="button" class="btn btn--icon btn--subtle">
+            <span class="icon icon--play" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="btn btn--icon btn--subtle">
+            <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
     <% end %>
   <% end %>
 </div>

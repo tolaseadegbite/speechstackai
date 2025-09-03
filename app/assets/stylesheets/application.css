@@ -17,10 +17,6 @@
   min-block-size: 100dvh; /* 100vh = 100% of the viewport height */
 }
  
-.min-i-screen {
-  min-inline-size: 70dvh; /* 100vh = 100% of the viewport height */
-}
- 
 .min-b-screen-80 {
   min-block-size: 80dvh; /* 100vh = 80% of the viewport height */
 }
