@@ -22,13 +22,13 @@
   <%# This loop renders each voice as a selectable card. %>
   <% @voices.each do |voice| %>
     <%# The entire label is a clickable area for the hidden radio button inside it. %>
-    <%= f.label :voice_id, value: voice.id, class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2" do %>
+    <%= f.label :voice_id, value: voice.id, class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2 cursor-pointer" do %>
       
       <%# This radio button is visually hidden but provides the core functionality. %>
       <%= f.radio_button :voice_id, voice.id, class: "sr-only", data: { action: "voice-selector#select" } %>
 
       <%# --- Visual Content of the Card --- %>
-      <div class="flex items-center gap-4 w-full">
+      <div class="flex items-center justify-between gap-4 i-full">
         <%# NOTE: Using placeholder colors. You'll need to add color attributes to your Voice model or a helper. %>
         <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, #A5B4FC, #6366F1);" aria-hidden="true"></span>
         

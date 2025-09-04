@@ -68,6 +68,6 @@ class VoicesController < DashboardController
 
     # Only allow a list of trusted parameters through.
     def voice_params
-      params.expect(voice: [ :name, :gender, :description, language_ids: [] ])
+      params.expect(voice: [ :name, :gender, :description, :s3_key, language_ids: [] ])
     end
 end

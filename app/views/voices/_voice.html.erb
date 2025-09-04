@@ -21,8 +21,10 @@
     <h4 class="font-medium leading-none">Gender:</h4>
     <p class="leading-none"><%= voice.gender %></p>
   </div>
-  <div class="flex flex-col gap-half">
-    <h4 class="font-medium leading-none">User:</h4>
-    <p class="leading-none"><%= voice.user.name %></p>
-  </div>
+
+  <% if voice.s3_key.present? %>
+    <div>
+      <%= link_to "Play voice", "#", class: "btn btn--primary" %>
+    </div>
+  <% end %>
 </div>
