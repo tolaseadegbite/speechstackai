@@ -109,6 +109,27 @@ export default class extends Controller {
     }
   }
 
+  playSample(event) {
+    // Prevent the click from bubbling up to the label and selecting the radio button.
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { url } = event.params;
+    const isSameClip = this.audio.src === url;
+
+    // If the clicked sample is the same as the one playing, toggle it.
+    if (isSameClip && this.audio.src) {
+      this.audio.paused ? this.audio.play() : this.audio.pause();
+    } else {
+      // If a different sample is clicked, play the new one.
+      this.audio.src = url;
+      // We do NOT update the main player's metadata here.
+      // this.currentClipData = { ... };
+      // this.updateMetadataUI();
+      this.audio.play().catch(e => console.error("Audio playback failed:", e));
+    }
+  }
+
   /**
    * Called by the main play/pause buttons in the player UI.
    */
@@ -169,18 +190,18 @@ export default class extends Controller {
     allPlayIcons.forEach(icon => {
       const isCurrentlyPlaying = this.audio.src === icon.dataset.playIconUrl;
       if (isCurrentlyPlaying && !this.audio.paused) {
-        icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`; // Pause Icon
+        icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`; // Pause Icon
       } else {
-        icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>`; // Play Icon
+        icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>`; // Play Icon
       }
     });
 
     // Also update the main player buttons
     this.playPauseIconsTargets.forEach(icon => {
         if (!this.audio.paused && this.audio.src) {
-            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`; // Pause Icon
+            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`; // Pause Icon
         } else {
-            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>`; // Play Icon
+            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>`; // Play Icon
         }
     })
   }

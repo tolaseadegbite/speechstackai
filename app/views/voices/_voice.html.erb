@@ -23,8 +23,24 @@
   </div>
 
   <% if voice.s3_key.present? %>
-    <div>
-      <%= link_to "Play voice", "#", class: "btn btn--primary" %>
-    </div>
+    <% s3_url = presigned_s3_url(voice.s3_key) %>
+    <button type="button" class="btn btn--icon btn--subtle"
+            data-action="click->audio-player#playSample"
+            data-audio-player-url-param="<%= s3_url %>"
+            <%# --- FIX: Add the missing metadata params --- %>
+            data-audio-player-title-param="<%= voice.name %>"
+            data-audio-player-author-param="<%= voice.user&.name || 'Community Voice' %>"
+            data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
+      
+      <div data-play-icon-url="<%= s3_url %>">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      </div>
+    </button>
+  <% else %>
+    <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
+      <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      </div>
+    </button>
   <% end %>
 </div>

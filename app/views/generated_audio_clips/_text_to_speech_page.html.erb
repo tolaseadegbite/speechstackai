@@ -1,5 +1,5 @@
 <div class="flex flex-col grow min-b-0">
-  <%= form_with model: @generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit sample-text voice-selector" } do |f| %>
+  <%= form_with model: @generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit voice-selector" } do |f| %>
   
     <%= f.hidden_field :service_type, value: "text_to_speech" %>
     <%= f.hidden_field :voice_id, data: { voice_selector_target: "input" } %>

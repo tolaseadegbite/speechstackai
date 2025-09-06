@@ -19,29 +19,45 @@
     <p class="font-semibold">Default</p>
   </div>
 
-  <%# This loop renders each voice as a selectable card. %>
   <% @voices.each do |voice| %>
-    <%# The entire label is a clickable area for the hidden radio button inside it. %>
     <%= f.label :voice_id, value: voice.id, class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2 cursor-pointer" do %>
-      
-      <%# This radio button is visually hidden but provides the core functionality. %>
       <%= f.radio_button :voice_id, voice.id, class: "sr-only", data: { action: "voice-selector#select" } %>
 
-      <%# --- Visual Content of the Card --- %>
       <div class="flex items-center justify-between gap-4 i-full">
-        <%# NOTE: Using placeholder colors. You'll need to add color attributes to your Voice model or a helper. %>
         <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, #A5B4FC, #6366F1);" aria-hidden="true"></span>
         
         <div class="flex flex-col overflow-hidden">
           <p class="font-semibold"><%= voice.name %></p>
-          <%# NOTE: Using available data for description. You might want a dedicated 'description' attribute on your Voice model. %>
           <p class="text-sm text-subtle overflow-ellipsis"><%= "#{voice.languages.first&.name} - #{voice.gender.capitalize}" %></p>
         </div>
 
         <div class="mis-auto shrink-0 flex items-center gap-2">
-          <button type="button" class="btn btn--icon btn--subtle">
-            <span class="icon icon--play" aria-hidden="true"></span>
-          </button>
+          <% if voice.s3_key.present? %>
+            <% s3_url = presigned_s3_url(voice.s3_key) %>
+            <button type="button" class="btn btn--icon btn--subtle"
+                    data-action="click->audio-player#playSample"
+                    data-audio-player-url-param="<%= s3_url %>"
+                    <%# --- FIX: Add the missing metadata params --- %>
+                    data-audio-player-title-param="<%= voice.name %>"
+                    data-audio-player-author-param="<%= voice.user&.name || 'Community' %>"
+                    data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
+              
+              <div data-play-icon-url="<%= s3_url %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+              </div>
+            </button>
+          <% else %>
+            <%# If no s3_key, render a disabled button.
+              This provides clear visual feedback to the user.
+            %>
+            <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
+              <div>
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+              </div>
+            </button>
+          <% end %>
+          <%# --- END: Conditional Play Button --- %>
+
           <button type="button" class="btn btn--icon btn--subtle">
             <span class="icon icon--more-horizontal" aria-hidden="true"></span>
           </button>
