@@ -1,46 +1,75 @@
-<div id="<%= dom_id voice %>" class="flex flex-col gap p-4">
-  <div class="flex flex-col gap-half">
-    <h4 class="font-medium leading-none">Name:</h4>
-    <p class="leading-none"><%= voice.name %></p>
+<div id="<%= dom_id voice %>" class="flex items-center justify-between gap-2 p-4 rounded-lg cursor-pointer">
+
+  <div class="flex items-center gap-4">
+    <div>
+      <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; <%= voice_gradient_style(voice) %>" aria-hidden="true"></span>
+    </div>
+
+    <div class="flex flex-col gap-half">
+
+      <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide">
+
+        <a href="" class="" data-popover-target="trigger">
+          <h4 class="font-semibold leading-tight"><%= voice.name %> - <%= voice.description.truncate(50) %> </h4>
+        </a>
+
+        <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
+          <div class="flex flex-col p-4">
+          <h4 class="font-semibold leading-tight"><%= voice.name %> </h4>
+            <p class="text-sm text-subtle"><%= voice.description %></p>
+          </div>
+        </div>
+      </div>
+
+
+      <p class="text-sm text-subtle leading-none">Narrative, news casting and customer support</p>
+      <div class="flex text-sm text-subtle gap-1">
+        <% if voice.languages.any? %>
+          <% voice.languages.each do |language| %>
+            <p><%= language.name %></p>
+          <% end %>
+        <% else %>
+          <p>No language specified</p>
+        <% end %>
+        <span>-</span>
+        <p><%= voice.gender %></p>
+      </div>
+    </div>
   </div>
-  <div class="flex flex-col gap-half">
-    <h4 class="font-medium leading-none">Name:</h4>
-    <p class="leading-none"><%= voice.description %></p>
-  </div>
-  <div class="flex flex-col gap-half">
-    <h4 class="font-medium leading-none">Language:</h4>
-    <% if voice.languages.any? %>
-      <% voice.languages.each do |language| %>
-        <p class="leading-none"><%= language.name %></p>
-      <% end %>
+  
+  <div class="flex items-center gap-2">
+    <% if voice.s3_key.present? %>
+      <% s3_url = presigned_s3_url(voice.s3_key) %>
+      <button type="button" class="btn btn--icon btn--subtle"
+              data-action="click->audio-player#play"
+              data-audio-player-url-param="<%= s3_url %>"
+              <%# --- FIX: Add the missing metadata params --- %>
+              data-audio-player-title-param="<%= voice.name %>"
+              data-audio-player-author-param="<%= voice.user&.name || 'Community Voice' %>"
+              data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
+        
+        <div data-play-icon-url="<%= s3_url %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
+      </button>
+
+      <div contents data-controller="popover" data-popover-placement-value="bottom-start">
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover" aria-haspopup="true">
+          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+        </button>
+
+        <div popover id="popover" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+            <%= link_to "Edit", edit_voice_path(voice), class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          </div>
+        </div>
+      </div>
     <% else %>
-      <p class="leading-none">No language specified</p>
+      <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
+      </button>
     <% end %>
   </div>
-  <div class="flex flex-col gap-half">
-    <h4 class="font-medium leading-none">Gender:</h4>
-    <p class="leading-none"><%= voice.gender %></p>
-  </div>
-
-  <% if voice.s3_key.present? %>
-    <% s3_url = presigned_s3_url(voice.s3_key) %>
-    <button type="button" class="btn btn--icon btn--subtle"
-            data-action="click->audio-player#playSample"
-            data-audio-player-url-param="<%= s3_url %>"
-            <%# --- FIX: Add the missing metadata params --- %>
-            data-audio-player-title-param="<%= voice.name %>"
-            data-audio-player-author-param="<%= voice.user&.name || 'Community Voice' %>"
-            data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
-      
-      <div data-play-icon-url="<%= s3_url %>">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
-      </div>
-    </button>
-  <% else %>
-    <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
-      <div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
-      </div>
-    </button>
-  <% end %>
 </div>
