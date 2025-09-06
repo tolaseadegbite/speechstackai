@@ -24,7 +24,7 @@
       <%= f.radio_button :voice_id, voice.id, class: "sr-only", data: { action: "voice-selector#select" } %>
 
       <div class="flex items-center justify-between gap-4 i-full">
-        <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; background-image: radial-gradient(circle, #A5B4FC, #6366F1);" aria-hidden="true"></span>
+        <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; <%= voice_gradient_style(voice) %>" aria-hidden="true"></span>
         
         <div class="flex flex-col overflow-hidden">
           <p class="font-semibold"><%= voice.name %></p>
@@ -35,12 +35,13 @@
           <% if voice.s3_key.present? %>
             <% s3_url = presigned_s3_url(voice.s3_key) %>
             <button type="button" class="btn btn--icon btn--subtle"
-                    data-action="click->audio-player#playSample"
-                    data-audio-player-url-param="<%= s3_url %>"
-                    <%# --- FIX: Add the missing metadata params --- %>
-                    data-audio-player-title-param="<%= voice.name %>"
-                    data-audio-player-author-param="<%= voice.user&.name || 'Community' %>"
-                    data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
+                      data-action="click->audio-player#playSample"
+                      data-audio-player-url-param="<%= s3_url %>"
+                      data-audio-player-title-param="<%= voice.name %>"
+                      data-audio-player-author-param="<%= voice.user&.name || 'Community' %>"
+                      data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                      data-audio-player-gradient-start-param="<%= voice.gradient_start %>"
+                      data-audio-player-gradient-end-param="<%= voice.gradient_end %>">
               
               <div data-play-icon-url="<%= s3_url %>">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>

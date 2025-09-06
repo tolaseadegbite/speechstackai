@@ -1,8 +1,9 @@
 module VoicesHelper
-  def available_voices
-    [
-      { name: "Adéṣínà", desc: "A clear, articulate young yoruba man", color1: "#A7F3D0", color2: "#6EE7B7" },
-      { name: "Abọ́sẹ̀dé", desc: "A clear, articulate young yoruba woman", color1: "#BFDBFE", color2: "#93C5FD" }
-    ]
+  def voice_gradient_style(voice)
+    # Provides a fallback to prevent errors if colors are missing
+    start_color = voice.gradient_start || "#A5B4FC"
+    end_color = voice.gradient_end || "#6366F1"
+
+    "background-image: radial-gradient(circle, #{start_color}, #{end_color});"
   end
 end

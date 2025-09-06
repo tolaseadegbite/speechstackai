@@ -46,7 +46,8 @@ export default class extends Controller {
     "durations",
     "clipTitles",
     "clipAuthors",
-    "downloadLinks"
+    "downloadLinks",
+    "gradientSwatch"
   ]
 
   connect() {
@@ -82,15 +83,16 @@ export default class extends Controller {
    * Called from the list of audio clips to start a new track.
    */
   play(event) {
-    const { url, title, author, filename } = event.params;
+    const { url, title, author, filename, gradientStart, gradientEnd } = event.params;
     const isSameClip = this.audio.src === url;
 
     if (isSameClip) {
       this.togglePlay();
     } else {
       this.audio.src = url;
-      this.currentClipData = { url, title, author, filename };
+      this.currentClipData = { url, title, author, filename, gradientStart, gradientEnd };
       this.updateMetadataUI();
+      this.updateGradientUI(); // Call the new method
       this.audio.play().catch(e => console.error("Audio playback failed:", e));
     }
 
@@ -114,18 +116,15 @@ export default class extends Controller {
     event.preventDefault();
     event.stopPropagation();
 
-    const { url } = event.params;
+    const { url, gradientStart, gradientEnd } = event.params;
     const isSameClip = this.audio.src === url;
 
-    // If the clicked sample is the same as the one playing, toggle it.
     if (isSameClip && this.audio.src) {
       this.audio.paused ? this.audio.play() : this.audio.pause();
     } else {
-      // If a different sample is clicked, play the new one.
       this.audio.src = url;
-      // We do NOT update the main player's metadata here.
-      // this.currentClipData = { ... };
-      // this.updateMetadataUI();
+      this.currentClipData = { ...this.currentClipData, gradientStart, gradientEnd };
+      this.updateGradientUI(); // Call the new method
       this.audio.play().catch(e => console.error("Audio playback failed:", e));
     }
   }
@@ -156,6 +155,13 @@ export default class extends Controller {
     this.audio.currentTime = clickPosition * this.audio.duration;
   }
 
+  updateGradientUI() {
+    if (this.hasGradientSwatchTarget && this.currentClipData.gradientStart && this.currentClipData.gradientEnd) {
+      this.gradientSwatchTarget.style.setProperty('--gradient-start', this.currentClipData.gradientStart);
+      this.gradientSwatchTarget.style.setProperty('--gradient-end', this.currentClipData.gradientEnd);
+    }
+  }
+
 
   // --- UI UPDATE METHODS ---
 
@@ -171,6 +177,7 @@ export default class extends Controller {
         this.updateProgressUI();
         this.updateDurationUI();
         this.updatePlayPauseIcons();
+        this.updateGradientUI();
     }
   }
 
