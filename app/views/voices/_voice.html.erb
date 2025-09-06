@@ -53,12 +53,12 @@
         </div>
       </button>
 
-      <div contents data-controller="popover" data-popover-placement-value="bottom-start">
-        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover" aria-haspopup="true">
+      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
           <span class="icon icon--more-horizontal" aria-hidden="true"></span>
         </button>
 
-        <div popover id="popover" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+        <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
             <%= link_to "Edit", edit_voice_path(voice), class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           </div>
