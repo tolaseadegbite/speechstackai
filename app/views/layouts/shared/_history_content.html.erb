@@ -1,24 +1,10 @@
-<%# --- START: The Fixed Header Section --- %>
 <div class="shrink-0 pbe-2">
   <input type="search" class="input i-full" placeholder="Search history...">
 </div>
-<%# --- END: The Fixed Header Section --- %>
 
-<%# --- START: The Scrollable List Section --- %>
 <div id="history-list" class="flex flex-col gap-4 grow overflow-y-auto pbs-2">
-  
-  <%# FIX: Use the instance variable @generated_audio_clips directly from the controller %>
   <% @generated_audio_clips.each do |date, audio_clips_on_date| %>
-    <div class="flex flex-col gap-2">
-      <h3 class="text-sm font-semibold bg-shade pi-2 pb-1 rounded-lg mi-auto">
-        <%= date.strftime("%B %d, %Y") %>
-      </h3>
-
-      <div class="flex flex-col gap-2">
-        <%# Render each audio clip for the current date %>
-        <%= render partial: "layouts/shared/history_item", collection: audio_clips_on_date.sort_by(&:created_at).reverse, as: :audio %>
-      </div>
-    </div>
+    <%# Use the new partial here %>
+    <%= render "layouts/shared/history_date_group", date: date, audio_clips: audio_clips_on_date.sort_by(&:created_at).reverse %>
   <% end %>
 </div>
-<%# --- END: The Scrollable List Section --- %>

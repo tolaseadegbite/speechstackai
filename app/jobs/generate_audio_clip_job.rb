@@ -3,6 +3,7 @@ class GenerateAudioClipJob < ApplicationJob
 
   limits_concurrency to: 1, key: ->(audio_clip) { audio_clip.user_id }, duration: 5.minutes
 
+  # Update the rescue_from to use a method that triggers the update callback
   rescue_from(StandardError) do |exception|
     audio_clip = arguments.first
     audio_clip&.failed!
@@ -10,6 +11,8 @@ class GenerateAudioClipJob < ApplicationJob
   end
 
   def perform(audio_clip)
+    audio_clip.processing!
+
     user = audio_clip.user
 
     unless user.credits > 0
@@ -17,18 +20,13 @@ class GenerateAudioClipJob < ApplicationJob
       return
     end
 
-    # Check if a voice record is actually associated with the clip.
-    # The `&.` safe navigation operator prevents an error if audio_clip.voice is nil.
     voice_name = audio_clip.voice&.name
     unless voice_name
       raise "GenerateAudioClipJob failed for audio_clip #{audio_clip.id}: No associated Voice record found."
     end
 
     endpoint = Rails.application.credentials.modal.generate
-
-    # Build the body using the `name` from the associated Voice record.
     body = { text: audio_clip.text, voice: voice_name }
-
     response = ModalApiClient.generate(endpoint, body)
 
     if response.is_a?(Net::HTTPSuccess)
@@ -50,11 +48,6 @@ class GenerateAudioClipJob < ApplicationJob
       )
       deduct_credit(user)
     end
-
-    audio_clip.broadcast_prepend_to [ user, "history" ],
-      target: "history-list",
-      partial: "layouts/shared/history_item",
-      locals: { audio: audio_clip }
   end
 
   def deduct_credit(user)

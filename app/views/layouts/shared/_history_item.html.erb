@@ -1,72 +1,114 @@
 <%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2", id: dom_id(audio) do %>
-  <div class="flex flex-col gap-half text-sm">
 
-    <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide" data-popover-placement-value="bottom-right">
+  <% case audio.status %>
+  <% when "pending", "processing" %>
+    <%# --- STATE: PENDING / PROCESSING --- %>
+    <div class="flex flex-col gap-half text-sm flex-grow min-w-0">
+      <h4 class="overflow-ellipsis font-semibold text-subtle"><%= audio.text.truncate(40) %> (<%= audio.status.humanize %>...)</h4>
+      <div class="flex items-center gap-2 text-sm text-subtle">
+        <span class="voice-swatch shrink-0" style="--icon-size: 1rem; <%= voice_gradient_style(audio.voice) %>" aria-hidden="true"></span>
+        <span><%= audio.voice.name %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 shrink-0 mis-2">
+      <div class="btn btn--icon btn--subtle" aria-label="Processing">
+        <span class="icon icon--loading animate-spin" aria-hidden="true"></span>
+      </div>
+      <div class="btn btn--icon btn--subtle" aria-label="Menu" style="opacity: 0.5; cursor: not-allowed;">
+        <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+      </div>
+    </div>
 
-      <a href="" class="" data-popover-target="trigger">
-        <h4 class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></h4>
-      </a>
+  <% when "failed", "no_credits" %>
+    <%# --- STATE: FAILED --- %>
+    <div class="flex flex-col gap-half text-sm flex-grow min-w-0">
+      <h4 class="overflow-ellipsis font-semibold text-negative"><%= audio.text.truncate(40) %></h4>
+      <div class="flex items-center gap-2 text-sm text-negative">
+        <span class="icon icon--circle-alert" aria-hidden="true"></span>
+        <span><%= audio.failed? ? "Generation failed" : "Insufficient credits" %></span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 shrink-0 mis-2">
+      <div class="btn btn--icon btn--subtle" aria-label="Failed">
+        <span class="icon icon--circle-alert text-negative" aria-hidden="true"></span>
+      </div>
+      <%= link_to generated_audio_clip_path(audio), class: "btn btn--icon btn--subtle", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+        <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+      <% end %>
+    </div>
 
-      <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
-        <div class="flex flex-col p-4">
-          <p class="text-sm text-subtle"><%= audio.text %></p>
+  <% when "processed" %>
+    <%# --- STATE: PROCESSED --- %>
+    <div class="flex flex-col gap-half text-sm">
+
+      <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide" data-popover-placement-value="bottom-right">
+
+        <a href="" class="" data-popover-target="trigger">
+          <h4 class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></h4>
+        </a>
+
+        <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
+          <div class="flex flex-col p-4">
+            <p class="text-sm text-subtle"><%= audio.text %></p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex items-center gap-2 text-sm text-subtle">
-      <span class="voice-swatch shrink-0" style="--icon-size: 1rem; <%= voice_gradient_style(audio.voice) %>" aria-hidden="true"></span>
-      <span><%= audio.voice.name %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
-    </div>
-  </div>
-
-  <div class="flex items-center gap-2 shrink-0 mis-2">
-    <% s3_url = presigned_s3_url(audio.s3_key) %>
-    <button type="button" class="btn btn--icon btn--subtle"
-                            data-action="audio-player#play"
-                            data-audio-player-url-param="<%= s3_url %>"
-                            data-audio-player-title-param="<%= audio.text.truncate(40) %>"
-                            data-audio-player-author-param="<%= audio.voice.name %>"
-                            data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>"
-                            data-audio-player-gradient-start-param="<%= audio.voice.gradient_start %>"
-                            data-audio-player-gradient-end-param="<%= audio.voice.gradient_end %>">
-      
-      <%# --- FIX: Replace the span with the targetable div structure --- %>
-      <div data-play-icon-url="<%= s3_url %>">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      <div class="flex items-center gap-2 text-sm text-subtle">
+        <span class="voice-swatch shrink-0" style="--icon-size: 1rem; <%= voice_gradient_style(audio.voice) %>" aria-hidden="true"></span>
+        <span><%= audio.voice.name %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
       </div>
-    </button>
+    </div>
 
-    <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-      <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= audio.id %>" aria-haspopup="true">
-        <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+    <div class="flex items-center gap-2 shrink-0 mis-2">
+      <% s3_url = presigned_s3_url(audio.s3_key) %>
+      <button type="button" class="btn btn--icon btn--subtle"
+                              data-action="audio-player#play"
+                              data-audio-player-url-param="<%= s3_url %>"
+                              data-audio-player-title-param="<%= audio.text.truncate(40) %>"
+                              data-audio-player-author-param="<%= audio.voice.name %>"
+                              data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>"
+                              data-audio-player-gradient-start-param="<%= audio.voice.gradient_start %>"
+                              data-audio-player-gradient-end-param="<%= audio.voice.gradient_end %>">
+        
+        <%# --- FIX: Replace the span with the targetable div structure --- %>
+        <div data-play-icon-url="<%= s3_url %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
       </button>
 
-      <div popover id="popover-<%= audio.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
-        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-          <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", 
-            class: "btn menu__item" do %>
-            <span class="icon icon--download" aria-hidden="true"></span>
-            Download
-          <% end %>
-          <%= link_to generated_audio_clip_path(audio), 
-                class: "btn menu__item", 
-                role: "menuitem", 
-                data: { 
-                  turbo_method: :delete, 
-                  turbo_confirm: "Are you sure you want to delete this audio clip?",
-                  menu_target: "item" 
-                } do %>
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              <line x1="10" y1="11" x2="10" y2="17"></line>
-              <line x1="14" y1="11" x2="14" y2="17"></line>
-            </svg>
-            Delete
-          <% end %>
+      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= audio.id %>" aria-haspopup="true">
+          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+        </button>
+
+        <div popover id="popover-<%= audio.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+            <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", 
+              class: "btn menu__item" do %>
+              <span class="icon icon--download" aria-hidden="true"></span>
+              Download
+            <% end %>
+            <%= link_to generated_audio_clip_path(audio), 
+                  class: "btn menu__item", 
+                  role: "menuitem", 
+                  data: { 
+                    turbo_method: :delete, 
+                    turbo_confirm: "Are you sure you want to delete this audio clip?",
+                    menu_target: "item" 
+                  } do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+              Delete
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
+
 <% end %>

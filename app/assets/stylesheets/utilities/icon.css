@@ -58,6 +58,7 @@ img.icon {
 .icon--smile { --svg: url("smile.svg"); }
 .icon--calculator { --svg: url("calculator.svg"); }
 .icon--user { --svg: url("user.svg"); }
+.icon--loading { --svg: url("loading.svg"); }
 .icon--play { --svg: url("play.svg"); }
 .icon--credit-card { --svg: url("credit-card.svg"); }
 .icon--settings { --svg: url("settings.svg"); }
