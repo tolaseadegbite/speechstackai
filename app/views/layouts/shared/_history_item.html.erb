@@ -1,6 +1,19 @@
 <%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2", id: dom_id(audio) do %>
   <div class="flex flex-col gap-half text-sm">
-    <p class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></p>
+
+    <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide" data-popover-placement-value="bottom-right">
+
+      <a href="" class="" data-popover-target="trigger">
+        <h4 class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></h4>
+      </a>
+
+      <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
+        <div class="flex flex-col p-4">
+          <p class="text-sm text-subtle"><%= audio.text %></p>
+        </div>
+      </div>
+    </div>
+
     <div class="flex items-center gap-2 text-sm text-subtle">
       <span class="voice-swatch shrink-0" style="--icon-size: 1rem; <%= voice_gradient_style(audio.voice) %>" aria-hidden="true"></span>
       <span><%= audio.voice.name %> · <%= audio.created_at.strftime('%I:%M %p') %></span>

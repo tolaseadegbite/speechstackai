@@ -32,15 +32,15 @@
         </div>
 
       </div>
-      <div data-form-submit-target="button">
+
+      <div>
         <%= button_tag type: "submit", class: "btn btn--primary block i-full", form: "text_to_speech_form" do %>
-          <span class="icon icon--loading hide" data-form-submit-target="spinner"></span>
 
           <span data-form-submit-target="label">Generate speech</span>
         <% end %>
       </div>
       <div class="flex justify-between">
-          <p class="text-subtle text-xs font-semibold">10,000 credits remaining</p>
+          <p class="text-subtle text-xs font-semibold"><%= current_user.credits %> credits remaining</p>
           <p class="text-subtle text-xs font-semibold">1,734 / 5,000 characters</p>
       </div>
     </div>

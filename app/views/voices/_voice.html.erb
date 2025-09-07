@@ -70,6 +70,18 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
         </div>
       </button>
+      
+      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
+          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+        </button>
+
+        <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+            <%= link_to "Edit", edit_voice_path(voice), class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          </div>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>
