@@ -44,6 +44,22 @@ class GeneratedAudioClipsController < DashboardController
     end
   end
 
+  def destroy
+    @generated_audio_clip = current_user.generated_audio_clips.find(params[:id])
+    @generated_audio_clip.destroy
+
+    # Refetch the updated list to pass to the turbo stream template
+    @generated_audio_clips = current_user.generated_audio_clips
+                                       .includes(:voice)
+                                       .order(created_at: :desc)
+                                       .group_by { |audio| audio.created_at.to_date }
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to new_generated_audio_clip_path, notice: 'Audio clip was successfully deleted.' }
+    end
+  end
+
   private
 
   def audio_clip_params

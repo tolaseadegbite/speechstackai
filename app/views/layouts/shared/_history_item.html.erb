@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="flex items-center gap-4 shrink-0 mis-2">
+  <div class="flex items-center gap-2 shrink-0 mis-2">
     <% s3_url = presigned_s3_url(audio.s3_key) %>
     <button type="button" class="btn btn--icon btn--subtle"
                             data-action="audio-player#play"
@@ -33,12 +33,40 @@
       
       <%# --- FIX: Replace the span with the targetable div structure --- %>
       <div data-play-icon-url="<%= s3_url %>">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
       </div>
     </button>
-    
-    <a href="<%= s3_url %>" download="<%= "audio_#{audio.id}.mp3" %>" class="btn btn--icon btn--subtle cursor-pointer">
-      <span class="icon icon--download" aria-hidden="true"></span>
-    </a>
+
+    <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+      <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= audio.id %>" aria-haspopup="true">
+        <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+      </button>
+
+      <div popover id="popover-<%= audio.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+          <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", 
+            class: "btn menu__item" do %>
+            <span class="icon icon--download" aria-hidden="true"></span>
+            Download
+          <% end %>
+          <%= link_to generated_audio_clip_path(audio), 
+                class: "btn menu__item", 
+                role: "menuitem", 
+                data: { 
+                  turbo_method: :delete, 
+                  turbo_confirm: "Are you sure you want to delete this audio clip?",
+                  menu_target: "item" 
+                } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+            Delete
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 <% end %>

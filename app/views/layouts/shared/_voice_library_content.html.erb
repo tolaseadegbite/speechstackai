@@ -1,13 +1,13 @@
 <%# --- START: The Fixed Header Section --- %>
 <div class="shrink-0">
   <%# Call to Action: Explore Voice Library %>
-  <div class="flex items-start gap-3 p-4 bg-shade rounded-lg relative">
+  <div class="flex items-center gap-3 p-4 bg-shade rounded-lg relative">
     <div class="p-3 bg-gradient-purple text-reversed rounded-lg shadow-md">
       <span class="icon icon--apps" style="--icon-size: 1.5rem" aria-hidden="true"></span>
     </div>
     <div class="flex flex-col gap-half">
       <p class="font-semibold">Explore Voice Library</p>
-      <p class="text-sm text-subtle">Find high quality voices from the community. Perfect for any occasion.</p>
+      <p class="text-sm text-subtle">Use our default high quality voices.</p>
     </div>
   </div>
 </div>
@@ -50,20 +50,20 @@
                       data-audio-player-gradient-end-param="<%= voice.gradient_end %>">
               
               <div data-play-icon-url="<%= s3_url %>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
               </div>
             </button>
           <% else %>
             <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
               <div>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
               </div>
             </button>
           <% end %>
 
-          <button type="button" class="btn btn--icon btn--subtle">
+          <%# <button type="button" class="btn btn--icon btn--subtle">
             <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-          </button>
+          </button> %>
         </div>
       </div>
     <% end %>
