@@ -1,7 +1,11 @@
 class GeneratedAudioClipsController < DashboardController
   def new
     @service_type = params[:service_type]
-    @generated_audio_clips = current_user.generated_audio_clips.includes(:voice).order(created_at: :desc)
+    # THE FIX: Order the records by created_at DESC before grouping them.
+    @generated_audio_clips = current_user.generated_audio_clips
+                                       .includes(:voice)
+                                       .order(created_at: :desc)
+                                       .group_by { |audio| audio.created_at.to_date }
     @generated_audio_clip = GeneratedAudioClip.new
     @voices = Voice.includes(:languages).order(:name)
   end
@@ -13,7 +17,6 @@ class GeneratedAudioClipsController < DashboardController
     if @generated_audio_clip.save
       case @service_type
       when "text_to_speech"
-        # THE FIX: We set an instance variable with the correct form ID.
         @form_id = "text_to_speech_form"
         GenerateAudioClipJob.perform_later(@generated_audio_clip)
       when "voice_changer"
@@ -31,7 +34,11 @@ class GeneratedAudioClipsController < DashboardController
         format.turbo_stream
       end
     else
-      @generated_audio_clips = current_user.generated_audio_clips.includes(:voice).order(created_at: :desc)
+      # THE FIX: Also apply the ordering here for the validation error case.
+      @generated_audio_clips = current_user.generated_audio_clips
+                                       .includes(:voice)
+                                       .order(created_at: :desc)
+                                       .group_by { |audio| audio.created_at.to_date }
       @voices = Voice.includes(:languages).order(:name)
       render :new, status: :unprocessable_entity
     end
@@ -40,7 +47,6 @@ class GeneratedAudioClipsController < DashboardController
   private
 
   def audio_clip_params
-    # THE FIX: Permit all possible attributes for all your services.
     params.require(:generated_audio_clip).permit(:text, :voice_id, :service_type)
   end
 end
