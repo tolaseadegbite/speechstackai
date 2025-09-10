@@ -67,8 +67,8 @@
 /* Voice library */
 
 /* The purple gradient for the icon wrapper. */
-.bg-gradient-purple {
-  background-image: linear-gradient(135deg, rgb(96, 212, 174), rgb(15, 226, 156));
+.v-library-bg-grad {
+  background-image: linear-gradient(135deg, rgb(96, 212, 174), rgb(15, 92, 66));
 }
 
 .min-b-0, .min-h-0 { min-block-size: 0; }

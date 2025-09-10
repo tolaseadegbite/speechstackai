@@ -1,10 +1,26 @@
+<%# Set a default prefix if one isn't provided %>
+<% id_prefix ||= "history" %>
+
+<%# Use the passed-in collection or fall back to the instance variable %>
+<% generated_audio_clips ||= @generated_audio_clips %>
+
 <div class="shrink-0 pbe-2">
   <input type="search" class="input i-full" placeholder="Search history...">
 </div>
 
-<div id="history-list" class="flex flex-col gap-4 grow overflow-y-auto pbs-2">
-  <% @generated_audio_clips.each do |date, audio_clips_on_date| %>
-    <%# Use the new partial here %>
-    <%= render "layouts/shared/history_date_group", date: date, audio_clips: audio_clips_on_date.sort_by(&:created_at).reverse %>
+<div id="history-list-<%= id_prefix %>" class="flex flex-col gap-4 grow overflow-y-auto pbs-2">
+  <%# This loop iterates through the dates and clips %>
+  <% generated_audio_clips.each do |date, audio_clips_on_date| %>
+    
+    <%# 
+      THE FIX IS HERE:
+      We must explicitly pass the `date`, `audio_clips`, and `id_prefix`
+      variables to the `_history_date_group` partial as locals.
+    %>
+    <%= render partial: "layouts/shared/history_date_group", locals: { 
+               date: date, 
+               audio_clips: audio_clips_on_date.sort_by(&:created_at).reverse,
+               id_prefix: id_prefix 
+             } %>
   <% end %>
 </div>

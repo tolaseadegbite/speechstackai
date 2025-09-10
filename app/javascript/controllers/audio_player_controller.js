@@ -157,8 +157,10 @@ export default class extends Controller {
 
   updateGradientUI() {
     if (this.hasGradientSwatchTarget && this.currentClipData.gradientStart && this.currentClipData.gradientEnd) {
-      this.gradientSwatchTarget.style.setProperty('--gradient-start', this.currentClipData.gradientStart);
-      this.gradientSwatchTarget.style.setProperty('--gradient-end', this.currentClipData.gradientEnd);
+      this.gradientSwatchTargets.forEach(swatch => {
+        swatch.style.setProperty('--gradient-start', this.currentClipData.gradientStart);
+        swatch.style.setProperty('--gradient-end', this.currentClipData.gradientEnd);
+      });
     }
   }
 

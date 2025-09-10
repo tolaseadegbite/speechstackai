@@ -3,7 +3,6 @@
     <div class="responsive-padding flex flex-col gap-3">
       <div class="flex justify-between">
         
-        <%# THE FIX: Path reverted to the shared directory. %>
         <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
           label: "Voice Library", 
           content_partial: "layouts/shared/voice_library_content", 
@@ -12,17 +11,17 @@
           trigger: capture do %>
             <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
               <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
-              <%# Arápáregángan %>
               Select voice
             </button>
           <% end 
         } %>
 
         <div>
-          <%# THE FIX: Path reverted to the shared directory. %>
           <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
             label: "History", 
-            content_partial: "layouts/shared/history_content", 
+            content_partial: "layouts/shared/history_content",
+            id_prefix: "mobile", 
+            generated_audio_clips: @generated_audio_clips,
             trigger: capture do %>
               <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
@@ -35,7 +34,6 @@
 
       <div>
         <%= button_tag type: "submit", class: "btn btn--primary block i-full", form: "text_to_speech_form" do %>
-
           <span data-form-submit-target="label">Generate speech</span>
         <% end %>
       </div>
