@@ -45,7 +45,7 @@
         <a href="" class="" data-popover-target="trigger">
           <h4 class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></h4>
         </a>
-        <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
+        <div popover="hint" class="popover shadow-md max-b-screen-32" style="max-width: 20rem;" data-popover-target="content" role="dialog">
           <div class="flex flex-col p-4">
             <p class="text-sm text-subtle"><%= audio.text %></p>
           </div>
@@ -104,9 +104,9 @@
 
       <%# THE FIX for long text: a scrollable container %>
       <div class="p-3 mbe-4 bg-shade border rounded-lg">
-        <div class="max-h-32 overflow-y-auto bg-canvas border rounded p-2 mbe-3">
-          <blockquote class="text-sm border-s-4 border-subtle ps-3 italic text-strong">
-            <%= audio.text %>
+        <div class="max-b-screen-32 overflow-y-auto rounded-lg p-2 mbe-3">
+          <blockquote class="text-sm border-subtle ps-3 text-strong">
+            <%= simple_format(audio.text) %>
           </blockquote>
         </div>
         <p class="text-xs text-subtle">

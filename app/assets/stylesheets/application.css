@@ -25,6 +25,10 @@
   min-block-size: 90dvh; /* 90vh = 90% of the viewport height */
 }
 
+.max-b-screen-32 {
+  max-block-size: 32dvh; /* 32vh = 32% of the viewport height */
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
