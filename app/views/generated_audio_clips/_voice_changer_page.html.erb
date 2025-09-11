@@ -27,10 +27,11 @@
           </div>
           <div hidden id="vc_voice_library_tab" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
             <%# We pass `f` so the voice library can add its `f.select` to the form. %>
-            <%= render partial: "layouts/shared/voice_library_content", locals: { f: f } %>
+            <%= render partial: "layouts/shared/voice_library_content", locals: { f: f, context: :desktop } %>
           </div>
           <div hidden id="vc_history_tab" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips %>
+            <%# THE FIX: Added the missing `}` and removed the duplicate variable. %>
+            <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips, locals: { context: :desktop } %>
           </div>
         </div>
       </div>

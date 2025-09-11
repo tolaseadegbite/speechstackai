@@ -20,6 +20,8 @@
     </div>
 
     <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
+      
+      <%# START: This is the DESKTOP view container. %>
       <div class="show@lg p-4 flex flex-col grow min-h-0">
         <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">
           <div class="tabs__list shrink-0">
@@ -27,14 +29,21 @@
             <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="history_tab">History</button>
           </div>
           <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%= render partial: "layouts/shared/voice_library_content", locals: { f: f, id_prefix: "desktop" } %>
+            <%= render partial: "layouts/shared/voice_library_content", locals: { f: f, context: :desktop } %>
           </div>
           <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips, locals: { id_prefix: "desktop" } %>
+            <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips, locals: { context: :desktop } %>
           </div>
         </div>
       </div>
+      <%# END: Desktop view container. %>
+
+      <%# 
+        THE FIX IS HERE: The mobile info bar is now OUTSIDE the `show@lg` div.
+        It is a direct child of the settings column, so its own `hide@lg` class can work correctly.
+      %>
       <%= render "generated_audio_clips/partials/text_to_speech/mobile_info_bar", f: f %>
+
     </div>
   <% end %>
 </div>

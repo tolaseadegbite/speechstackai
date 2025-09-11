@@ -1,0 +1,22 @@
+<%# This broadcast is triggered on `after_create_commit`. %>
+<% date = audio.created_at.to_date %>
+<% is_first_of_the_day = audio.user.generated_audio_clips.where("DATE(created_at) = ?", date).count == 1 %>
+
+<%# Define the contexts we need to update. %>
+<% [:desktop, :mobile].each do |context| %>
+
+  <% if is_first_of_the_day %>
+    <%# If it's the first clip of the day, prepend the entire date group. %>
+    <%= turbo_stream.prepend "history_list_#{context}" do %>
+      <%= render partial: "layouts/shared/history_date_group", 
+                 locals: { date: date, audio_clips: [audio], context: context } %>
+    <% end %>
+  <% else %>
+    <%# Otherwise, just prepend the new item into today's existing group. %>
+    <%= turbo_stream.prepend "#{context}_history_items_for_#{date.to_s}" do %>
+      <%= render partial: "layouts/shared/history_item", 
+                 locals: { audio: audio, context: context } %>
+    <% end %>
+  <% end %>
+
+<% end %>

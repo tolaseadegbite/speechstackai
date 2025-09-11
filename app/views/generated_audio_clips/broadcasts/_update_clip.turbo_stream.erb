@@ -1,0 +1,13 @@
+<%# This broadcast is triggered on `after_update_commit`. %>
+
+<%# Replace the desktop version of the history item. %>
+<%= turbo_stream.replace dom_id(audio, :desktop) do %>
+  <%= render partial: "layouts/shared/history_item", 
+             locals: { audio: audio, context: :desktop } %>
+<% end %>
+
+<%# Replace the mobile version of the history item. %>
+<%= turbo_stream.replace dom_id(audio, :mobile) do %>
+  <%= render partial: "layouts/shared/history_item", 
+             locals: { audio: audio, context: :mobile } %>
+<% end %>

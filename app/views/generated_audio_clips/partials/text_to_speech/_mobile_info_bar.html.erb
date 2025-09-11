@@ -6,7 +6,7 @@
         <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
           label: "Voice Library", 
           content_partial: "layouts/shared/voice_library_content", 
-          id_prefix: "mobile",
+          context: :mobile,
           f: f,
           trigger: capture do %>
             <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
@@ -17,10 +17,11 @@
         } %>
 
         <div>
+          <%# THE FIX: Changed `id_prefix: "mobile"` to `context: :mobile` for consistency. %>
           <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
             label: "History", 
             content_partial: "layouts/shared/history_content",
-            id_prefix: "mobile", 
+            context: :mobile, 
             generated_audio_clips: @generated_audio_clips,
             trigger: capture do %>
               <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">

@@ -3,10 +3,10 @@
   - trigger: A block that defines the button HTML.
   - content_partial: The path to the partial to render inside the sheet.
   - label: A string for the aria-label.
-  - id_prefix: (Optional) A string to prefix IDs within the content partial.
+  - context: (Optional) A symbol (:desktop, :mobile) for generating unique IDs.
   - f: (Optional) The form builder object, to be passed down.
+  - generated_audio_clips: (Optional) The collection of audio clips.
 %>
-<% id_prefix ||= nil %>
 
 <%# THIS IS THE CONTROLLER THAT LISTENS FOR THE ACTION %>
 <div contents data-controller="dialog">
@@ -26,8 +26,12 @@
     </div>
 
     <div class="sheet__content sheet_wrapper pis-3 pie-4 pbs-0 grow flex flex-col min-b-0">
-      <% final_locals = { id_prefix: id_prefix } %>
+      <%# Build a hash of locals to pass down to the content partial %>
+      <% final_locals = { context: local_assigns.fetch(:context, :mobile) } %>
+      
+      <%# Conditionally add other locals if they were passed in %>
       <% final_locals[:f] = f if local_assigns.key?(:f) %>
+      <% final_locals[:generated_audio_clips] = generated_audio_clips if local_assigns.key?(:generated_audio_clips) %>
 
       <%= render partial: content_partial, locals: final_locals %>
     </div>

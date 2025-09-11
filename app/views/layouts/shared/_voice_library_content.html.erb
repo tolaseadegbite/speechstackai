@@ -22,7 +22,7 @@
   </div>
 
   <% @voices.each do |voice| %>
-    <% unique_id = "#{id_prefix}_voice_id_#{voice.id}" %>
+    <% unique_id = dom_id(voice, context) %> <%# Generates IDs like "desktop_voice_1" or "mobile_voice_1" %>
 
     <%# THE FIX: The `value` attribute is removed and the `for` attribute is added
         to explicitly link the label to the radio button with the new unique ID. %>

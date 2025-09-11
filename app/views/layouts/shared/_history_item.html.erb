@@ -1,7 +1,5 @@
-<% id_prefix ||= "item" %>
-
 <%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2", 
-            id: dom_id(audio), 
+            id: dom_id(audio, context), 
             data: { controller: "dialog" } do %>
 
   <% case audio.status %>
@@ -64,10 +62,12 @@
         </div>
       </button>
       <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= id_prefix %>-popover-<%= audio.id %>" aria-haspopup="true">
+        <%# THE FIX: Use `dom_id` with context for the popover target. %>
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= dom_id(audio, "#{context}_popover") %>" aria-haspopup="true">
           <span class="icon icon--more-horizontal" aria-hidden="true"></span>
         </button>
-        <div popover id="<%= id_prefix %>-popover-<%= audio.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+        <%# THE FIX: Use `dom_id` with context for the popover ID. %>
+        <div popover id="<%= dom_id(audio, "#{context}_popover") %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
             <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", class: "btn menu__item" do %>
               <span class="icon icon--download" aria-hidden="true"></span>
@@ -88,21 +88,21 @@
     </div>
   <% end %>
 
+  <%# THE FIX: Use `dom_id` with context for ARIA and ID attributes. %>
   <dialog class="dialog" 
           data-dialog-target="content" 
           role="alertdialog" 
-          aria-labelledby="<%= id_prefix %>-dialog_label-<%= audio.id %>" 
-          aria-describedby="<%= id_prefix %>-dialog_desc-<%= audio.id %>">
+          aria-labelledby="<%= dom_id(audio, "#{context}_dialog_label") %>" 
+          aria-describedby="<%= dom_id(audio, "#{context}_dialog_desc") %>">
     <div class="dialog__content">
-      <h2 class="text-lg font-semibold leading-none mbe-2" id="<%= id_prefix %>-dialog_label-<%= audio.id %>">
+      <h2 class="text-lg font-semibold leading-none mbe-2" id="<%= dom_id(audio, "#{context}_dialog_label") %>">
         Delete Audio Clip?
       </h2>
       
-      <p class="text-sm text-subtle mbe-4" id="<%= id_prefix %>-dialog_desc-<%= audio.id %>">
+      <p class="text-sm text-subtle mbe-4" id="<%= dom_id(audio, "#{context}_dialog_desc") %>">
         Are you sure you want to permanently delete the audio clip detailed below? This action cannot be undone.
       </p>
 
-      <%# THE FIX for long text: a scrollable container %>
       <div class="p-3 mbe-4 bg-shade border rounded-lg">
         <div class="max-b-screen-32 overflow-y-auto rounded-lg p-2 mbe-3">
           <blockquote class="text-sm border-subtle ps-3 text-strong">

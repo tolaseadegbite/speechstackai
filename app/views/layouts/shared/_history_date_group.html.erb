@@ -1,16 +1,22 @@
-<%# app/views/layouts/shared/_history_date_group.html.erb %>
+<%# This partial correctly expects a `context` variable. %>
 
-<%= tag.div class: "flex flex-col gap-2", id: "#{id_prefix}_history_date_group_#{date.to_s}" do %>
+<%# 
+  THE FIX: Use string interpolation. A `Date` object cannot be used with `dom_id`.
+  We use `date.to_s` to get a string representation like "2025-09-11".
+%>
+<%= tag.div class: "flex flex-col gap-2", id: "#{context}_history_date_group_#{date.to_s}" do %>
 
   <h3 class="text-sm font-semibold bg-shade pi-2 pb-1 rounded-lg mi-auto text-sm">
     <%= date.strftime("%B %d, %Y") %>
   </h3>
 
-  <div class="flex flex-col gap-2" id="#{id_prefix}_history_items_for_<%= date.to_s %>">
+  <%# THE FIX: Same as above, use string interpolation. %>
+  <div class="flex flex-col gap-2" id="<%= "#{context}_history_items_for_#{date.to_s}" %>">
+    <%# This render call is correct as it passes context to the item partial. %>
     <%= render partial: "layouts/shared/history_item", 
                collection: audio_clips, 
                as: :audio, 
-               locals: { id_prefix: id_prefix } %>
+               locals: { context: context } %>
   </div>
 
 <% end %>
