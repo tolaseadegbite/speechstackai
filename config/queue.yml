@@ -1,18 +1,19 @@
-default: &default
-  dispatchers:
-    - polling_interval: 1
-      batch_size: 500
-  workers:
-    - queues: "*"
-      threads: 3
-      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
-      polling_interval: 0.1
+queues:
+  audio_generation:
+    concurrency_limit: 5
+    timeout: 360
 
-development:
-  <<: *default
+  default:
+    concurrency_limit: 10
 
-test:
-  <<: *default
+workers:
+  # Worker Pool #1: Dedicated to Song Generation
+  - queues: audio_generation
+    threads: 2
+    polling_interval: 5
 
-production:
-  <<: *default
+  # Worker Pool #2: General Purpose "Catch-All" Workers
+  - queues: default
+    threads: 3
+    processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
+    polling_interval: 0.1
