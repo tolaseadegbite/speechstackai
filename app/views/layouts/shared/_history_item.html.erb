@@ -89,42 +89,40 @@
   <% end %>
 
   <%# THE FIX: Use `dom_id` with context for ARIA and ID attributes. %>
-  <dialog class="dialog" 
-          data-dialog-target="content" 
-          role="alertdialog" 
-          aria-labelledby="<%= dom_id(audio, "#{context}_dialog_label") %>" 
-          aria-describedby="<%= dom_id(audio, "#{context}_dialog_desc") %>">
+  <dialog class="dialog"
+          data-dialog-target="content"
+          data-action="click->dialog#closeOnClickOutside" <%# Enables clicking the backdrop to close %>
+          role="alertdialog"
+          aria-labelledby="<%= dom_id(audio, "#{context}_dialog_label") %>">
+
+    <%# Add the explicit "X" close button %>
+    <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
+      <span class="icon icon--x" aria-hidden="true"></span>
+      <span class="sr-only">Close</span>
+    </button>
+
     <div class="dialog__content">
-      <h2 class="text-lg font-semibold leading-none mbe-2" id="<%= dom_id(audio, "#{context}_dialog_label") %>">
+      <h2 class="text-lg font-semibold" id="<%= dom_id(audio, "#{context}_dialog_label") %>">
         Delete Audio Clip?
       </h2>
-      
-      <p class="text-sm text-subtle mbe-4" id="<%= dom_id(audio, "#{context}_dialog_desc") %>">
-        Are you sure you want to permanently delete the audio clip detailed below? This action cannot be undone.
+      <p class="text-sm text-subtle mbe-4">
+        Are you sure you want to permanently delete this audio clip? This action cannot be undone.
       </p>
 
-      <div class="p-3 mbe-4 bg-shade border rounded-lg">
-        <div class="max-b-screen-32 overflow-y-auto rounded-lg p-2 mbe-3">
-          <blockquote class="text-sm border-subtle ps-3 text-strong">
-            <%= simple_format(audio.text) %>
-          </blockquote>
-        </div>
-        <p class="text-xs text-subtle">
-          <strong>Voice:</strong> <%= audio.voice.name %>
-        </p>
-        <p class="text-xs text-subtle">
-          <strong>Created:</strong> <%= audio.created_at.strftime("%B %d, %Y at %I:%M %p") %>
-        </p>
-      </div>
-
       <div class="flex items-center justify-end gap">
+        <%# The "Cancel" button also uses the controller to close %>
         <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-        
-        <%= link_to "Delete", 
-                    generated_audio_clip_path(audio), 
-                    class: "btn btn--danger",
-                    data: { turbo_method: :delete } %>
+
+        <%# THE CRITICAL FIX: This link still closes the dialog BEFORE the Turbo request %>
+        <%= link_to "Delete",
+                    generated_audio_clip_path(audio),
+                    class: "btn btn--negative",
+                    data: {
+                      turbo_method: :delete,
+                      action: "turbo:before-fetch-request->dialog#close"
+                    } %>
       </div>
     </div>
   </dialog>
+
 <% end %>

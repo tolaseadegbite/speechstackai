@@ -43,8 +43,8 @@
 
     <%# User profile dropdown %>
     <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-      <button type="button" class="btn p-0 rounded-lg hide@md" data-popover-target="trigger" popovertarget="md_user_popover" aria-haspopup="true">
-        <%= image_tag "robot.png", size: 32, class: "rounded-lg", alt: "User Avatar" %>
+      <button type="button" class="btn p-0 rounded-full border-2 border-green-500 hide@md" data-popover-target="trigger" popovertarget="md_user_popover" aria-haspopup="true">
+        <%= image_tag "robot.png", size: 32, class: "rounded-full", alt: "User Avatar" %>
       </button>
 
       <div popover id="md_user_popover" class="popover" style="--popover-size: 12rem;" data-popover-target="content">

@@ -1,15 +1,7 @@
-<%= turbo_stream.update "history-list" do %>
-  <%# Re-render the list of history items %>
-  <% @generated_audio_clips.each do |date, audio_clips_on_date| %>
-    <div class="flex flex-col gap-2">
-      <h3 class="text-sm font-semibold bg-shade pi-2 pb-1 rounded-lg mi-auto">
-        <%= date.strftime("%B %d, %Y") %>
-      </h3>
+<%# FIRST: Always remove the audio clip itself. %>
+<%= turbo_stream.remove @generated_audio_clip %>
 
-      <div class="flex flex-col gap-2">
-        <%# Render each audio clip for the current date %>
-        <%= render partial: "layouts/shared/history_item", collection: audio_clips_on_date.sort_by(&:created_at).reverse, as: :audio %>
-      </div>
-    </div>
-  <% end %>
+<% if @remove_date_group %>
+  <%# ALSO remove the date group if there are no more clips for that date. %>
+  <%= turbo_stream.remove "history_date_group_#{@date_to_check.to_s}" %>
 <% end %>
