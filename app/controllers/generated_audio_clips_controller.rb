@@ -46,16 +46,16 @@ class GeneratedAudioClipsController < DashboardController
 
   def destroy
     @generated_audio_clip = current_user.generated_audio_clips.find(params[:id])
-
-    # Store the date before deletion, as @generated_audio_clip will be gone after destroy.
+    @context = params[:context] || :desktop
     @date_to_check = @generated_audio_clip.created_at.to_date
-
     @generated_audio_clip.destroy
 
-    # THE FIX: Check if this was the last clip for this date
-    @remove_date_group = current_user.generated_audio_clips
-                                    .where("DATE(created_at) = ?", @date_to_check)
-                                    .count == 0
+    beginning_of_the_day = @date_to_check.in_time_zone.beginning_of_day
+    end_of_the_day = @date_to_check.in_time_zone.end_of_day
+
+    @remove_date_group = !current_user.generated_audio_clips
+                                      .where(created_at: beginning_of_the_day..end_of_the_day)
+                                      .exists?
 
     respond_to do |format|
       format.turbo_stream

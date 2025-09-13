@@ -1,6 +1,5 @@
-<%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2", 
-            id: dom_id(audio, context), 
-            data: { controller: "dialog" } do %>
+<%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2",
+            id: dom_id(audio, context) do %>
 
   <% case audio.status %>
   <% when "pending", "processing" %>
@@ -16,6 +15,7 @@
         <span class="icon icon--loading animate-spin" aria-hidden="true"></span>
       </div>
     </div>
+
   <% when "failed", "no_credits" %>
     <div class="flex flex-col gap-half text-sm flex-grow min-w-0">
       <h4 class="overflow-ellipsis font-semibold text-red-500"><%= audio.text.truncate(40) %></h4>
@@ -28,15 +28,18 @@
       </div>
     </div>
     <div class="flex items-center gap-2 shrink-0 mis-2">
-      <%= link_to generated_audio_clip_path(audio), class: "btn btn--icon btn--subtle", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+      <%= link_to generated_audio_clip_path(audio, context: context),
+                  class: "btn btn--icon btn--subtle",
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to permanently delete this audio clip?" } do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
-              </svg>
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
       <% end %>
     </div>
+
   <% when "processed" %>
     <div class="flex flex-col gap-half text-sm">
       <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide" data-popover-placement-value="bottom-right">
@@ -62,18 +65,23 @@
         </div>
       </button>
       <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-        <%# THE FIX: Use `dom_id` with context for the popover target. %>
         <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= dom_id(audio, "#{context}_popover") %>" aria-haspopup="true">
           <span class="icon icon--more-horizontal" aria-hidden="true"></span>
         </button>
-        <%# THE FIX: Use `dom_id` with context for the popover ID. %>
         <div popover id="<%= dom_id(audio, "#{context}_popover") %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
             <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", class: "btn menu__item" do %>
               <span class="icon icon--download" aria-hidden="true"></span>
               Download
             <% end %>
-            <button type="button" class="btn menu__item" role="menuitem" data-menu-target="item" data-action="dialog#showModal">
+            <%= link_to generated_audio_clip_path(audio, context: context), 
+              class: "btn menu__item", 
+              role: "menuitem", 
+              data: { 
+                turbo_method: :delete, 
+                turbo_confirm: "Are you sure you want to delete this audio clip?",
+                menu_target: "item" 
+              } do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -81,48 +89,10 @@
                 <line x1="14" y1="11" x2="14" y2="17"></line>
               </svg>
               Delete
-            </button>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   <% end %>
-
-  <%# THE FIX: Use `dom_id` with context for ARIA and ID attributes. %>
-  <dialog class="dialog"
-          data-dialog-target="content"
-          data-action="click->dialog#closeOnClickOutside" <%# Enables clicking the backdrop to close %>
-          role="alertdialog"
-          aria-labelledby="<%= dom_id(audio, "#{context}_dialog_label") %>">
-
-    <%# Add the explicit "X" close button %>
-    <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
-      <span class="icon icon--x" aria-hidden="true"></span>
-      <span class="sr-only">Close</span>
-    </button>
-
-    <div class="dialog__content">
-      <h2 class="text-lg font-semibold" id="<%= dom_id(audio, "#{context}_dialog_label") %>">
-        Delete Audio Clip?
-      </h2>
-      <p class="text-sm text-subtle mbe-4">
-        Are you sure you want to permanently delete this audio clip? This action cannot be undone.
-      </p>
-
-      <div class="flex items-center justify-end gap">
-        <%# The "Cancel" button also uses the controller to close %>
-        <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-
-        <%# THE CRITICAL FIX: This link still closes the dialog BEFORE the Turbo request %>
-        <%= link_to "Delete",
-                    generated_audio_clip_path(audio),
-                    class: "btn btn--negative",
-                    data: {
-                      turbo_method: :delete,
-                      action: "turbo:before-fetch-request->dialog#close"
-                    } %>
-      </div>
-    </div>
-  </dialog>
-
 <% end %>

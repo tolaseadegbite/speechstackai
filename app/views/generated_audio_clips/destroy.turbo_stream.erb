@@ -1,7 +1,5 @@
-<%# FIRST: Always remove the audio clip itself. %>
-<%= turbo_stream.remove @generated_audio_clip %>
+<%= turbo_stream.remove dom_id(@generated_audio_clip, @context) %>
 
 <% if @remove_date_group %>
-  <%# ALSO remove the date group if there are no more clips for that date. %>
-  <%= turbo_stream.remove "history_date_group_#{@date_to_check.to_s}" %>
+  <%= turbo_stream.remove "#{@context}_history_date_group_#{@date_to_check.to_s}" %>
 <% end %>
