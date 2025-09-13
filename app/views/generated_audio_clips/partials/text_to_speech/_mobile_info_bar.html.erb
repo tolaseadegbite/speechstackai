@@ -16,8 +16,8 @@
           <% end 
         } %>
 
-        <div>
-          <%# THE FIX: Changed `id_prefix: "mobile"` to `context: :mobile` for consistency. %>
+        <div class="flex items-center gap-2">
+          <button type="reset" class="btn btn--main block"> Reset form </button>
           <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
             label: "History", 
             content_partial: "layouts/shared/history_content",
