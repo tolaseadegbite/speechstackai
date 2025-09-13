@@ -10,6 +10,8 @@ export default class extends Controller {
   update() {
     const currentLength = this.inputTarget.value.length
 
-    this.countTarget.textContent = currentLength
+    this.countTargets.forEach((target) => {
+      target.textContent = currentLength
+    })
   }
 }
