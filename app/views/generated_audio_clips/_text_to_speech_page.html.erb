@@ -1,5 +1,5 @@
 <div class="flex flex-col grow min-b-0">
-  <%= form_with model: @generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit voice-selector" } do |f| %>
+  <%= form_with model: @generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit voice-selector character-counter" } do |f| %>
   
     <%= f.hidden_field :service_type, value: "text_to_speech" %>
     <%= f.hidden_field :voice_id, data: { voice_selector_target: "input" } %>
@@ -10,9 +10,11 @@
           placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
           class: "input tts-input responsive-padding border-0",
           style: "--input-rows: 3lh; outline: 0; resize: none",
+          maxlength: 5000,
           data: { 
             sample_text_target: "output",
-            action: "input->sample-text#handleInput" 
+            action: "input->sample-text#handleInput input->character-counter#update",
+            character_counter_target: "input" 
           } %>
         <%= render "generated_audio_clips/partials/text_to_speech/sample_texts" %>
         <%= render "generated_audio_clips/partials/text_to_speech/desktop_info_bar" %>
@@ -38,10 +40,6 @@
       </div>
       <%# END: Desktop view container. %>
 
-      <%# 
-        THE FIX IS HERE: The mobile info bar is now OUTSIDE the `show@lg` div.
-        It is a direct child of the settings column, so its own `hide@lg` class can work correctly.
-      %>
       <%= render "generated_audio_clips/partials/text_to_speech/mobile_info_bar", f: f %>
 
     </div>
