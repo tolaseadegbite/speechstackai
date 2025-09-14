@@ -60,7 +60,7 @@ class GeneratedAudioClipsController < DashboardController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to new_generated_audio_clip_path, notice: 'Audio clip was successfully deleted.' }
+      format.html { redirect_to new_generated_audio_clip_path, notice: "Audio clip was successfully deleted." }
     end
   end
 

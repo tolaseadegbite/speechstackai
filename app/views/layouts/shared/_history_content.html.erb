@@ -1,4 +1,3 @@
-<%# Set a default context in case one isn't provided. %>
 <% context ||= :desktop %>
 
 <%# Use the passed-in collection or fall back to the instance variable. %>
@@ -7,13 +6,7 @@
 <div class="shrink-0 pbe-2">
   <input type="search" class="input i-full" placeholder="Search history...">
 </div>
-
-<%# 
-  THE FIX: Revert to simple string interpolation for non-model objects.
-  `dom_id` should not be used with a string as the first argument.
-%>
 <div id="history_list_<%= context %>" class="flex flex-col gap-4 grow overflow-y-auto pbs-2">
-  <%# This loop iterates through the dates and clips. %>
   <% generated_audio_clips.each do |date, audio_clips_on_date| %>
     
     <%# This render call is correct as it passes the context down. %>

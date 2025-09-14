@@ -4,9 +4,7 @@
     <%= date.strftime("%B %d, %Y") %>
   </h3>
 
-  <%# THE FIX: Same as above, use string interpolation. %>
   <div class="flex flex-col gap-2" id="<%= "#{context}_history_items_for_#{date.to_s}" %>">
-    <%# This render call is correct as it passes context to the item partial. %>
     <%= render partial: "layouts/shared/history_item", 
                collection: audio_clips, 
                as: :audio, 

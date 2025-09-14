@@ -20,37 +20,31 @@
     <div class="flex flex-col gap-half text-sm flex-grow min-w-0">
       <h4 class="overflow-ellipsis font-semibold text-red-500"><%= audio.text.truncate(40) %></h4>
       <div class="flex items-center gap-2 text-sm text-red-500">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         <span><%= audio.failed? ? "Generation failed" : "Insufficient credits" %> · <%= audio.created_at.strftime('%I:%M %p') %></span>
       </div>
     </div>
     <div class="flex items-center gap-2 shrink-0 mis-2">
-      <%= link_to generated_audio_clip_path(audio, context: context),
-                  class: "btn btn--icon btn--subtle",
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to permanently delete this audio clip?" } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          <line x1="10" y1="11" x2="10" y2="17"></line>
-          <line x1="14" y1="11" x2="14" y2="17"></line>
-        </svg>
+      <% trigger = button_tag type: "button", class: "btn btn--icon btn--subtle", data: { action: "dialog#showModal" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+      <% end %>
+      <%= modal_dialog trigger, title: "Delete this audio clip?" do %>
+        <p class="text-sm text-subtle mbe-4">This will permanently delete this audio clip. This action cannot be undone.</p>
+        <div class="flex items-center justify-end gap">
+          <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+          <%= link_to "Continue", 
+                generated_audio_clip_path(audio, context: context), 
+                data: { turbo_method: :delete }, 
+                class: "btn btn--negative" %>
+        </div>
       <% end %>
     </div>
 
   <% when "processed" %>
     <div class="flex flex-col gap-half text-sm">
       <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide" data-popover-placement-value="bottom-right">
-        <a href="" class="" data-popover-target="trigger">
-          <h4 class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></h4>
-        </a>
-        <div popover="hint" class="popover shadow-md max-b-screen-32" style="max-width: 20rem;" data-popover-target="content" role="dialog">
-          <div class="flex flex-col p-4">
-            <p class="text-sm text-subtle"><%= audio.text %></p>
-          </div>
-        </div>
+        <a href="" class="" data-popover-target="trigger"><h4 class="overflow-ellipsis font-semibold"><%= audio.text.truncate(40) %></h4></a>
+        <div popover="hint" class="popover shadow-md max-b-screen-32" style="max-width: 20rem;" data-popover-target="content" role="dialog"><div class="flex flex-col p-4"><p class="text-sm text-subtle"><%= audio.text %></p></div></div>
       </div>
       <div class="flex items-center gap-2 text-sm text-subtle">
         <span class="voice-swatch shrink-0" style="--icon-size: 1rem; <%= voice_gradient_style(audio.voice) %>" aria-hidden="true"></span>
@@ -60,35 +54,23 @@
     <div class="flex items-center gap-2 shrink-0 mis-2">
       <% s3_url = presigned_s3_url(audio.s3_key) %>
       <button type="button" class="btn btn--icon btn--subtle" data-action="audio-player#play" data-audio-player-url-param="<%= s3_url %>" data-audio-player-title-param="<%= audio.text.truncate(40) %>" data-audio-player-author-param="<%= audio.voice.name %>" data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>" data-audio-player-gradient-start-param="<%= audio.voice.gradient_start %>" data-audio-player-gradient-end-param="<%= audio.voice.gradient_end %>">
-        <div data-play-icon-url="<%= s3_url %>">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
-        </div>
+        <div data-play-icon-url="<%= s3_url %>"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></div>
       </button>
       <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= dom_id(audio, "#{context}_popover") %>" aria-haspopup="true">
-          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-        </button>
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= dom_id(audio, "#{context}_popover") %>" aria-haspopup="true"><span class="icon icon--more-horizontal" aria-hidden="true"></span></button>
         <div popover id="<%= dom_id(audio, "#{context}_popover") %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-            <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", class: "btn menu__item" do %>
-              <span class="icon icon--download" aria-hidden="true"></span>
-              Download
-            <% end %>
-            <%= link_to generated_audio_clip_path(audio, context: context), 
-              class: "btn menu__item", 
-              role: "menuitem", 
-              data: { 
-                turbo_method: :delete, 
-                turbo_confirm: "Are you sure you want to delete this audio clip?",
-                menu_target: "item" 
-              } do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
-              </svg>
-              Delete
+            <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", class: "btn menu__item" do %><span class="icon icon--download" aria-hidden="true"></span>Download<% end %>
+            <% trigger = button_tag type: "button", class: "btn menu__item", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" do %><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Delete<% end %>
+            <%= modal_dialog trigger, title: "Delete this audio clip?" do %>
+              <p class="text-sm text-subtle mbe-4">This will permanently delete this audio clip. This action cannot be undone.</p>
+              <div class="flex items-center justify-end gap">
+                <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                <%= link_to "Continue", 
+                generated_audio_clip_path(audio, context: context), 
+                data: { turbo_method: :delete }, 
+                class: "btn btn--negative" %>
+              </div>
             <% end %>
           </div>
         </div>

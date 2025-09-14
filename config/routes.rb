@@ -57,7 +57,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "static_pages#homepage"
-  resources :generated_audio_clips, only: [:create, :destroy]
+  resources :generated_audio_clips, only: [ :create, :destroy ]
   resources :voices
 
   get "/playground", to: "static_pages#playground"
