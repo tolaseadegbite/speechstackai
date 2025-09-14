@@ -72,17 +72,31 @@
                   </div>
                 </dialog>
               </div>
-              <%# --- ADD DELETE LINK HERE --- %>
-              <%= link_to "Delete", voice,
-                          data: {
-                            menu_target: "item",
-                            turbo_method: :delete,
-                            turbo_confirm: "Are you sure you want to delete '#{voice.name}'?",
-                            dialog_target: "close" # This will close the popover after click
-                          },
-                          class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600",
-                          role: "menuitem" %>
-              <%# --- END DELETE LINK --- %>
+
+              <%# --- MODIFICATION START --- %>
+              <div contents data-controller="dialog">
+                <button type="button" class="btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
+                  Delete
+                </button>
+
+                <dialog class="dialog" style="--dialog-size: 430px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Confirm deletion">
+                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
+                    <span class="icon icon--x" aria-hidden="true"></span>
+                    <span class="sr-only">Close</span>
+                  </button>
+                  <div class="dialog__content">
+                    <h2 class="text-lg font-semibold leading-none mbe-2">Delete '<%= voice.name %>'?</h2>
+                    <p class="text-sm text-subtle mbe-4">
+                      This will permanently delete this voice. This action cannot be undone.
+                    </p>
+                    <div class="flex items-center justify-end gap">
+                      <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                      <%= button_to "Continue", voice, method: :delete, class: "btn btn--danger" %>
+                    </div>
+                  </div>
+                </dialog>
+              </div>
+              <%# --- MODIFICATION END --- %>
             </div>
           </div>
         </div>
@@ -104,7 +118,6 @@
                 <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
                   Edit
                 </button>
-
                 <dialog class="dialog" style="--dialog-size: 500px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Edit <%= voice.name %>">
                   <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
                     <span class="icon icon--x" aria-hidden="true"></span>
@@ -116,17 +129,31 @@
                   </div>
                 </dialog>
               </div>
-              <%# --- ADD DELETE LINK HERE --- %>
-              <%= link_to "Delete", voice,
-                          data: {
-                            menu_target: "item",
-                            turbo_method: :delete,
-                            turbo_confirm: "Are you sure you want to delete '#{voice.name}'?",
-                            dialog_target: "close" # This will close the popover after click
-                          },
-                          class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600",
-                          role: "menuitem" %>
-              <%# --- END DELETE LINK --- %>
+
+              <%# --- MODIFICATION START --- %>
+              <div contents data-controller="dialog">
+                <button type="button" class="btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
+                  Delete
+                </button>
+
+                <dialog class="dialog" style="--dialog-size: 430px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Confirm deletion">
+                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
+                    <span class="icon icon--x" aria-hidden="true"></span>
+                    <span class="sr-only">Close</span>
+                  </button>
+                  <div class="dialog__content">
+                    <h2 class="text-lg font-semibold leading-none mbe-2">Delete '<%= voice.name %>'?</h2>
+                    <p class="text-sm text-subtle mbe-4">
+                      This will permanently delete this voice. This action cannot be undone.
+                    </p>
+                    <div class="flex items-center justify-end gap">
+                      <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                      <%= button_to "Delete", voice, method: :delete, class: "btn btn--negative" %>
+                    </div>
+                  </div>
+                </dialog>
+              </div>
+              <%# --- MODIFICATION END --- %>
             </div>
           </div>
         </div>

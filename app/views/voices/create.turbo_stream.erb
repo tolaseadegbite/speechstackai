@@ -8,3 +8,6 @@
 <%= turbo_stream.update "new_voice_form" do %>
   <%= render "form", voice: Voice.new %>
 <% end %>
+
+<%# 4. Write the custom turbo-stream tag directly as plain HTML %>
+<turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>
