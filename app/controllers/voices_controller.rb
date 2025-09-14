@@ -4,7 +4,7 @@ class VoicesController < DashboardController
 
   # GET /voices or /voices.json
   def index
-    @voices = Voice.all
+    @voices = Voice.all.order(id: :desc)
     @voice = Voice.new
   end
 
@@ -27,9 +27,15 @@ class VoicesController < DashboardController
 
     respond_to do |format|
       if @voice.save
-        redirect_to voices_path, notice: "Voice was successfully created."
+        flash.now[:notice] = "Voice was successfully created."
+        format.turbo_stream # This will render create.turbo_stream.erb
       else
-        render :new, status: :unprocessable_entity
+        # On failure, update the flash messages with the errors
+        flash.now[:alert] = @voice.errors.full_messages.to_sentence
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
+                 status: :unprocessable_entity
+        end
       end
     end
   end
@@ -38,10 +44,15 @@ class VoicesController < DashboardController
   def update
     respond_to do |format|
       if @voice.update(voice_params)
-        redirect_to voices_path, notice: "Voice was successfully updated."
+        flash.now[:notice] = "Voice was successfully updated."
+        format.turbo_stream # This will render update.turbo_stream.erb
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @voice.errors, status: :unprocessable_entity }
+        # On failure, update the flash messages with the errors
+        flash.now[:alert] = @voice.errors.full_messages.to_sentence
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
+                 status: :unprocessable_entity
+        end
       end
     end
   end
@@ -49,10 +60,9 @@ class VoicesController < DashboardController
   # DELETE /voices/1 or /voices/1.json
   def destroy
     @voice.destroy!
-
     respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@voice) }
       format.html { redirect_to voices_path, status: :see_other, notice: "Voice was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

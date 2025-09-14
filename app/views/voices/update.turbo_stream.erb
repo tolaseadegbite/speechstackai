@@ -1,0 +1,5 @@
+<%# 1. Find the voice's DOM ID in the list and replace it with the updated partial %>
+<%= turbo_stream.replace @voice %>
+
+<%# 2. Update the flash messages container with the success notice %>
+<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>

@@ -17,7 +17,9 @@
         </button>
         <div class="dialog__content">
           <h2 class="font-semibold text-lg mbe-4">Add a new voice</h2>
-          <%= render "form", voice: @voice %>
+          <div id="new_voice_form">
+            <%= render "form", voice: @voice %>
+          </div>
         </div>
       </dialog>
     </div>

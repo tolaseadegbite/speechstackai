@@ -56,7 +56,6 @@
 
           <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
             <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-              <%# --- MODIFICATION START --- %>
               <div contents data-controller="dialog">
                 <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
                   Edit
@@ -69,12 +68,21 @@
                   </button>
                   <div class="dialog__content">
                     <h2 class="font-semibold text-lg mbe-4">Editing <%= voice.name %></h2>
-                    <%# This renders the _form.html.erb partial for the current voice %>
                     <%= render "form", voice: voice %>
                   </div>
                 </dialog>
               </div>
-              <%# --- MODIFICATION END --- %>
+              <%# --- ADD DELETE LINK HERE --- %>
+              <%= link_to "Delete", voice,
+                          data: {
+                            menu_target: "item",
+                            turbo_method: :delete,
+                            turbo_confirm: "Are you sure you want to delete '#{voice.name}'?",
+                            dialog_target: "close" # This will close the popover after click
+                          },
+                          class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600",
+                          role: "menuitem" %>
+              <%# --- END DELETE LINK --- %>
             </div>
           </div>
         </div>
@@ -92,7 +100,6 @@
 
           <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
             <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-              <%# --- MODIFICATION START --- %>
               <div contents data-controller="dialog">
                 <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
                   Edit
@@ -105,12 +112,21 @@
                   </button>
                   <div class="dialog__content">
                     <h2 class="font-semibold text-lg mbe-4">Editing <%= voice.name %></h2>
-                    <%# This renders the _form.html.erb partial for the current voice %>
                     <%= render "form", voice: voice %>
                   </div>
                 </dialog>
               </div>
-              <%# --- MODIFICATION END --- %>
+              <%# --- ADD DELETE LINK HERE --- %>
+              <%= link_to "Delete", voice,
+                          data: {
+                            menu_target: "item",
+                            turbo_method: :delete,
+                            turbo_confirm: "Are you sure you want to delete '#{voice.name}'?",
+                            dialog_target: "close" # This will close the popover after click
+                          },
+                          class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600",
+                          role: "menuitem" %>
+              <%# --- END DELETE LINK --- %>
             </div>
           </div>
         </div>
