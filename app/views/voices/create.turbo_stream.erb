@@ -4,7 +4,6 @@
 <%# 2. Update the flash messages container with the success notice %>
 <%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
 
-<%# 3. (Optional but recommended) Reset the "New Voice" form so another can be added %>
 <%= turbo_stream.update "new_voice_form" do %>
   <%= render "form", voice: Voice.new %>
 <% end %>

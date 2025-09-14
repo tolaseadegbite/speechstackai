@@ -56,47 +56,19 @@
 
           <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
             <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-              <div contents data-controller="dialog">
-                <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
-                  Edit
-                </button>
+              <% edit_trigger = button_tag "Edit", type: "button", class: "btn menu__item w-full text-left", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+              <%= modal_dialog edit_trigger, title: "Editing #{voice.name}" do %>
+                <%= render "form", voice: voice %>
+              <% end %>
 
-                <dialog class="dialog" style="--dialog-size: 430px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Edit <%= voice.name %>">
-                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
-                    <span class="icon icon--x" aria-hidden="true"></span>
-                    <span class="sr-only">Close</span>
-                  </button>
-                  <div class="dialog__content">
-                    <h2 class="font-semibold text-lg mbe-4">Editing <%= voice.name %></h2>
-                    <%= render "form", voice: voice %>
-                  </div>
-                </dialog>
-              </div>
-
-              <%# --- MODIFICATION START --- %>
-              <div contents data-controller="dialog">
-                <button type="button" class="btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
-                  Delete
-                </button>
-
-                <dialog class="dialog" style="--dialog-size: 430px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Confirm deletion">
-                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
-                    <span class="icon icon--x" aria-hidden="true"></span>
-                    <span class="sr-only">Close</span>
-                  </button>
-                  <div class="dialog__content">
-                    <h2 class="text-lg font-semibold leading-none mbe-2">Delete '<%= voice.name %>'?</h2>
-                    <p class="text-sm text-subtle mbe-4">
-                      This will permanently delete this voice. This action cannot be undone.
-                    </p>
-                    <div class="flex items-center justify-end gap">
-                      <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-                      <%= button_to "Continue", voice, method: :delete, class: "btn btn--danger" %>
-                    </div>
-                  </div>
-                </dialog>
-              </div>
-              <%# --- MODIFICATION END --- %>
+              <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+              <%= modal_dialog delete_trigger, title: "Delete '#{voice.name}'?" do %>
+                <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+                <div class="flex items-center justify-end gap">
+                  <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                  <%= button_to "Continue", voice, method: :delete, class: "btn btn--danger" %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
@@ -114,46 +86,19 @@
 
           <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
             <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-              <div contents data-controller="dialog">
-                <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
-                  Edit
-                </button>
-                <dialog class="dialog" style="--dialog-size: 500px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Edit <%= voice.name %>">
-                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
-                    <span class="icon icon--x" aria-hidden="true"></span>
-                    <span class="sr-only">Close</span>
-                  </button>
-                  <div class="dialog__content">
-                    <h2 class="font-semibold text-lg mbe-4">Editing <%= voice.name %></h2>
-                    <%= render "form", voice: voice %>
-                  </div>
-                </dialog>
-              </div>
-
-              <%# --- MODIFICATION START --- %>
-              <div contents data-controller="dialog">
-                <button type="button" class="btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
-                  Delete
-                </button>
-
-                <dialog class="dialog" style="--dialog-size: 430px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Confirm deletion">
-                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
-                    <span class="icon icon--x" aria-hidden="true"></span>
-                    <span class="sr-only">Close</span>
-                  </button>
-                  <div class="dialog__content">
-                    <h2 class="text-lg font-semibold leading-none mbe-2">Delete '<%= voice.name %>'?</h2>
-                    <p class="text-sm text-subtle mbe-4">
-                      This will permanently delete this voice. This action cannot be undone.
-                    </p>
-                    <div class="flex items-center justify-end gap">
-                      <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-                      <%= button_to "Delete", voice, method: :delete, class: "btn btn--negative" %>
-                    </div>
-                  </div>
-                </dialog>
-              </div>
-              <%# --- MODIFICATION END --- %>
+              <% edit_trigger = button_tag "Edit", type: "button", class: "btn menu__item w-full text-left", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+              <%= modal_dialog edit_trigger, title: "Editing #{voice.name}", size: '500px' do %>
+                <%= render "form", voice: voice %>
+              <% end %>
+              
+              <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+              <%= modal_dialog delete_trigger, title: "Delete '#{voice.name}'?" do %>
+                <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+                <div class="flex items-center justify-end gap">
+                  <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                  <%= button_to "Continue", voice, method: :delete, class: "btn btn--danger" %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
