@@ -1,87 +1,120 @@
-<div id="<%= dom_id voice %>" class="flex items-center justify-between gap-2 p-4 rounded-lg cursor-pointer">
+<div id="<%= dom_id voice %>" class="p-3 rounded-lg cursor-pointer">
 
   <div class="flex items-center gap-4">
-    <div>
-      <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; <%= voice_gradient_style(voice) %>" aria-hidden="true"></span>
-    </div>
+    <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide">
+      <a href="" class="cursor-pointer" data-popover-target="trigger">
+        <h4 class="font-semibold"><%= voice.name %> - <%= voice.description.truncate(75) %> </h4>
+      </a>
 
-    <div class="flex flex-col gap-half">
-
-      <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide">
-
-        <a href="" class="" data-popover-target="trigger">
-          <h4 class="font-semibold"><%= voice.name %> - <%= voice.description.truncate(50) %> </h4>
-        </a>
-
-        <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
-          <div class="flex flex-col p-4">
+      <div popover="hint" class="popover shadow-md" style="max-width: 20rem;" data-popover-target="content" role="dialog">
+        <div class="flex flex-col p-4">
           <h4 class="font-semibold"><%= voice.name %> </h4>
-            <p class="text-sm text-subtle"><%= voice.description %></p>
-          </div>
+          <p class="text-sm text-subtle"><%= voice.description %></p>
         </div>
-      </div>
-
-
-      <p class="text-sm text-subtle">Narrative, news casting and customer support</p>
-      <div class="flex text-sm text-subtle gap-1">
-        <% if voice.languages.any? %>
-          <% voice.languages.each do |language| %>
-            <p><%= language.name %></p>
-          <% end %>
-        <% else %>
-          <p>No language specified</p>
-        <% end %>
-        <span>-</span>
-        <p><%= voice.gender %></p>
       </div>
     </div>
   </div>
-  
-  <div class="flex items-center gap-2">
-    <% if voice.s3_key.present? %>
-      <% s3_url = presigned_s3_url(voice.s3_key) %>
-      <button type="button" class="btn btn--icon btn--subtle"
-              data-action="click->audio-player#play"
-              data-audio-player-url-param="<%= s3_url %>"
-              <%# --- FIX: Add the missing metadata params --- %>
-              data-audio-player-title-param="<%= voice.name %>"
-              data-audio-player-author-param="<%= voice.user&.name || 'Community Voice' %>"
-              data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
-        
-        <div data-play-icon-url="<%= s3_url %>">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
-        </div>
-      </button>
 
-      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
-          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-        </button>
-
-        <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
-          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-            <%= link_to "Edit", edit_voice_path(voice), class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          </div>
+  <div class="flex justify-between items-center gap-2 mbs-3">
+    <div class="flex gap-2 items-center">
+      <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; <%= voice_gradient_style(voice) %>" aria-hidden="true"></span>
+      <div>
+        <p class="text-sm text-subtle">Narrative, news casting and customer support</p>
+        <div class="flex text-sm text-subtle gap-1">
+          <% if voice.languages.any? %>
+            <% voice.languages.each do |language| %>
+              <p><%= language.name %></p>
+            <% end %>
+          <% else %>
+            <p>No language specified</p>
+          <% end %>
+          <span>-</span>
+          <p><%= voice.gender %></p>
         </div>
       </div>
-    <% else %>
-      <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
-        <div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <% if voice.s3_key.present? %>
+        <% s3_url = presigned_s3_url(voice.s3_key) %>
+        <button type="button" class="btn btn--icon btn--subtle"
+                data-action="click->audio-player#play"
+                data-audio-player-url-param="<%= s3_url %>"
+                data-audio-player-title-param="<%= voice.name %>"
+                data-audio-player-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
+          
+          <div data-play-icon-url="<%= s3_url %>">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
-        </div>
-      </button>
-      
-      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
-          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+          </div>
         </button>
 
-        <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
-          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-            <%= link_to "Edit", edit_voice_path(voice), class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+          <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
+            <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+          </button>
+
+          <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+            <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+              <%# --- MODIFICATION START --- %>
+              <div contents data-controller="dialog">
+                <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
+                  Edit
+                </button>
+
+                <dialog class="dialog" style="--dialog-size: 430px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Edit <%= voice.name %>">
+                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
+                    <span class="icon icon--x" aria-hidden="true"></span>
+                    <span class="sr-only">Close</span>
+                  </button>
+                  <div class="dialog__content">
+                    <h2 class="font-semibold text-lg mbe-4">Editing <%= voice.name %></h2>
+                    <%# This renders the _form.html.erb partial for the current voice %>
+                    <%= render "form", voice: voice %>
+                  </div>
+                </dialog>
+              </div>
+              <%# --- MODIFICATION END --- %>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% else %>
+        <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
+          <div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+          </div>
+        </button>
+        
+        <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+          <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
+            <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+          </button>
+
+          <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+            <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+              <%# --- MODIFICATION START --- %>
+              <div contents data-controller="dialog">
+                <button type="button" class="btn menu__item w-full text-left" data-action="dialog#showModal" data-menu-target="item" role="menuitem">
+                  Edit
+                </button>
+
+                <dialog class="dialog" style="--dialog-size: 500px;" data-dialog-target="content" data-action="click->dialog#closeOnClickOutside" aria-label="Edit <%= voice.name %>">
+                  <button type="button" class="btn btn--plain dialog__close" data-action="click->dialog#close">
+                    <span class="icon icon--x" aria-hidden="true"></span>
+                    <span class="sr-only">Close</span>
+                  </button>
+                  <div class="dialog__content">
+                    <h2 class="font-semibold text-lg mbe-4">Editing <%= voice.name %></h2>
+                    <%# This renders the _form.html.erb partial for the current voice %>
+                    <%= render "form", voice: voice %>
+                  </div>
+                </dialog>
+              </div>
+              <%# --- MODIFICATION END --- %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
