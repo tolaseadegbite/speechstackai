@@ -34,13 +34,14 @@ class GeneratedAudioClipsController < DashboardController
         format.turbo_stream
       end
     else
-      # THE FIX: Also apply the ordering here for the validation error case.
-      @generated_audio_clips = current_user.generated_audio_clips
-                                       .includes(:voice)
-                                       .order(created_at: :desc)
-                                       .group_by { |audio| audio.created_at.to_date }
-      @voices = Voice.includes(:languages).order(:name)
-      render :new, status: :unprocessable_entity
+      flash.now[:alert] = @generated_audio_clip.errors.full_messages.to_sentence
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
+                 status: :unprocessable_entity
+        end
+      end
     end
   end
 

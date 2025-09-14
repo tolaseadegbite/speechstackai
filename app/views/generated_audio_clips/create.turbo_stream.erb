@@ -1,15 +1,1 @@
 <%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
-
-<%#= turbo_stream.replace @form_id do %>
-  <%# @generated_audio_clip = GeneratedAudioClip.new %>
-  <%# @generated_audio_clips = current_user.generated_audio_clips.order(created_at: :desc).group_by { |audio| audio.created_at.to_date } %>
-
-  <%# case @service_type %>
-  <%# when "text_to_speech" %>
-    <%#= render "text_to_speech_page" %>
-  <%# when "voice_changer" %>
-    <%#= render "voice_changer_page" %>
-  <%# when "sound_effects" %>
-    <%#= render "sound_effects_page" %>
-  <%# end %>
-<%# end %>
