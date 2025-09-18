@@ -1,4 +1,4 @@
-class TwoFactorAuthentication::Profile::TotpsController < ApplicationController
+class TwoFactorAuthentication::Profile::TotpsController < DashboardController
   before_action :set_user
   before_action :set_totp, only: %i[ new create ]
 

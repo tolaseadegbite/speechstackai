@@ -1,29 +1,35 @@
 <%= turbo_frame_tag "settings_content" do %>
-  <div class="max-i-full" style="max-width: 48rem;">
-    <div class="mbe-6">
-      <h1 class="font-bold text-2xl mbe-2">Two-Factor Recovery Codes</h1>
-      <p class="text-subtle">
-        Recovery codes provide a way to log in if you lose your phone. Keep these somewhere safe and accessible, like a password manager. Each code can only be used once.
-      </p>
-    </div>
+  <div class="p-4">
 
-    <%# The list is now a styled grid %>
-    <div class="grid grid-cols-1 grid-cols-2@sm gap mbe-6">
-      <%= render @recovery_codes %>
-    </div>
+    <%# --- MOBILE-ONLY BACK BUTTON --- %>
+    <%= render "shared/settings_back_button" %>
 
-    <div class="mbe-8">
-      <%= link_to "OK, I've saved them", "/settings", class: "btn btn--primary" %>
-    </div>
+    <div class="max-i-full" style="max-width: 48rem;">
+      <div class="mbe-6">
+        <h1 class="font-bold text-2xl mbe-2">Two-Factor Recovery Codes</h1>
+        <p class="text-subtle">
+          Recovery codes provide a way to log in if you lose your phone. Keep these somewhere safe and accessible, like a password manager. Each code can only be used once.
+        </p>
+      </div>
 
-    <div class="border-b border-main mbe-8"></div>
+      <%# The list is now a styled grid %>
+      <div class="grid grid-cols-1 grid-cols-2@sm gap mbe-6">
+        <%= render @recovery_codes %>
+      </div>
 
-    <div>
-      <h2 class="font-semibold text-lg mbe-2">Need new recovery codes?</h2>
-      <p class="text-subtle mbe-4">
-        If you've used your codes or think they've been compromised, you can generate a new set. Your old codes will stop working immediately.
-      </p>
-      <%= button_to "Generate new codes", two_factor_authentication_profile_recovery_codes_path, class: "btn" %>
+      <div class="mbe-8">
+        <%= link_to "OK, I've saved them", "/settings", class: "btn btn--primary" %>
+      </div>
+
+      <div class="border-b border-main mbe-8"></div>
+
+      <div>
+        <h2 class="font-semibold text-lg mbe-2">Need new recovery codes?</h2>
+        <p class="text-subtle mbe-4">
+          If you've used your codes or think they've been compromised, you can generate a new set. Your old codes will stop working immediately.
+        </p>
+        <%= button_to "Generate new codes", two_factor_authentication_profile_recovery_codes_path, class: "btn" %>
+      </div>
     </div>
   </div>
 <% end %>

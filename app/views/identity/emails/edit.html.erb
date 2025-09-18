@@ -1,41 +1,47 @@
 <%= turbo_frame_tag "settings_content" do %>
-  <div class="max-i-full" style="max-width: 48rem;">
-    <% if Current.user.verified? %>
-      <h1 class="font-bold text-2xl mbe-4">Change your email</h1>
-    <% else %>
-      <h1 class="font-bold text-2xl mbe-4">Verify your email</h1>
-      <p class="text-subtle mbe-2">We sent a verification email to the address below. Check that email and follow those instructions to confirm it's your email address.</p>
-      <div class="mbe-4">
-        <%= button_to "Re-send verification email", identity_email_verification_path, class: "btn" %>
-      </div>
-    <% end %>
+  <div class="p-4">
 
-    <%= form_with(url: identity_email_path, method: :patch) do |form| %>
-      <% if @user.errors.any? %>
-        <div style="color: red">
-          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <%# --- MOBILE-ONLY BACK BUTTON --- %>
+    <%= render "shared/settings_back_button" %>
 
-          <ul>
-            <% @user.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
+    <div class="max-i-full" style="max-width: 48rem;">
+      <% if Current.user.verified? %>
+        <h1 class="font-bold text-2xl mbe-4">Change your email</h1>
+      <% else %>
+        <h1 class="font-bold text-2xl mbe-4">Verify your email</h1>
+        <p class="text-subtle mbe-2">We sent a verification email to the address below. Check that email and follow those instructions to confirm it's your email address.</p>
+        <div class="mbe-4">
+          <%= button_to "Re-send verification email", identity_email_verification_path, class: "btn" %>
         </div>
       <% end %>
 
-      <div class="flex flex-col items-start gap-half mbe-4">
-        <%= form.label :email, "New email", class: "text-sm font-medium leading-none" %>
-        <%= form.email_field :email, required: true, autofocus: true, value: Current.user.email, class: "input i-full" %>
-      </div>
+      <%= form_with(url: identity_email_path, method: :patch) do |form| %>
+        <% if @user.errors.any? %>
+          <div style="color: red">
+            <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <div class="flex flex-col items-start gap-half mbe-4">
-        <%= form.label :password_challenge, "Confirm with your password", class: "text-sm font-medium leading-none" %>
-        <%= form.password_field :password_challenge, required: true, autocomplete: "current-password", class: "input i-full" %>
-      </div>
+            <ul>
+              <% @user.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
 
-      <div class="inline-flex items-center gap-2 mbs-4">
-        <%= form.submit "Save changes", class: "btn btn--primary", data: { turbo_frame: "_top" } %>
-      </div>
-    <% end %>
+        <div class="flex flex-col items-start gap-half mbe-4">
+          <%= form.label :email, "New email", class: "text-sm font-medium leading-none" %>
+          <%= form.email_field :email, required: true, autofocus: true, value: Current.user.email, class: "input i-full" %>
+        </div>
+
+        <div class="flex flex-col items-start gap-half mbe-4">
+          <%= form.label :password_challenge, "Confirm with your password", class: "text-sm font-medium leading-none" %>
+          <%= form.password_field :password_challenge, required: true, autocomplete: "current-password", class: "input i-full" %>
+        </div>
+
+        <div class="inline-flex items-center gap-2 mbs-4">
+          <%= form.submit "Save changes", class: "btn btn--primary", data: { turbo_frame: "_top" } %>
+        </div>
+      <% end %>
+    </div>
   </div>
 <% end %>

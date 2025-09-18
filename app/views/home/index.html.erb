@@ -1,81 +1,87 @@
 <% content_for :title, "Settings" %>
 <% content_for :page_header, "Settings" %>
 
-<div class="flex i-full mi-auto">
-  <%# --- LEFT COLUMN: SIDEBAR NAVIGATION --- %>
+<%# --- DESKTOP LAYOUT (Visible on medium screens and up) --- %>
+<div class="show@lg flex i-full mi-auto"> <%# Use the appropriate breakpoint class, e.g., @lg or @md %>
+  
+  <%# --- LEFT COLUMN: DESKTOP SIDEBAR --- %>
   <aside
     class="shrink-0 p-4"
     style="width: 280px;"
     data-controller="settings-sidebar">
 
     <nav class="flex flex-col gap settings-sidebar">
-
+      
+      <%# These links target the Turbo Frame for a fast, single-page experience on desktop %>
       <%= link_to "Change password", edit_password_path,
             class: "btn sidebar-menu__button",
-            data: {
-              turbo_frame: "settings_content",
-              action: "click->settings-sidebar#select",
-              settings_sidebar_target: "link"
-            } %>
-
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
       <%= link_to "Change email address", edit_identity_email_path,
             class: "btn sidebar-menu__button",
-            data: {
-              turbo_frame: "settings_content",
-              action: "click->settings-sidebar#select",
-              settings_sidebar_target: "link"
-            } %>
-
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
       <%= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path,
             class: "btn sidebar-menu__button",
-            data: {
-              turbo_frame: "settings_content",
-              action: "click->settings-sidebar#select",
-              settings_sidebar_target: "link"
-            } %>
-
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
+            
       <% if Current.user.otp_required_for_sign_in? %>
-        <%= link_to "Recovery Codes", two_factor_authentication_profile_recovery_codes_path, class: "btn sidebar-menu__button" %>
-        <%= link_to "Security keys", two_factor_authentication_profile_security_keys_path, class: "btn sidebar-menu__button" %>
+        <%= link_to "Recovery Codes", two_factor_authentication_profile_recovery_codes_path, class: "btn sidebar-menu__button", data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
+        <%= link_to "Security keys", two_factor_authentication_profile_security_keys_path, class: "btn sidebar-menu__button", data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
       <% end %>
 
       <%= link_to "Send invitation", new_invitation_path,
             class: "btn sidebar-menu__button",
-            data: {
-              turbo_frame: "settings_content",
-              action: "click->settings-sidebar#select",
-              settings_sidebar_target: "link"
-            } %>
-
-      <%= button_to "Signin as last user", user_masquerade_path(User.last), class: "btn btn--primary w-full text-left" %>
-
-      <h2 class="font-semibold text-lg mbs-4">Access History</h2>
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
+            
+      <%# <div class="border-b border-main mbs-4"></div> %>
+      
+      <h2 class="font-semibold text-lg mbs-4 pi-2">Access History</h2>
       <%= link_to "Devices & Sessions", sessions_path,
             class: "btn sidebar-menu__button",
-            data: {
-              turbo_frame: "settings_content",
-              action: "click->settings-sidebar#select",
-              settings_sidebar_target: "link"
-            } %>
-
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
       <%= link_to "Activity Log", authentications_events_path,
             class: "btn sidebar-menu__button",
-            data: {
-              turbo_frame: "settings_content",
-              action: "click->settings-sidebar#select",
-              settings_sidebar_target: "link"
-            } %>
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
+            
+      <%# <div class="border-b border-main mbs-4"></div> %>
 
-      <div class="border-b border-main mbs-4"></div>
-      
       <%= button_to "Log out", Current.session, method: :delete, class: "btn btn--negative w-full text-left" %>
     </nav>
   </aside>
 
-  <%# --- RIGHT COLUMN: DYNAMIC CONTENT AREA --- %>
-  <main class="grow p-4 border-is border-main">
+  <%# --- RIGHT COLUMN: DESKTOP DYNAMIC CONTENT AREA --- %>
+  <main class="grow border-is border-main">
     <%= turbo_frame_tag "settings_content", src: edit_password_path do %>
-      <p>Loading settings...</p>
+      <div class="p-4 flex items-center gap-3">
+        <h2 class="text-2xl">Loading settings</h2>
+        <span class="icon icon--loading animate-spin p-4" aria-hidden="true"></span>
+      </div>
     <% end %>
   </main>
+</div>
+
+
+
+
+<%# --- MOBILE LAYOUT (Visible on small screens) --- %>
+<div class="hide@lg i-full p-4 mi-auto"> <%# Use the opposite breakpoint class %>
+  <nav class="flex flex-col gap">
+    
+    <%# These are NORMAL links for full-page navigation on mobile. NO Turbo Frame attributes. %>
+    <%= link_to "Change password", edit_password_path, class: "btn sidebar-menu__button" %>
+    <%= link_to "Change email address", edit_identity_email_path, class: "btn sidebar-menu__button" %>
+    <%= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path, class: "btn sidebar-menu__button" %>
+    <% if Current.user.otp_required_for_sign_in? %>
+      <%= link_to "Recovery Codes", two_factor_authentication_profile_recovery_codes_path, class: "btn sidebar-menu__button" %>
+      <%= link_to "Security keys", two_factor_authentication_profile_security_keys_path, class: "btn sidebar-menu__button" %>
+    <% end %>
+    <%= link_to "Send invitation", new_invitation_path, class: "btn sidebar-menu__button" %>
+    
+    <div class="border-b border-main mbs-4"></div>
+
+    <h2 class="font-semibold text-lg mbs-4 pi-2">Access History</h2>
+    <%= link_to "Devices & Sessions", sessions_path, class: "btn sidebar-menu__button" %>
+    <%= link_to "Activity Log", authentications_events_path, class: "btn sidebar-menu__button" %>
+
+    <%= button_to "Log out", Current.session, method: :delete, class: "btn btn--negative w-full text-left" %>
+  </nav>
 </div>

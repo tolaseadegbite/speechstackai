@@ -49,7 +49,7 @@
 
       <div popover id="md_user_popover" class="popover" style="--popover-size: 12rem;" data-popover-target="content">
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
-          <%= link_to "Account settings", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+          <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "API Keys", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "Webhooks", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
           <%= link_to "Subscription", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
