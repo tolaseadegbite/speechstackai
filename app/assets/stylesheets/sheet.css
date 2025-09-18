@@ -57,6 +57,7 @@
 .sheet__content {
   block-size: var(--size-full);
   padding: var(--size-6);
+  width: 100%;
 }
 
 .sheet__close {

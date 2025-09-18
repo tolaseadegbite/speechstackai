@@ -1,18 +1,31 @@
-<p style="color: red"><%= alert %></p>
-
-<%= form_with(url: two_factor_authentication_challenge_recovery_codes_path) do |form| %>
-  <div>
-    <%= form.label :code do %>
-      <h1>OK, enter one of your recovery codes below:</h1>
-    <% end %>
-    <%= form.text_field :code, autofocus: true, required: true, autocomplete: :off %>
+<div class="p-4 i-full bg-main" style="max-inline-size: 25rem;">
+  <div class="text-center">
+    <div class="mbe-5">
+      <%= link_to root_path, class: "block" do %>
+        <span class="icon icon--audio-waveform p-8" aria-hidden="true"></span>
+      <% end %>
+    </div>
+    <h1 class="font-semibold text-2xl mbe-5">Enter Recovery Code</h1>
   </div>
 
-  <div>
-    <%= form.submit "Continue" %>
-  </div>
-<% end %>
+  <% if alert.present? %>
+    <div class="alert alert--negative text-center mbe-4" role="alert">
+      <%= alert %>
+    </div>
+  <% end %>
 
-<div>
-  <p>To access your account, enter one of the recovery codes (e.g., xxxxxxxxxx) you saved when you set up your two-factor authentication device.</p>
+  <%= form_with(url: two_factor_authentication_challenge_recovery_codes_path) do |form| %>
+    <div class="mbe-5">
+      <%= form.label :code, "Enter one of the recovery codes you saved.", class: "font-semibold mbe-2 block text-center" %>
+      <%= form.text_field :code, autofocus: true, required: true, autocomplete: :off, class: "input i-full text-center", style: "font-size: 1.25rem;" %>
+    </div>
+
+    <div>
+      <%= form.submit "Continue", class: "btn btn--primary i-full" %>
+    </div>
+  <% end %>
+  
+  <div class="text-sm text-subtle text-center mbs-5">
+    <p>To access your account, enter one of the 10-character codes you saved when setting up two-factor authentication.</p>
+  </div>
 </div>
