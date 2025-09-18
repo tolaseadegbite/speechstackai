@@ -1,5 +1,13 @@
-<% if recovery_code.used? %>
-  <li><del><%= recovery_code.code %></del></li>
-<% else %>
-  <li><%= recovery_code.code %></li>
-<% end %>
+<div class="flex items-center p-3 rounded-md bg-surface border border-main">
+  <% if recovery_code.used? %>
+    <%# A used code is greyed out and has a strikethrough %>
+    <p class="font-mono text-lg tracking-wider text-subtle opacity-75">
+      <del><%= recovery_code.code %></del>
+    </p>
+  <% else %>
+    <%# An available code is displayed normally %>
+    <p class="font-mono text-lg tracking-wider">
+      <%= recovery_code.code %>
+    </p>
+  <% end %>
+</div>

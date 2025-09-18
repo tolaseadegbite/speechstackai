@@ -1,45 +1,81 @@
-<% content_for :title, "Account Settings" %>
-<% content_for :page_header, "Account" %>
+<% content_for :title, "Settings" %>
+<% content_for :page_header, "Settings" %>
 
-<div class="i-full p-4 mi-auto" style="max-width: 90rem;">
-  <div class="flex items-center justify-between mbe-4">
-    <h2 class="font-bold text-2xl">Settings</h2>
-  </div>
+<div class="flex i-full mi-auto">
+  <%# --- LEFT COLUMN: SIDEBAR NAVIGATION --- %>
+  <aside
+    class="shrink-0 p-4"
+    style="width: 280px;"
+    data-controller="settings-sidebar">
 
-  <div>
-    <%= link_to "Change password", edit_password_path %>
-  </div>
+    <nav class="flex flex-col gap settings-sidebar">
 
-  <div>
-    <%= link_to "Change email address", edit_identity_email_path %>
-  </div>
+      <%= link_to "Change password", edit_password_path,
+            class: "btn sidebar-menu__button",
+            data: {
+              turbo_frame: "settings_content",
+              action: "click->settings-sidebar#select",
+              settings_sidebar_target: "link"
+            } %>
 
-  <div>
-    <%= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path %>
-  </div>
+      <%= link_to "Change email address", edit_identity_email_path,
+            class: "btn sidebar-menu__button",
+            data: {
+              turbo_frame: "settings_content",
+              action: "click->settings-sidebar#select",
+              settings_sidebar_target: "link"
+            } %>
 
-  <% if Current.user.otp_required_for_sign_in? %>
-    <div><%= link_to "Recovery Codes", two_factor_authentication_profile_recovery_codes_path %></div>
-    <div><%= link_to "Security keys", two_factor_authentication_profile_security_keys_path %></div>
-  <% end %>
+      <%= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path,
+            class: "btn sidebar-menu__button",
+            data: {
+              turbo_frame: "settings_content",
+              action: "click->settings-sidebar#select",
+              settings_sidebar_target: "link"
+            } %>
 
-  <div>
-    <%= link_to "Send invitation", new_invitation_path %>
-  </div>
+      <% if Current.user.otp_required_for_sign_in? %>
+        <%= link_to "Recovery Codes", two_factor_authentication_profile_recovery_codes_path, class: "btn sidebar-menu__button" %>
+        <%= link_to "Security keys", two_factor_authentication_profile_security_keys_path, class: "btn sidebar-menu__button" %>
+      <% end %>
 
-  <%= button_to "Signin as last user", user_masquerade_path(User.last) %>
+      <%= link_to "Send invitation", new_invitation_path,
+            class: "btn sidebar-menu__button",
+            data: {
+              turbo_frame: "settings_content",
+              action: "click->settings-sidebar#select",
+              settings_sidebar_target: "link"
+            } %>
 
-  <h2>Access history</h2>
+      <%= button_to "Signin as last user", user_masquerade_path(User.last), class: "btn btn--primary w-full text-left" %>
 
-  <div>
-    <%= link_to "Devices & Sessions", sessions_path %>
-  </div>
+      <h2 class="font-semibold text-lg mbs-4">Access History</h2>
+      <%= link_to "Devices & Sessions", sessions_path,
+            class: "btn sidebar-menu__button",
+            data: {
+              turbo_frame: "settings_content",
+              action: "click->settings-sidebar#select",
+              settings_sidebar_target: "link"
+            } %>
 
-  <div>
-    <%= link_to "Activity Log", authentications_events_path %>
-  </div>
+      <%= link_to "Activity Log", authentications_events_path,
+            class: "btn sidebar-menu__button",
+            data: {
+              turbo_frame: "settings_content",
+              action: "click->settings-sidebar#select",
+              settings_sidebar_target: "link"
+            } %>
 
-  <br>
+      <div class="border-b border-main mbs-4"></div>
+      
+      <%= button_to "Log out", Current.session, method: :delete, class: "btn btn--negative w-full text-left" %>
+    </nav>
+  </aside>
 
-  <%= button_to "Log out", Current.session, method: :delete %>
+  <%# --- RIGHT COLUMN: DYNAMIC CONTENT AREA --- %>
+  <main class="grow p-4 border-is border-main">
+    <%= turbo_frame_tag "settings_content", src: edit_password_path do %>
+      <p>Loading settings...</p>
+    <% end %>
+  </main>
 </div>

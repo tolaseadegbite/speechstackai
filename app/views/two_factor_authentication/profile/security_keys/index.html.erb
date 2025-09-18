@@ -1,18 +1,25 @@
-<p style="color: green"><%= notice %></p>
+<%= turbo_frame_tag "settings_content" do %>
+  <div class="max-i-full" style="max-width: 48rem;">
+    <div class="flex items-center justify-between mbe-6 gap-5">
+      <div>
+        <h1 class="font-bold text-2xl mbe-2">Security Keys</h1>
+        <p class="text-subtle">
+          A security key is a hardware device used to verify your identity, like a YubiKey or a built-in fingerprint reader.
+        </p>
+      </div>
+      <div>
+        <%= link_to "Add security key", new_two_factor_authentication_profile_security_key_path, class: "btn btn--primary" %>
+      </div>
+    </div>
 
-<h1>Security keys</h1>
-<p>A security key is a hardware device used to verify your identity. For example, a built-in fingerprint reader, a plug-in USB key, or a login system like Windows Hello.</p>
-
-<ul><%= render @security_keys %></ul>
-
-<br>
-
-<div>
-  <%= link_to "Add security key", new_two_factor_authentication_profile_security_key_path %>
-</div>
-
-<br>
-
-<div>
-  <%= link_to "Back", root_path %>
-</div>
+    <div class="flex flex-col gap">
+      <% if @security_keys.any? %>
+        <%= render @security_keys %>
+      <% else %>
+        <div class="text-center p-8 rounded-lg bg-surface border border-main">
+          <p class="text-subtle">You haven't added any security keys yet.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

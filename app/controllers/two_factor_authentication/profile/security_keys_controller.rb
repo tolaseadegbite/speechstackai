@@ -1,4 +1,4 @@
-class TwoFactorAuthentication::Profile::SecurityKeysController < ApplicationController
+class TwoFactorAuthentication::Profile::SecurityKeysController < DashboardController
   before_action :set_user
   before_action :set_security_key, only: %i[ edit update destroy ]
 

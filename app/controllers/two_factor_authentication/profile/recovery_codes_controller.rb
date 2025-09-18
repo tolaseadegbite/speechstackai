@@ -1,4 +1,4 @@
-class TwoFactorAuthentication::Profile::RecoveryCodesController < ApplicationController
+class TwoFactorAuthentication::Profile::RecoveryCodesController < DashboardController
   before_action :set_user
 
   def index

@@ -67,5 +67,7 @@ Rails.application.routes.draw do
   get "/pricing", to: "static_pages#pricing"
   get "/documentation", to: "static_pages#documentation"
   get "/about", to: "static_pages#about"
+
+  # Settings routes
   get "/settings", to: "home#index"
 end
