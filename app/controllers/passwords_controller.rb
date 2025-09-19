@@ -5,10 +5,18 @@ class PasswordsController < DashboardController
   end
 
   def update
-    if @user.update(user_params)
-      redirect_to root_path, notice: "Your password has been changed"
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @user.update(user_params)
+        flash.now[:notice] = "Password was successfully updated."
+        format.turbo_stream
+        # redirect_to root_path, notice: "Your password has been changed"
+      else
+        flash.now[:alert] = @user.errors.full_messages.to_sentence
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
+                 status: :unprocessable_entity
+        end
+      end
     end
   end
 

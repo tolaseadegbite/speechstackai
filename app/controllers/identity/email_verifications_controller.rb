@@ -8,9 +8,25 @@ class Identity::EmailVerificationsController < ApplicationController
     redirect_to root_path, notice: "Thank you for verifying your email address"
   end
 
+  # def create
+  #   send_email_verification
+  #   redirect_to root_path, notice: "We sent a verification email to your email address"
+  # end
+
   def create
     send_email_verification
-    redirect_to root_path, notice: "We sent a verification email to your email address"
+    
+    respond_to do |format|
+      format.turbo_stream do
+        flash.now[:notice] = "We sent another verification email to your address."
+        render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash")
+      end
+
+      # This is the fallback for non-JS browsers
+      format.html do
+        redirect_to root_path, notice: "We sent a verification email to your email address"
+      end
+    end
   end
 
   private
