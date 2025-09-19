@@ -17,7 +17,7 @@
   <%= form_with(url: two_factor_authentication_challenge_recovery_codes_path) do |form| %>
     <div class="mbe-5">
       <%= form.label :code, "Enter one of the recovery codes you saved.", class: "font-semibold mbe-2 block text-center" %>
-      <%= form.text_field :code, autofocus: true, required: true, autocomplete: :off, class: "input i-full text-center", style: "font-size: 1.25rem;" %>
+      <%= form.text_field :code, autofocus: true, required: true, autocomplete: :off, class: "input i-full text-center" %>
     </div>
 
     <div>

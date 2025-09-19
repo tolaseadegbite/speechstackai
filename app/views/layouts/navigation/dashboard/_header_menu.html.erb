@@ -58,11 +58,12 @@
     <%# 2. Call our generic modal_dialog helper with the trigger and a title. %>
     <%= modal_dialog trigger, title: "Account Menu", size: '12rem' do %>
       <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+        <span class="overflow-ellipsis max-i-full font-semibold">Tolase Kelvin (<%= current_user.verified ? "Verified" : "Unverified" %>)</span>
+        <%# <hr class="menu__separator b-2" role="separator"/> %>
         <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
         <%#= link_to "API Keys", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
         <%#= link_to "Webhooks", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
         <%#= link_to "Subscription", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-        <%# <hr class="menu__separator" role="separator"/> %>
         <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
       </div>
     <% end %>

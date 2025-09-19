@@ -1,4 +1,4 @@
-<div class="p-4 i-full bg-main" style="max-inline-size: 25rem;">
+<div class="p-4 i-full bg-main mi-auto" style="max-inline-size: 25rem;">
   <div class="text-center">
     <div class="mbe-5">
       <%= link_to root_path, class: "block" do %>
@@ -17,7 +17,7 @@
   <%= form_with(url: two_factor_authentication_challenge_totp_path) do |form| %>
     <div class="mbe-5">
       <%= form.label :code, "Open your authenticator app and enter the six-digit code.", class: "font-semibold mbe-2 block text-center" %>
-      <%= form.text_field :code, autofocus: true, required: true, autocomplete: :off, class: "input i-full text-center", style: "font-size: 1.5rem; letter-spacing: 0.5rem;" %>
+      <%= form.text_field :code, autofocus: true, required: true, autocomplete: :off, class: "input i-full text-center" %>
     </div>
 
     <div>

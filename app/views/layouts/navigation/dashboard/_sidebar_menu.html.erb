@@ -110,7 +110,7 @@
           <%= image_tag "robot.png", size: 32, alt: "User Avatar" %>
         </div>
         <div class="flex flex-col text-start leading-tight overflow-hidden">
-          <span class="overflow-ellipsis max-i-full font-semibold">Tolase Kelvin</span>
+          <span class="overflow-ellipsis max-i-full font-semibold">Tolase Kelvin (<%= current_user.verified ? "Verified" : "Unverified" %>)</span>
           <span class="overflow-ellipsis max-i-full text-xs"><%= current_user.email %></span>
         </div>
         <span class="icon icon--chevrons-up-down mis-auto" aria-hidden="true"></span>
