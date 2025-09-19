@@ -8,22 +8,31 @@
       <%= link_to "Feedback", "", class: "btn" %>
       <%= link_to "Documentation", "", class: "btn" %>
     </div>
-    
-    <div contents data-controller="popover" data-popover-placement-value="bottom-center">
-      <button type="button" class="btn btn--icon hide@md" data-popover-target="trigger" popovertarget="color_scheme_popover" aria-haspopup="true">
-        <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
-        <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
-        <span class="sr-only">Theme switcher</span>
-      </button>
 
-      <div popover id="color_scheme_popover" class="popover" style="--popover-size: 12rem;" data-popover-target="content">
-        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
-          <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setLight" data-menu-target="item" role="menuitem">Light</button>
-          <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setDark" data-menu-target="item" role="menuitem">Dark</button>
-          <button type="button" class="btn menu__item" data-action="popover#hide color-scheme#setSystem" data-menu-target="item" role="menuitem">System</button>
-        </div>
+   <%# 1. Define the trigger button using the button_tag helper. %>
+    <% trigger = button_tag type: "button", class: "btn btn--icon hide@md", data: { action: "dialog#showModal" } do %>
+      <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
+      <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
+      <span class="sr-only">Theme switcher</span>
+    <% end %>
+
+    <%# 2. Call our generic modal_dialog helper with the trigger and content. %>
+    <%= modal_dialog trigger, title: "Select a theme" do %>
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+        
+        <button type="button" class="btn menu__item" data-action="dialog#close color-scheme#setLight" data-menu-target="item" role="menuitem">
+          <span class="icon icon--sun"></span>
+          Light
+        </button>
+        <button type="button" class="btn menu__item" data-action="dialog#close color-scheme#setDark" data-menu-target="item" role="menuitem">
+        <span class="icon icon--moon"></span>
+          Dark
+        </button>
+        <button type="button" class="btn menu__item" data-action="dialog#close color-scheme#setSystem" data-menu-target="item" role="menuitem">
+          System
+        </button>
       </div>
-    </div>
+    <% end %>
     
     <%# Notifications dropdown %>
     <div contents 
@@ -42,21 +51,20 @@
     </div>
 
     <%# User profile dropdown %>
-    <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-      <button type="button" class="btn p-0 rounded-full border-2 border-green-500 hide@md" data-popover-target="trigger" popovertarget="md_user_popover" aria-haspopup="true">
-        <%= image_tag "robot.png", size: 32, class: "rounded-full", alt: "User Avatar" %>
-      </button>
+    <% trigger = button_tag type: "button", class: "btn p-0 rounded-full border-2 border-green-500 hide@md", data: { action: "dialog#showModal" } do %>
+      <%= image_tag "robot.png", size: 32, class: "rounded-full", alt: "User Avatar" %>
+    <% end %>
 
-      <div popover id="md_user_popover" class="popover" style="--popover-size: 12rem;" data-popover-target="content">
-        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
-          <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%= link_to "API Keys", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%= link_to "Webhooks", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%= link_to "Subscription", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <hr class="menu__separator" role="separator"/>
-          <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
-        </div>
+    <%# 2. Call our generic modal_dialog helper with the trigger and a title. %>
+    <%= modal_dialog trigger, title: "Account Menu", size: '12rem' do %>
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
+        <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <%#= link_to "API Keys", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <%#= link_to "Webhooks", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <%#= link_to "Subscription", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
+        <%# <hr class="menu__separator" role="separator"/> %>
+        <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

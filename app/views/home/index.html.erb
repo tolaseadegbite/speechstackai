@@ -32,7 +32,7 @@
             class: "btn sidebar-menu__button",
             data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
             
-      <%# <div class="border-b border-main mbs-4"></div> %>
+      <hr class="menu__separator" role="separator"/>
       
       <h2 class="font-semibold text-lg mbs-4 pi-2">Access History</h2>
       <%= link_to "Devices & Sessions", sessions_path,
@@ -76,7 +76,7 @@
     <% end %>
     <%= link_to "Send invitation", new_invitation_path, class: "btn sidebar-menu__button" %>
     
-    <div class="border-b border-main mbs-4"></div>
+    <hr class="menu__separator" role="separator"/>
 
     <h2 class="font-semibold text-lg mbs-4 pi-2">Access History</h2>
     <%= link_to "Devices & Sessions", sessions_path, class: "btn sidebar-menu__button" %>

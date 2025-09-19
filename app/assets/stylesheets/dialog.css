@@ -38,7 +38,7 @@
   }
 
   /* --- THE FIX for mobile layout --- */
-  @media (width < 40rem) {
+  @media (width < 64rem) {
     /* Position it at the bottom of the screen */
     margin: 0;
     margin-block-start: auto;
