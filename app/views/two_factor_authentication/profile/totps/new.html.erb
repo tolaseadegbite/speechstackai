@@ -30,16 +30,9 @@
         </figure>
       </div>
 
-      <%= form_with(url: two_factor_authentication_profile_totp_path) do |form| %>
-        <div class="flex flex-col items-start gap-half mbe-4">
-          <%= form.label :code, "After scanning, the app will generate a six-digit code. Enter it here:", class: "text-sm font-medium leading-none" %>
-          <%= form.text_field :code, required: true, autofocus: true, autocomplete: :off, class: "input" %>
-        </div>
-
-        <div class="inline-flex items-center gap-2 mbs-4">
-          <%= form.submit "Verify and activate", class: "btn btn--primary", data: { turbo_frame: "_top" } %>
-        </div>
-      <% end %>
+      <div id="new_totp_form">
+        <%= render 'form', user: @user %>
+      </div>
     </div>
   </div>
 <% end %>

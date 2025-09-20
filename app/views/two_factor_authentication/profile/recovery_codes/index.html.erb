@@ -1,10 +1,9 @@
 <%= turbo_frame_tag "settings_content" do %>
+
+  <%# --- MOBILE-ONLY BACK BUTTON --- %>
+  <%= render "shared/settings_back_button" %>
   <div class="p-4">
-
-    <%# --- MOBILE-ONLY BACK BUTTON --- %>
-    <%= render "shared/settings_back_button" %>
-
-    <div class="max-i-full" style="max-width: 48rem;">
+    <div class="max-i-full" style="max-width: 48rem;" data-controller="recovery-codes">
       <div class="mbe-6">
         <h1 class="font-bold text-2xl mbe-2">Two-Factor Recovery Codes</h1>
         <p class="text-subtle">
@@ -12,13 +11,22 @@
         </p>
       </div>
 
-      <%# The list is now a styled grid %>
       <div class="grid grid-cols-1 grid-cols-2@sm gap mbe-6">
         <%= render @recovery_codes %>
       </div>
 
-      <div class="mbe-8">
-        <%= link_to "OK, I've saved them", "/settings", class: "btn btn--primary" %>
+      <div class="flex flex-wrap items-center gap mbe-8">
+        <%= link_to "OK, I've saved them", "/settings", class: "btn btn--primary", data: { turbo_frame: "_top" } %>
+        
+        <button type="button" class="btn" data-action="click->recovery-codes#copy" data-recovery-codes-target="copyButton">
+          <span class="icon icon--copy" aria-hidden="true"></span>
+          <span data-recovery-codes-target="copyButtonText">Copy codes</span>
+        </button>
+
+        <button type="button" class="btn" data-action="click->recovery-codes#download">
+          <span class="icon icon--download"></span>
+          Download
+        </button>
       </div>
 
       <div class="border-b border-main mbe-8"></div>
