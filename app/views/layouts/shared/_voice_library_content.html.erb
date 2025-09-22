@@ -22,11 +22,12 @@
   </div>
 
   <% @voices.each do |voice| %>
-    <% unique_id = dom_id(voice, context) %> <%# Generates IDs like "desktop_voice_1" or "mobile_voice_1" %>
+    <% unique_id = dom_id(voice, context) %>
 
-    <%# THE FIX: The `value` attribute is removed and the `for` attribute is added
-        to explicitly link the label to the radio button with the new unique ID. %>
-    <%= f.label :voice_id, for: unique_id, class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2 cursor-pointer" do %>
+    <%= f.label :voice_id, for: unique_id, 
+        class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2 cursor-pointer",
+        style: "--gradient-start: #{voice.gradient_start || '#A5B4FC'}; --gradient-end: #{voice.gradient_end || '#6366F1'};" do %>
+      
       <%= f.radio_button :voice_id, voice.id, class: "sr-only", id: unique_id, data: { action: "voice-selector#select" } %>
 
       <div class="flex items-center justify-between gap-4 i-full">
@@ -56,14 +57,10 @@
           <% else %>
             <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
               <div>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
               </div>
             </button>
           <% end %>
-
-          <%# <button type="button" class="btn btn--icon btn--subtle">
-            <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-          </button> %>
         </div>
       </div>
     <% end %>

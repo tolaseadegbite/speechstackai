@@ -192,3 +192,4 @@ max-inline-size: var(--max-i-lg);
 .history-card {
   height: 70dvh !important; /* Fixed height for the history card */
 }
+
