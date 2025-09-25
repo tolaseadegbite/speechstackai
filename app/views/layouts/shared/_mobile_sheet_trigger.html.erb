@@ -29,8 +29,7 @@
       <%# Build a hash of locals to pass down to the content partial %>
       <% final_locals = { context: local_assigns.fetch(:context, :mobile) } %>
       
-      <%# Conditionally add other locals if they were passed in %>
-      <% final_locals[:f] = f if local_assigns.key?(:f) %>
+      <% final_locals[:form_id] = form_id if local_assigns.key?(:form_id) %>
       <% final_locals[:generated_audio_clips] = generated_audio_clips if local_assigns.key?(:generated_audio_clips) %>
 
       <%= render partial: content_partial, locals: final_locals %>

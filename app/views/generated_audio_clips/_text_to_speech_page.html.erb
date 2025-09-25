@@ -1,12 +1,21 @@
 <div class="flex flex-col grow min-b-0">
-  <%= form_with model: @generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit voice-selector character-counter" } do |f| %>
-  
-    <%= f.hidden_field :service_type, value: "text_to_speech" %>
-    <%= f.hidden_field :voice_id, data: { voice_selector_target: "input" } %>
+  <div class="grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto" data-controller="sample-text form-submit voice-selector character-counter">
 
     <div class="col-span-8@md">
+      <%# --- INVISIBLE CREATION FORM --- %>
+      <%# As per the article (https://dev.to/railsdesigner/how-to-work-with-nested-forms-in-rails-2ep2?utm_source=shortruby&ref=shortruby.com), I created a separate form for the creation action. %>
+
+      <%# It is not visible and does not wrap anything. %>
+
+      <%= form_with model: @generated_audio_clip, id: "text_to_speech_form", html: { class: "hidden" } do |f| %>
+        <%= f.hidden_field :service_type, value: "text_to_speech" %>
+        <%= f.hidden_field :voice_id, data: { voice_selector_target: "input" } %>
+      <% end %>
+
       <div>
-        <%= f.text_area :text,
+        <%# --- Use `text_area_tag` and link it with the `form` attribute --- %>
+        <%= text_area_tag 'generated_audio_clip[text]', nil,
+          form: "text_to_speech_form",
           placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
           class: "input tts-input responsive-padding border-0",
           style: "--input-rows: 3lh; outline: 0; resize: none",
@@ -22,26 +31,22 @@
     </div>
 
     <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
-      
-      <%# START: This is the DESKTOP view container. %>
       <div class="show@lg p-4 flex flex-col grow min-h-0">
         <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">
           <div class="tabs__list shrink-0">
-            <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="tab_voice_library">Voice Library</button>
-            <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="history_tab">History</button>
+            <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab">Voice Library</button>
+            <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab">History</button>
           </div>
-          <div hidden id="tab_voice_library" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%= render partial: "layouts/shared/voice_library_content", locals: { f: f, context: :desktop } %>
+          <div data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
+            <%= render partial: "layouts/shared/voice_library_content", locals: { form_id: "text_to_speech_form", context: :desktop } %>
           </div>
-          <div hidden id="history_tab" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
+          <div hidden data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
+            <%# This partial now contains a clean, non-nested search form %>
             <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips, locals: { context: :desktop } %>
           </div>
         </div>
       </div>
-      <%# END: Desktop view container. %>
-
-      <%= render "generated_audio_clips/partials/text_to_speech/mobile_info_bar", f: f %>
-
+      <%= render "generated_audio_clips/partials/text_to_speech/mobile_info_bar", form_id: "text_to_speech_form" %>
     </div>
-  <% end %>
+  </div>
 </div>

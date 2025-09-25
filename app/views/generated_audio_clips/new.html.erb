@@ -1,9 +1,6 @@
 <% title = @service_type.humanize.titleize %>
 <% provide(:title, title) %>
 <% content_for :page_header, title %>
-<% content_for :head do %>
-  <%= turbo_stream_from [current_user, "history"] %>
-<% end %>
 
 <% case @service_type %>
 <% when "text_to_speech" %>

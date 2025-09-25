@@ -23,12 +23,14 @@
 
   <% @voices.each do |voice| %>
     <% unique_id = dom_id(voice, context) %>
-
-    <%= f.label :voice_id, for: unique_id, 
+    
+    <%= label_tag :voice_id, for: unique_id, 
         class: "card card--selectable p-3 flex items-start shadow-none mie-2 mbe-2 cursor-pointer",
         style: "--gradient-start: #{voice.gradient_start || '#A5B4FC'}; --gradient-end: #{voice.gradient_end || '#6366F1'};" do %>
       
-      <%= f.radio_button :voice_id, voice.id, class: "sr-only", id: unique_id, data: { action: "voice-selector#select" } %>
+      <%= radio_button_tag 'generated_audio_clip[voice_id]', voice.id, false,
+          form: form_id,
+          class: "sr-only", id: unique_id, data: { action: "voice-selector#select" } %>
 
       <div class="flex items-center justify-between gap-4 i-full">
         <span class="voice-swatch shrink-0" style="--icon-size: 2.1rem; <%= voice_gradient_style(voice) %>" aria-hidden="true"></span>

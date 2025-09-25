@@ -18,14 +18,16 @@ class GeneratedAudioClip < ApplicationRecord
     no_credits: 4
   }
 
-  # THE FIX: Point to a new turbo_stream partial for the broadcast.
+  def self.ransackable_attributes(auth_object = nil)
+    ["text", "created_at"]
+  end
+
   after_create_commit do
     broadcast_render_to [user, "history"],
       partial: "generated_audio_clips/broadcasts/new_clip",
       locals: { audio: self }
   end
 
-  # THE FIX: Point to a new turbo_stream partial for updates.
   after_update_commit do
     broadcast_render_to [user, "history"],
       partial: "generated_audio_clips/broadcasts/update_clip",
@@ -34,9 +36,6 @@ class GeneratedAudioClip < ApplicationRecord
 
 
   private
-
-  # THE FIX: The empty `broadcast_new_clip_to_history` method has been completely removed.
-  # Its logic now lives in `app/views/generated_audio_clips/broadcasts/_new_clip.turbo_stream.erb`.
 
   def text_to_speech?
     service_type == "text_to_speech"

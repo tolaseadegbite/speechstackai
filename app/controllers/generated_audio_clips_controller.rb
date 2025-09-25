@@ -1,11 +1,16 @@
 class GeneratedAudioClipsController < DashboardController
   def new
     @service_type = params[:service_type]
-    # THE FIX: Order the records by created_at DESC before grouping them.
-    @generated_audio_clips = current_user.generated_audio_clips
-                                       .includes(:voice)
-                                       .order(created_at: :desc)
-                                       .group_by { |audio| audio.created_at.to_date }
+
+    # Initialize Ransack search object
+    @q = current_user.generated_audio_clips.ransack(params[:q])
+
+    # Get the search results and then apply the rest of your logic
+    @generated_audio_clips = @q.result(distinct: true)
+                              .includes(:voice)
+                              .order(created_at: :desc)
+                              .group_by { |audio| audio.created_at.to_date }
+
     @generated_audio_clip = GeneratedAudioClip.new
     @voices = Voice.includes(:languages).order(:name)
   end

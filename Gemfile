@@ -81,3 +81,5 @@ gem "rqrcode"
 gem "webauthn"
 gem "aws-sdk-s3", "~> 1"
 gem "mission_control-jobs"
+
+gem "ransack", "~> 4.4"

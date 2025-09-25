@@ -7,7 +7,7 @@
           label: "Voice Library", 
           content_partial: "layouts/shared/voice_library_content", 
           context: :mobile,
-          f: f,
+          form_id: form_id, # Pass the form_id down to the trigger
           trigger: capture do %>
             <button type="button" class="btn btn--icon rounded-lg" data-action="dialog#showModal">
               <span class="voice-swatch" style="--icon-size: 1.2rem; background-image: radial-gradient(circle, #F9A8D4, #EC4899);" aria-hidden="true"></span>
@@ -17,7 +17,7 @@
         } %>
 
         <div class="flex items-center gap-2">
-          <button type="reset" class="btn btn--main block"> Reset form </button>
+          <button type="reset" class="btn btn--main block" form="<%= form_id %>"> Reset form </button>
           <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
             label: "History", 
             content_partial: "layouts/shared/history_content",
@@ -30,14 +30,14 @@
             <% end 
           } %>
         </div>
-
       </div>
 
       <div>
-        <%= button_tag type: "submit", class: "btn btn--primary block i-full", form: "text_to_speech_form" do %>
+        <%= button_tag type: "submit", class: "btn btn--primary block i-full", form: form_id do %>
           <span data-form-submit-target="label">Generate speech</span>
         <% end %>
       </div>
+
       <div class="flex justify-between">
           <p class="text-subtle text-xs font-semibold"><%= current_user.credits %> credits remaining</p>
           <p class="text-subtle text-xs font-semibold">
