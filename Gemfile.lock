@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/lazaronixon/css-zero.git
-  revision: 24e6aa6ba2ab2239f812065983a343f72d698720
+  revision: 3082788e2ef19fa0f640658fc70a8f5a92720cad
   specs:
-    css-zero (1.2.0)
+    css-zero (2.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -462,7 +462,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   capybara
-  css-zero (~> 1.2)!
+  css-zero (~> 2.1)!
   debug
   importmap-rails
   jbuilder
