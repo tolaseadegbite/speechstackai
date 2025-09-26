@@ -156,6 +156,29 @@ export default class extends Controller {
     this.audio.currentTime = clickPosition * this.audio.duration;
   }
 
+  /**
+   * Stops audio and hides the player completely.
+   */
+  close() {
+    if (!this.audio) return;
+
+    // 1. Pause the audio and reset its time
+    this.audio.pause();
+    this.audio.currentTime = 0;
+
+    // 2. Find the player container element using querySelector
+    // This correctly searches the entire document for the player.
+    const playerContainer = document.querySelector('[data-controller="player-visibility"]');
+    
+    // 3. If found, hide it by setting its 'hidden' attribute to true
+    if (playerContainer) {
+      playerContainer.hidden = true;
+    }
+
+    // 4. Update all play/pause icons on the page to their default state
+    this.updatePlayPauseIcons();
+  }
+
   updateGradientUI() {
     if (this.hasGradientSwatchTarget && this.currentClipData.gradientStart && this.currentClipData.gradientEnd) {
       this.gradientSwatchTargets.forEach(swatch => {

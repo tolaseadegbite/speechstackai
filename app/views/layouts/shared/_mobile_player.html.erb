@@ -29,11 +29,14 @@
 
     <!-- Right Section: Actions (Actions added) -->
     <div class="flex items-center gap-2 shrink-0">
-      <%# The download button is now a functional link, styled to look the same %>
       <a href="#" class="btn btn--icon border-0" data-audio-player-target="downloadLinks"><span class="icon icon--download" aria-hidden="true"></span></a>
       <button class="bg-black text-reversed rounded-full p-2 border-0" data-action="audio-player#togglePlay" data-audio-player-target="playPauseIcons"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></button>
       <button type="button" class="btn btn--icon border-0" data-action="click->player-visibility#minimize">
         <span class="icon icon--chevron-down" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="audio-player#close">
+        <span class="icon icon--x" style="--icon-size: 1.2rem" aria-hidden="true"></span>
       </button>
     </div>
   </div>
