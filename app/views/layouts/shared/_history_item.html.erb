@@ -58,7 +58,15 @@
 
       <% s3_url = presigned_s3_url(audio.s3_key) %>
 
-      <button type="button" class="btn btn--icon btn--subtle" data-action="audio-player#play" data-audio-player-url-param="<%= s3_url %>" data-audio-player-title-param="<%= audio.text.truncate(40) %>" data-audio-player-author-param="<%= audio.voice.name %>" data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>" data-audio-player-gradient-start-param="<%= audio.voice.gradient_start %>" data-audio-player-gradient-end-param="<%= audio.voice.gradient_end %>">
+      <button type="button" class="btn btn--icon btn--subtle" 
+        data-action="audio-player#play" 
+        data-audio-player-url-param="<%= s3_url %>" 
+        data-audio-player-title-param="<%= audio.text.truncate(40) %>" 
+        data-audio-player-author-param="<%= audio.voice.name %>" 
+        data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>" 
+        data-audio-player-gradient-start-param="<%= audio.voice.gradient_start %>" 
+        data-audio-player-gradient-end-param="<%= audio.voice.gradient_end %>"
+        data-audio-player-created-at-param="<%= audio.created_at.strftime('%-d/%-m/%Y') %>">
         <div data-play-icon-url="<%= s3_url %>"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></div>
       </button>
 

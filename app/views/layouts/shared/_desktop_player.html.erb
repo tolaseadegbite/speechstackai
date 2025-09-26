@@ -19,21 +19,35 @@
     <!-- Left Section: Info (Original structure is preserved) -->
     <div class="flex flex-col shrink-0">
       <p class="text-sm font-medium whitespace-nowrap overflow-ellipsis" style="max-inline-size: 40ch;" data-audio-player-target="clipTitles">Settle into a comfortable position and gently cl...</p>
+
       <div class="flex items-center gap-half text-sm mbs-1">
-      <div class="rounded-full" style="inline-size: 1.25rem; block-size: 1.25rem; background: linear-gradient(180deg, var(--gradient-start, #FDBFDE) 0%, var(--gradient-end, #E66FB2) 100%);"
-          data-audio-player-target="gradientSwatch"></div>
+        <div class="rounded-full" style="inline-size: 1.25rem; block-size: 1.25rem; background: linear-gradient(180deg, var(--gradient-start, #FDBFDE) 0%, var(--gradient-end, #E66FB2) 100%);"
+            data-audio-player-target="gradientSwatch"></div>
+
         <span class="text-subtle font-medium" data-audio-player-target="clipAuthors">Tolase</span>
+
         <span class="text-subtle">·</span>
+
         <svg class="text-subtle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span class="text-subtle">3/23/2025</span>
+
+        <span class="text-subtle" data-audio-player-target="clipDates"></span>
       </div>
     </div>
     
     <!-- Middle Section: Player Controls (Actions added) -->
     <div class="flex items-center grow gap-4 justify-center">
-      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="audio-player#rewind"><span class="icon icon--rotate-ccw" style="--icon-size: 1.2rem" aria-hidden="true"></span></button>
-      <button class="bg-black text-reversed rounded-full p-2 border-0" data-action="audio-player#togglePlay" data-audio-player-target="playPauseIcons"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></button>
-      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="audio-player#fastForward"><span class="icon icon--rotate-cw" style="--icon-size: 1.2rem" aria-hidden="true"></span></button>
+      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="audio-player#rewind">
+        <span class="icon icon--rotate-ccw" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+      </button>
+
+      <button class="bg-black text-reversed rounded-full p-2 border-0 cursor-pointer" data-action="audio-player#togglePlay" data-audio-player-target="playPauseIcons">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      </button>
+
+      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="audio-player#fastForward">
+        <span class="icon icon--rotate-cw" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+      </button>
+
       <div>
         <span class="text-xs text-subtle whitespace-nowrap" data-audio-player-target="currentTimes">0:00</span>
         <span class="text-xs text-subtle whitespace-nowrap"> / </span>
@@ -43,7 +57,10 @@
     
     <!-- Right Section: Actions (Original structure is preserved) -->
     <div class="flex items-center gap-2 shrink-0">
-      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full"><span class="icon icon--history" style="--icon-size: 1.2rem" aria-hidden="true"></span></button>
+      <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full">
+        <span class="icon icon--history" style="--icon-size: 1.2rem" aria-hidden="true"></span>
+      </button>
+      
       <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="click->player-visibility#minimize">
         <span class="icon icon--chevron-down" style="--icon-size: 1.2rem" aria-hidden="true"></span>
       </button>

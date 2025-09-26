@@ -47,7 +47,8 @@ export default class extends Controller {
     "clipTitles",
     "clipAuthors",
     "downloadLinks",
-    "gradientSwatch"
+    "gradientSwatch",
+    "clipDates"
   ]
 
   connect() {
@@ -83,14 +84,14 @@ export default class extends Controller {
    * Called from the list of audio clips to start a new track.
    */
   play(event) {
-    const { url, title, author, filename, gradientStart, gradientEnd } = event.params;
+    const { url, title, author, filename, gradientStart, gradientEnd, createdAt } = event.params;
     const isSameClip = this.audio.src === url;
 
     if (isSameClip) {
       this.togglePlay();
     } else {
       this.audio.src = url;
-      this.currentClipData = { url, title, author, filename, gradientStart, gradientEnd };
+      this.currentClipData = { url, title, author, filename, gradientStart, gradientEnd, createdAt };
       this.updateMetadataUI();
       this.updateGradientUI(); // Call the new method
       this.audio.play().catch(e => console.error("Audio playback failed:", e));
@@ -173,7 +174,8 @@ export default class extends Controller {
             url: this.audio.src,
             title: this.clipTitlesTargets[0]?.textContent || "Audio Clip",
             author: this.clipAuthorsTargets[0]?.textContent || "Unknown",
-            filename: this.downloadLinksTargets[0]?.download || "audio.mp3"
+            filename: this.downloadLinksTargets[0]?.download || "audio.mp3",
+            createdAt: this.clipDatesTargets[0]?.textContent || ""
         }
         this.updateMetadataUI();
         this.updateProgressUI();
@@ -190,6 +192,9 @@ export default class extends Controller {
         target.href = this.currentClipData.url;
         target.download = this.currentClipData.filename;
     });
+    if (this.hasClipDatesTarget) {
+      this.clipDatesTargets.forEach(target => target.textContent = this.currentClipData.createdAt);
+    }
   }
 
   updatePlayPauseIcons() {
