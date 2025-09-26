@@ -17,7 +17,9 @@
         } %>
 
         <div class="flex items-center gap-2">
+          
           <button type="reset" class="btn btn--main block" form="<%= form_id %>"> Reset form </button>
+
           <%= render partial: "layouts/shared/mobile_sheet_trigger", locals: { 
             label: "History", 
             content_partial: "layouts/shared/history_content",
