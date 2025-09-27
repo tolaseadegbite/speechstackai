@@ -40,7 +40,7 @@
         <%= render "layouts/navigation/dashboard/sidebar_menu" %>
       </aside>
 
-      <main id="main" style="padding: 0 !important; gap: 0">
+      <main id="main" style="padding: 0; gap: 0">
         <div class="header-layout">
           <header class="" id="header">
             <%= render "layouts/navigation/dashboard/mobile_menu" %>
@@ -48,12 +48,14 @@
           </header>
         <%= yield %>
 
-        <%# --- RESPONSIVE AUDIO PLAYER --- %>
-        <div data-controller="player-visibility" hidden class="fixed-player border-bs border-shade" data-player-visibility-target="playerContainer">
-          <%= render "layouts/shared/desktop_player" %>
-          <%= render "layouts/shared/mobile_player" %>
-        </div>
       </main>
     </div>
+
+    <%# --- RESPONSIVE AUDIO PLAYER --- %>
+    <div data-controller="player-visibility" hidden class="fixed-player border-bs border-shade" data-player-visibility-target="playerContainer">
+      <%= render "layouts/shared/desktop_player" %>
+      <%= render "layouts/shared/mobile_player" %>
+    </div>
+    
   </body>
 </html>

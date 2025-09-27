@@ -162,20 +162,22 @@ export default class extends Controller {
   close() {
     if (!this.audio) return;
 
-    // 1. Pause the audio and reset its time
     this.audio.pause();
     this.audio.currentTime = 0;
-
-    // 2. Find the player container element using querySelector
-    // This correctly searches the entire document for the player.
-    const playerContainer = document.querySelector('[data-controller="player-visibility"]');
     
-    // 3. If found, hide it by setting its 'hidden' attribute to true
-    if (playerContainer) {
-      playerContainer.hidden = true;
+    // Find the visibility controller and tell it to run its `hide` action.
+    const playerElement = document.querySelector('[data-controller="player-visibility"]');
+    if (playerElement) {
+      const playerVisibilityController = this.application.getControllerForElementAndIdentifier(
+        playerElement,
+        "player-visibility"
+      );
+      if (playerVisibilityController) {
+        // This now correctly calls the method that also clears the padding.
+        playerVisibilityController.hide();
+      }
     }
-
-    // 4. Update all play/pause icons on the page to their default state
+    
     this.updatePlayPauseIcons();
   }
 
