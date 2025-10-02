@@ -8,7 +8,7 @@
           <span data-character-counter-target="count">0</span> / 5,000 characters
         </p>
 
-        <button type="reset" class="btn btn--main block" form="<%= form_id %>"> Reset form </button>
+        <button type="button" class="btn btn--main block" form="<%= form_id %>" data-action="click->sample-text#resetForm" data-sample-text-target="resetButton" hidden> Reset form </button>
 
         <div>
           <%= button_tag type: "submit", class: "btn btn--primary block i-full", form: "text_to_speech_form" do %>
