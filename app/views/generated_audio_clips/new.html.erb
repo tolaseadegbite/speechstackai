@@ -2,6 +2,11 @@
 <% provide(:title, title) %>
 <% content_for :page_header, title %>
 
+<% content_for :header_action_buttons do %>
+  <%= link_to "Feedback", "", class: "btn" %>
+  <%= link_to "Documentation", "", class: "btn" %>
+<% end %>
+
 <% case @service_type %>
 <% when "text_to_speech" %>
   <%= render "text_to_speech_page" %>

@@ -2,7 +2,7 @@
 
   <div class="flex items-center gap-4">
     <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide">
-      <a href="" class="cursor-pointer" data-popover-target="trigger">
+      <a href="#" class="cursor-pointer" data-popover-target="trigger">
         <h4 class="font-semibold"><%= voice.name %> - <%= voice.description.truncate(75) %> </h4>
       </a>
 
@@ -35,74 +35,59 @@
     </div>
 
     <div class="flex items-center gap-2">
+      <%# --- KEPT: The efficient S3 URL fetching button --- %>
       <% if voice.s3_key.present? %>
-        <% s3_url = presigned_s3_url(voice.s3_key) %>
         <button type="button" class="btn btn--icon btn--subtle"
-                data-action="click->audio-player#play"
-                data-audio-player-url-param="<%= s3_url %>"
-                data-audio-player-title-param="<%= voice.name %>"
-                data-audio-player-author-param="<%= voice.user&.name || 'Community Voice' %>"
-                data-audio-player-filename-param="<%= "#{voice.name.parameterize}.mp3" %>">
-          
-          <div data-play-icon-url="<%= s3_url %>">
+                data-action="click->audio-fetcher#fetch"
+                <%# --- These params are passed to the audio-fetcher controller --- %>
+                data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
+                data-audio-fetcher-title-param="<%= voice.name %>"
+                data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                <%# --- ADDED: The missing data for full player functionality --- %>
+                data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>"
+                data-audio-fetcher-created-at-param="<%= voice.created_at.strftime('%-d/%-m/%Y') %>">
+
+          <%# ADDED: An empty data-play-icon-url for the audio-player to find and update %>
+          <div data-play-icon-url>
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
           </div>
         </button>
-
-        <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-          <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
-            <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-          </button>
-
-          <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
-            <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-              <% edit_trigger = button_tag "Edit", type: "button", class: "btn menu__item w-full text-left", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
-              <%= modal_dialog edit_trigger, title: "Editing #{voice.name}" do %>
-                <%= render "form", voice: voice %>
-              <% end %>
-
-              <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
-              <%= modal_dialog delete_trigger, title: "Delete '#{voice.name}'?" do %>
-                <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
-                <div class="flex items-center justify-end gap">
-                  <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-                  <%= button_to "Continue", voice, method: :delete, class: "btn btn--danger" %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
       <% else %>
         <button type="button" class="btn btn--icon btn--subtle" disabled style="opacity: 0.5; cursor: not-allowed;">
           <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
           </div>
         </button>
-        
-        <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-          <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
-            <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-          </button>
+      <% end %>
 
-          <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
-            <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-              <% edit_trigger = button_tag "Edit", type: "button", class: "btn menu__item w-full text-left", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
-              <%= modal_dialog edit_trigger, title: "Editing #{voice.name}", size: '500px' do %>
-                <%= render "form", voice: voice %>
-              <% end %>
-              
-              <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
-              <%= modal_dialog delete_trigger, title: "Delete '#{voice.name}'?" do %>
-                <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
-                <div class="flex items-center justify-end gap">
-                  <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-                  <%= button_to "Continue", voice, method: :delete, class: "btn btn--negative" %>
-                </div>
-              <% end %>
-            </div>
+      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= voice.id %>" aria-haspopup="true">
+          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+        </button>
+
+        <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+
+            <%# --- REVERTED: The edit modal is now back inside the loop --- %>
+            <% edit_trigger = button_tag "Edit", type: "button", class: "btn menu__item w-full text-left", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+            <%= modal_dialog edit_trigger, title: "Editing #{voice.name}", size: '500px' do %>
+              <%= render "form", voice: voice %>
+            <% end %>
+
+            <%# --- The delete modal remains the same --- %>
+            <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+            <%= modal_dialog delete_trigger, title: "Delete '#{voice.name}'?" do %>
+              <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+              <div class="flex items-center justify-end gap">
+                <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                <%= button_to "Continue", voice, method: :delete, class: "btn btn--negative" %>
+              </div>
+            <% end %>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>

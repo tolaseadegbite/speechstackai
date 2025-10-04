@@ -5,8 +5,7 @@
 
   <div class="flex items-center gap">
     <div class="show@md gap">
-      <%= link_to "Feedback", "", class: "btn" %>
-      <%= link_to "Documentation", "", class: "btn" %>
+      <%= yield :header_action_buttons %>
     </div>
 
    <%# 1. Define the trigger button using the button_tag helper. %>

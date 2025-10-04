@@ -1,10 +1,12 @@
 class VoicesController < DashboardController
-  before_action :set_voice, only: %i[ show edit update destroy ]
+  include S3Helper
+
+  before_action :set_voice, only: %i[ show edit update destroy audio_url ]
   before_action :set_languages, only: %i[ index show new create edit update ]
 
   # GET /voices or /voices.json
   def index
-    @voices = Voice.all.order(id: :desc)
+    @voices = Voice.includes(:languages, :user).order(id: :desc)
     @voice = Voice.new
   end
 
@@ -63,6 +65,16 @@ class VoicesController < DashboardController
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@voice) }
       format.html { redirect_to voices_path, status: :see_other, notice: "Voice was successfully destroyed." }
+    end
+  end
+
+  # GET /voices/:id/audio_url
+  def audio_url
+    if @voice.s3_key.present?
+      url = presigned_s3_url(@voice.s3_key)
+      render json: { url: url }
+    else
+      render json: { error: "No audio file associated with this voice." }, status: :not_found
     end
   end
 

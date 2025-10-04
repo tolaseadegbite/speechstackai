@@ -56,18 +56,22 @@
 
     <div class="flex items-center gap-2 shrink-0 mis-2">
 
-      <% s3_url = presigned_s3_url(audio.s3_key) %>
+      <%# s3_url = presigned_s3_url(audio.s3_key) %>
 
-      <button type="button" class="btn btn--icon btn--subtle" 
-        data-action="audio-player#play" 
-        data-audio-player-url-param="<%= s3_url %>" 
-        data-audio-player-title-param="<%= audio.text.truncate(40) %>" 
-        data-audio-player-author-param="<%= audio.voice.name %>" 
-        data-audio-player-filename-param="<%= "audio_#{audio.id}.mp3" %>" 
-        data-audio-player-gradient-start-param="<%= audio.voice.gradient_start %>" 
-        data-audio-player-gradient-end-param="<%= audio.voice.gradient_end %>"
-        data-audio-player-created-at-param="<%= audio.created_at.strftime('%-d/%-m/%Y') %>">
-        <div data-play-icon-url="<%= s3_url %>"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+      <button type="button" class="btn btn--icon btn--subtle"
+              data-action="click->audio-fetcher#fetch"
+              data-audio-fetcher-url-param="<%= audio_url_generated_audio_clip_path(audio) %>"
+              data-audio-fetcher-title-param="<%= audio.text.truncate(40) %>"
+              data-audio-fetcher-author-param="<%= audio.voice.name %>"
+              data-audio-fetcher-filename-param="<%= "audio_#{audio.id}.mp3" %>"
+              data-audio-fetcher-gradient-start-param="<%= audio.voice.gradient_start %>"
+              data-audio-fetcher-gradient-end-param="<%= audio.voice.gradient_end %>"
+              data-audio-fetcher-created-at-param="<%= audio.created_at.strftime('%-d/%-m/%Y') %>">
+
+        <%# The div now has an empty data-play-icon-url attribute for the fetcher to populate %>
+        <div data-play-icon-url>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
       </button>
 
       <div contents data-controller="popover" data-popover-placement-value="bottom-end">
@@ -78,8 +82,11 @@
 
         <div popover id="<%= dom_id(audio, "#{context}_popover") %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-            <%= link_to s3_url, data: { menu_target: "item" }, role: "menuitem", download: "audio_#{audio.id}.mp3", class: "btn menu__item" do %>
-            
+            <%= link_to audio_url_generated_audio_clip_path(audio), 
+                        data: { menu_target: "item", turbo: "false" }, 
+                        role: "menuitem", 
+                        download: "audio_#{audio.id}.mp3", 
+                        class: "btn menu__item" do %>
               <span class="icon icon--download" aria-hidden="true"></span>
               Download
             <% end %>

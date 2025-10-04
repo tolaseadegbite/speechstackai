@@ -1,4 +1,6 @@
 class GeneratedAudioClipsController < DashboardController
+  before_action :set_generated_audio_clip, only: %i[ destroy audio_url ]
+
   def new
     @service_type = params[:service_type]
 
@@ -51,7 +53,7 @@ class GeneratedAudioClipsController < DashboardController
   end
 
   def destroy
-    @generated_audio_clip = current_user.generated_audio_clips.find(params[:id])
+    # @generated_audio_clip = current_user.generated_audio_clips.find(params[:id])
     @context = params[:context] || :desktop
     @date_to_check = @generated_audio_clip.created_at.to_date
     @generated_audio_clip.destroy
@@ -69,9 +71,22 @@ class GeneratedAudioClipsController < DashboardController
     end
   end
 
+  def audio_url
+    if @generated_audio_clip&.s3_key.present?
+      url = presigned_s3_url(@generated_audio_clip.s3_key)
+      render json: { url: url }
+    else
+      render json: { error: "No audio file associated with this clip." }, status: :not_found
+    end
+  end
+
   private
 
   def audio_clip_params
     params.require(:generated_audio_clip).permit(:text, :voice_id, :service_type)
+  end
+
+  def set_generated_audio_clip
+    @generated_audio_clip = current_user.generated_audio_clips.find(params[:id])
   end
 end

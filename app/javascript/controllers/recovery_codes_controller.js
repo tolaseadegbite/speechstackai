@@ -32,7 +32,7 @@ export default class extends Controller {
     const codesText = this.codeTargets.map(element => element.textContent.trim()).join("\n")
     
     // 2. Add a helpful header for the text file
-    const fileContent = "Your Speechstack Recovery Codes\n\n" +
+    const fileContent = "Your 2yarn Recovery Codes\n\n" +
                         "Keep these codes in a safe and accessible place.\n" +
                         "Each code can only be used once.\n\n" +
                         codesText
