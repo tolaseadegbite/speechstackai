@@ -1,5 +1,8 @@
 <% content_for :title, "Editing voice" %>
 
-<%= turbo_frame_tag "remote_voice_form" do %>
-  <%= render "form", voice: @voice %>
+<%= render "layouts/shared/modal" do %>
+  <div data-action="turbo:submit-end->modal#submitEnd">
+    <h2 class="font-semibold text-lg mbe-4">Editing <%= @voice.name %></h2>
+    <%= render "form", voice: @voice %>
+  </div>
 <% end %>

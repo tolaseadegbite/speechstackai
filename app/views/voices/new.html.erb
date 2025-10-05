@@ -1,12 +1,9 @@
 <% content_for :title, "New voice" %>
 <% content_for :page_header, "New voice" %>
 
-<div class="i-full p-4 mi-auto" style="max-width: 90rem;">
-  <h1 class="font-bold text-2xl mbe-4">Add a new voice</h1>
-
-  <%= render "form", voice: @voice %>
-
-  <div class="inline-flex flex-wrap items-center gap mbs-2" style="--row-gap: .5rem">
-    <%= link_to "Back to voices", voices_path, class: "btn" %>
+<%= render "layouts/shared/modal" do %>
+  <div data-action="turbo:submit-end->modal#submitEnd">
+    <h2 class="font-semibold text-lg mbe-4">Add a new voice</h2>
+    <%= render "form", voice: @voice %>
   </div>
-</div>
+<% end %>

@@ -70,13 +70,10 @@
         <div popover id="popover-<%= voice.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
 
-            <%# --- REVERTED: The edit modal is now back inside the loop --- %>
-            <% edit_trigger = button_tag "Edit", type: "button", class: "btn menu__item w-full text-left", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
-            <%= modal_dialog edit_trigger, title: "Editing #{voice.name}", size: '500px' do %>
-              <%= render "form", voice: voice %>
-            <% end %>
+            <%= link_to "Edit", edit_voice_path(voice),
+                        class: "btn menu__item w-full text-left",
+                        data: { turbo_frame: "modal" } %>
 
-            <%# --- The delete modal remains the same --- %>
             <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
             <%= modal_dialog delete_trigger, title: "Delete '#{voice.name}'?" do %>
               <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
