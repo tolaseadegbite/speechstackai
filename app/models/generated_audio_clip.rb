@@ -9,6 +9,8 @@ class GeneratedAudioClip < ApplicationRecord
   validates :text, presence: true, length: { maximum: 5000 }
   validates :voice, presence: true, if: :text_to_speech?
 
+  has_many :feedbacks, dependent: :destroy
+
   # The updated enum with the :processing state
   enum :status, {
     pending: 0,

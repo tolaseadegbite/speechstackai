@@ -22,6 +22,8 @@ class User < ApplicationRecord
   has_many :voices, dependent: :destroy
   has_many :languages, dependent: :destroy
 
+  has_many :feedbacks, dependent: :destroy
+
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, allow_nil: true, length: { minimum: 12 }
   validates :password, not_pwned: { message: "might easily be guessed" }

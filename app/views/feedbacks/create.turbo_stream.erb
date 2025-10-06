@@ -1,0 +1,6 @@
+<%= turbo_stream.prepend "feedbacks", @feedback %>
+<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
+<%# Optionally, you can clear the form in the modal after successful submission %>
+<%= turbo_stream.replace "new_feedback", partial: "feedbacks/form", locals: { feedback: Feedback.new } %>
+
+<turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>

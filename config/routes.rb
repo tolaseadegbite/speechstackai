@@ -64,7 +64,9 @@ Rails.application.routes.draw do
 
   resources :voices do
     get :audio_url, on: :member
-  end
+  end  
+  
+  resources :feedbacks
 
   get "/playground", to: "static_pages#playground"
   get "/text-to-speech", to: "generated_audio_clips#new", as: :text_to_speech, defaults: { service_type: "text_to_speech" }

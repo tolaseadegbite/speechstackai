@@ -1,0 +1,18 @@
+<% content_for :title, "User Feedback" %>
+<% content_for :page_header, "User Feedback" %>
+
+<div class="i-full p-4 mi-auto" style="max-width: 90rem;">
+  <div class="flex items-center justify-between mbe-4">
+    <h1 class="font-bold text-2xl">Feedback Submissions</h1>
+
+    <%# This link will open the 'new' form in a modal %>
+    <%= link_to "New Feedback", new_feedback_path,
+                class: "btn btn--primary",
+                data: { turbo_frame: "modal" } %>
+  </div>
+
+  <%# This container will be targeted by Turbo Streams to append, update, and remove feedback %>
+  <div id="feedbacks" class="flex flex-col gap-4">
+    <%= render @feedbacks %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_04_123456) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_06_172159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_123456) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.text "comment"
+    t.integer "rating"
+    t.integer "feedback_type"
+    t.integer "service"
+    t.bigint "user_id", null: false
+    t.bigint "generated_audio_clip_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["generated_audio_clip_id"], name: "index_feedbacks_on_generated_audio_clip_id"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "generated_audio_clips", force: :cascade do |t|
@@ -127,6 +140,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_123456) do
   end
 
   add_foreign_key "events", "users"
+  add_foreign_key "feedbacks", "generated_audio_clips"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "generated_audio_clips", "users"
   add_foreign_key "generated_audio_clips", "voices"
   add_foreign_key "language_voices", "languages"

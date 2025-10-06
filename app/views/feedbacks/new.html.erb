@@ -1,0 +1,8 @@
+<% content_for :title, "New Feedback" %>
+
+<%= render "layouts/shared/modal" do %>
+  <div data-action="turbo:submit-end->modal#submitEnd">
+    <h2 class="font-semibold text-lg mbe-4">Submit New Feedback</h2>
+    <%= render "form", feedback: @feedback %>
+  </div>
+<% end %>

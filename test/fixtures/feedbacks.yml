@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  comment: MyText
+  rating: 1
+  feedback_type: 1
+  service: 1
+  user: one
+  generated_audio_clip: one
+
+two:
+  comment: MyText
+  rating: 1
+  feedback_type: 1
+  service: 1
+  user: two
+  generated_audio_clip: two

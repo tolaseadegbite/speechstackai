@@ -1,0 +1,37 @@
+<%= form_with(model: feedback, html: { contents: true }) do |form| %>
+  <% if feedback.errors.any? %>
+    <div class="alert alert--negative" role="alert">
+      <h2><%= pluralize(feedback.errors.count, "error") %> prohibited this feedback from being saved:</h2>
+      <ul>
+        <% feedback.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex flex-col items-start gap-half mbe-4">
+    <%= form.label :service, class: "text-sm font-medium leading-none" %>
+    <%= form.select :service, Feedback.services.keys.map { |s| [s.humanize, s] }, { prompt: "Select a service" }, { class: "input i-full" } %>
+  </div>
+
+  <div class="flex flex-col items-start gap-half mbe-4">
+    <%= form.label :feedback_type, class: "text-sm font-medium leading-none" %>
+    <%= form.select :feedback_type, Feedback.feedback_types.keys.map { |ft| [ft.humanize, ft] }, { prompt: "Select feedback type" }, { class: "input i-full" } %>
+  </div>
+
+  <div class="flex flex-col items-start gap-half mbe-4">
+    <%= form.label :rating, "Rating (for reviews)", class: "text-sm font-medium leading-none" %>
+    <%= form.select :rating, (1..5).to_a.reverse, { include_blank: "No rating" }, { class: "input i-full" } %>
+  </div>
+
+  <div class="flex flex-col items-start gap-half mbe-4">
+    <%= form.label :comment, class: "text-sm font-medium leading-none" %>
+    <%= form.text_area :comment, rows: 5, class: "input", placeholder: "Please provide as much detail as possible..." %>
+  </div>
+
+  <div class="inline-flex items-center gap-2">
+    <%= form.submit "Submit Feedback", class: "btn btn--primary" %>
+    <button type="button" class="btn" data-action="modal#close">Cancel</button>
+  </div>
+<% end %>
