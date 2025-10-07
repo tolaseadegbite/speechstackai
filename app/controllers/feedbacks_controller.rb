@@ -45,7 +45,7 @@ class FeedbacksController < DashboardController
     respond_to do |format|
       if @feedback.update(feedback_params)
         flash.now[:notice] = "Feedback was successfully updated."
-        format.turbo_stream # Renders update.turbo_stream.erb
+        format.turbo_stream
       else
         flash.now[:alert] = @feedback.errors.full_messages.to_sentence
         format.turbo_stream do
@@ -58,11 +58,11 @@ class FeedbacksController < DashboardController
 
   # DELETE /feedbacks/1 or /feedbacks/1.json
   def destroy
-    @feedback.destroy!
     respond_to do |format|
-      # Renders destroy.turbo_stream.erb, which removes the feedback from the page
-      format.turbo_stream { flash.now[:notice] = "Feedback was successfully destroyed." }
-      format.html { redirect_to feedbacks_url, notice: "Feedback was successfully destroyed." }
+      @feedback.destroy!
+      format.turbo_stream
+      flash.now[:notice] = "Feedback was successfully destroyed."
+      format.html { redirect_to feedbacks_url, status: :see_other, notice: "Feedback was successfully destroyed." }
     end
   end
 

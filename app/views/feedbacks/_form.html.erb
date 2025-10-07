@@ -12,17 +12,17 @@
 
   <div class="flex flex-col items-start gap-half mbe-4">
     <%= form.label :service, class: "text-sm font-medium leading-none" %>
-    <%= form.select :service, Feedback.services.keys.map { |s| [s.humanize, s] }, { prompt: "Select a service" }, { class: "input i-full" } %>
+    <%= form.select :service, Feedback.services.keys.map { |s| [s.humanize, s] }, { prompt: "Select a service" }, class: "i-full", data: { controller: "combobox" } %>
   </div>
 
   <div class="flex flex-col items-start gap-half mbe-4">
     <%= form.label :feedback_type, class: "text-sm font-medium leading-none" %>
-    <%= form.select :feedback_type, Feedback.feedback_types.keys.map { |ft| [ft.humanize, ft] }, { prompt: "Select feedback type" }, { class: "input i-full" } %>
+    <%= form.select :feedback_type, Feedback.feedback_types.keys.map { |ft| [ft.humanize, ft] }, { prompt: "Select feedback type" }, class: "i-full", data: { controller: "combobox" } %>
   </div>
 
   <div class="flex flex-col items-start gap-half mbe-4">
     <%= form.label :rating, "Rating (for reviews)", class: "text-sm font-medium leading-none" %>
-    <%= form.select :rating, (1..5).to_a.reverse, { include_blank: "No rating" }, { class: "input i-full" } %>
+    <%= form.select :rating, (1..5).to_a.reverse, { prompt: "No rating" }, class: "i-full", data: { controller: "combobox" } %>
   </div>
 
   <div class="flex flex-col items-start gap-half mbe-4">

@@ -47,9 +47,8 @@ class VoicesController < DashboardController
     respond_to do |format|
       if @voice.update(voice_params)
         flash.now[:notice] = "Voice was successfully updated."
-        format.turbo_stream # This will render update.turbo_stream.erb
+        format.turbo_stream
       else
-        # On failure, update the flash messages with the errors
         flash.now[:alert] = @voice.errors.full_messages.to_sentence
         format.turbo_stream do
           render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
@@ -60,11 +59,12 @@ class VoicesController < DashboardController
   end
 
   # DELETE /voices/1 or /voices/1.json
-  def destroy
-    @voice.destroy!
+  def destroy 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@voice) }
-      format.html { redirect_to voices_path, status: :see_other, notice: "Voice was successfully destroyed." }
+      @voice.destroy!
+      format.turbo_stream
+      flash.now[:notice] = "Voice was successfully deleted."
+      format.html { redirect_to voices_url, status: :see_other, notice: "Voice was successfully destroyed." }
     end
   end
 
