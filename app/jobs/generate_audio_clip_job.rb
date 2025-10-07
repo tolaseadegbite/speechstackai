@@ -43,7 +43,7 @@ class GenerateAudioClipJob < ApplicationJob
     ApplicationRecord.transaction do
       audio_clip.update!(
         s3_key: data[:s3_key],
-        service: "african-tts",
+        service: :text_to_speech,
         status: :processed
       )
       deduct_credit(user)

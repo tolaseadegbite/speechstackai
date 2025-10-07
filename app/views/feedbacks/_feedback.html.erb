@@ -10,7 +10,7 @@
       </div>
       <div>
         <p class="font-semibold"><%= feedback.user.name || feedback.user.email %></p>
-        <p class="text-sm text-subtle">
+        <p class="text-xs text-subtle">
           Submitted <%= time_ago_in_words(feedback.created_at) %> ago
         </p>
       </div>
@@ -28,12 +28,53 @@
                       class: "btn menu__item w-full text-left",
                       data: { turbo_frame: "modal" } %>
 
-          <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item w-full text-left text-red-500 hover:text-red-600 focus:text-red-600", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
-          <%= modal_dialog delete_trigger, title: "Delete '#{feedback.comment}'?" do %>
+          <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item i-full text-start text-red-600 hover:text-red-700", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+
+          <%= modal_dialog delete_trigger, title: "Delete feedback?" do %>
             <p class="text-sm text-subtle mbe-4">This will permanently delete this feedback. This action cannot be undone.</p>
+
+            <%# --- Improved Summary Block --- %>
+            <div class="p-3 bg-main rounded-md border border-subtle mbe-4">
+              <div class="flex flex-col gap-half text-sm">
+                
+                <%# --- Type (with badge) --- %>
+                <div class="flex justify-between items-center">
+                  <span class="text-subtle">Type</span>
+                  <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
+                    <%= feedback.feedback_type.humanize %>
+                  </span>
+                </div>
+
+                <%# --- Service --- %>
+                <div class="flex justify-between items-center">
+                  <span class="text-subtle">Service</span>
+                  <span class="font-medium text-primary"><%= feedback.service.humanize %></span>
+                </div>
+
+                <%# --- Rating (conditional) --- %>
+                <% if feedback.rating.present? %>
+                  <div class="flex justify-between items-center">
+                    <span class="text-subtle">Rating</span>
+                    <span class="font-medium text-primary"><%= feedback.rating %> out of 5</span>
+                  </div>
+                <% end %>
+
+                <%# --- Comment --- %>
+                <div class="flex flex-col items-start gap-half mbs-2">
+                  <span class="text-subtle">Comment</span>
+                  <p class="text-primary leading-tight"><%= feedback.comment.truncate(100) %></p>
+                </div>
+
+              </div>
+            </div>
+            <%# --- End of Summary Block --- %>
+
             <div class="flex items-center justify-end gap">
               <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-              <%= button_to "Continue", feedback, method: :delete, class: "btn btn--negative" %>
+              
+              <%# Your button_to with the fix to close the modal on submit %>
+              <%= button_to "Continue", feedback, method: :delete, class: "btn btn--negative",
+                            form: { data: { action: "turbo:submit-end->dialog#close" } } %>
             </div>
           <% end %>
         </div>

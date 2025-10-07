@@ -15,7 +15,18 @@ class FeedbacksController < DashboardController
 
   # GET /feedbacks/new
   def new
-    @feedback = Feedback.new
+    # Check if a specific audio clip ID was passed in the URL
+    if params[:generated_audio_clip_id]
+      audio_clip = current_user.generated_audio_clips.find(params[:generated_audio_clip_id])
+      # Pre-fill the feedback with the audio clip's ID and its service
+      @feedback = Feedback.new(
+        generated_audio_clip_id: audio_clip.id,
+        service: audio_clip.service
+      )
+    else
+      # Otherwise, create a blank feedback object for general feedback
+      @feedback = Feedback.new
+    end
   end
 
   # GET /feedbacks/1/edit

@@ -1,0 +1,24 @@
+<div class="p-3 bg-main rounded-md border border-subtle mbe-4">
+  <div class="flex flex-col gap-half text-sm">
+    <div class="flex justify-between items-center">
+      <span class="text-subtle">Type</span>
+      <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
+        <%= feedback.feedback_type.humanize %>
+      </span>
+    </div>
+    <div class="flex justify-between items-center">
+      <span class="text-subtle">Service</span>
+      <span class="font-medium text-primary"><%= feedback.service.humanize %></span>
+    </div>
+    <% if feedback.rating.present? %>
+      <div class="flex justify-between items-center">
+        <span class="text-subtle">Rating</span>
+        <span class="font-medium text-primary"><%= feedback.rating %> out of 5</span>
+      </div>
+    <% end %>
+    <div class="flex flex-col items-start gap-half mbs-2">
+      <span class="text-subtle">Comment</span>
+      <p class="text-primary leading-tight"><%= feedback.comment.truncate(100) %></p>
+    </div>
+  </div>
+</div>

@@ -36,7 +36,7 @@
     <%= form.select :gender, Voice.genders.keys, { prompt: "Select voice gender" }, class: "i-full", data: { controller: "combobox" } %>
   </div>
 
-  <div class="inline-flex items-center gap-2">
+  <div class="flex items-center justify-end gap-2">
     <%= form.submit class: "btn btn--primary" %>
     <button type="button" class="btn" data-action="modal#close">Cancel</button>
   </div>
