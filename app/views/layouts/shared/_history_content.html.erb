@@ -32,7 +32,7 @@
                    date: date, 
                    audio_clips: audio_clips_on_date.sort_by(&:created_at).reverse,
                    context: context 
-                 } %>
+                 }, cached: true %>
       <% end %>
     <% end %>
   </div>
