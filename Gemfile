@@ -85,3 +85,4 @@ gem "mission_control-jobs"
 
 gem "ransack", "~> 4.4"
 
+gem "pagy", "~> 9.4"

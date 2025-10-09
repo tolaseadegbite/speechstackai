@@ -4,8 +4,7 @@ class FeedbacksController < DashboardController
   # GET /feedbacks or /feedbacks.json
   # Prepares a list of all feedbacks for an admin view and a new object for the form.
   def index
-    # Eager load the user to prevent N+1 queries in the view
-    @feedbacks = Feedback.includes(:user).order(created_at: :desc)
+    @pagy, @feedbacks = pagy_keyset(Feedback.includes(:user, :generated_audio_clip).order(created_at: :desc), limit: 21)
     @feedback = Feedback.new
   end
 

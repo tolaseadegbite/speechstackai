@@ -10,7 +10,16 @@
                 data: { turbo_frame: "modal" } %>
   </div>
 
-  <div id="feedbacks" class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4 gap-4">
-    <%= render @feedbacks %>
-  </div>
+  <% if @feedbacks.any? %>
+    <%= content_tag(:"turbo-frame", id: "feedbacks", target: "_top", class: "grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4") do %>
+      <%#= render @feedbacks %>
+      <%= render partial: "feedbacks/feedback", collection: @feedbacks, as: :feedback %>
+    <% end %>
+
+    <%= render_load_more(@pagy) %>
+    
+  <% else %>
+      <p class="italic text-gray-600 mt-4 text-center">No feedbacks!</p>
+  <% end %>
+  
 </div>

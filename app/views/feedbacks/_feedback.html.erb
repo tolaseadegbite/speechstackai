@@ -88,10 +88,10 @@
       
       <%# Badges using the new helper %>
       <div class="flex items-center flex-wrap gap-half mbe-2">
-        <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
+        <span class="rounded-sm <%= feedback_badge_classes(feedback.feedback_type) %>">
           <%= feedback.feedback_type.humanize %>
         </span>
-        <span class="text-xs font-medium pi-2 pbe-half rounded bg-shade text-subtle">
+        <span class="text-xs font-medium pi-2 pbe-half rounded-sm bg-shade text-subtle">
           <%= feedback.service.humanize %>
         </span>
       </div>
@@ -113,7 +113,7 @@
       <% end %>
 
       <%# The comment using your text color utility %>
-      <p class="text-primary"><%= feedback.comment.truncate(250) %></p>
+      <p class="text-primary"><%= simple_format(feedback.comment.truncate(250)) %></p>
     </div>
   </div>
 </div>
