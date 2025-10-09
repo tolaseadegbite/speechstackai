@@ -3,7 +3,10 @@
 <% content_for :page_header, title %>
 
 <% content_for :header_action_buttons do %>
-  <%= link_to "Feedback", "", class: "btn" %>
+  <%= link_to "New Feedback", new_feedback_path(service: @service_type),
+                class: "btn",
+                data: { turbo_frame: "modal" } %>
+
   <%= link_to "Documentation", "", class: "btn" %>
 <% end %>
 

@@ -1,10 +1,10 @@
-<% is_specific_feedback = feedback.generated_audio_clip_id.present? %>
+<% is_service_prefilled = feedback.service.present? %>
 
 <%= form_with(model: feedback, html: { contents: true }) do |form| %>
 
   <%= form.hidden_field :generated_audio_clip_id %>
 
-  <% if is_specific_feedback %>
+  <% if is_service_prefilled %>
     <%= form.hidden_field :service, value: feedback.service %>
   <% end %>
 
@@ -21,11 +21,12 @@
 
   <div class="flex flex-col items-start gap-half mbe-4">
     <%= form.label :service, class: "text-sm font-medium leading-none" %>
+    <%# The `disabled` option is also updated to use the new variable. %>
     <%= form.select :service, Feedback.services.keys.map { |s| [s.humanize, s] }, 
                     { prompt: "Select a service" }, 
                     class: "i-full", 
                     data: { controller: "combobox" }, 
-                    disabled: is_specific_feedback %>
+                    disabled: is_service_prefilled %>
   </div>
 
   <div class="flex flex-col items-start gap-half mbe-4">
