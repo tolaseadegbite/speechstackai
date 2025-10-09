@@ -57,6 +57,7 @@ group :development do
   gem "web-console"
   # gem "hotwire-spark"
   gem "letter_opener_web", "~> 3.0"
+  gem "faker", "~> 3.5"
 end
 
 group :test do
@@ -83,3 +84,4 @@ gem "aws-sdk-s3", "~> 1"
 gem "mission_control-jobs"
 
 gem "ransack", "~> 4.4"
+

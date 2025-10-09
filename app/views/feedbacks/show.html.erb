@@ -25,7 +25,6 @@
       <%= modal_dialog delete_trigger, title: "Delete feedback?" do %>
         <p class="text-sm text-subtle mbe-4">This action cannot be undone. All data will be permanently lost.</p>
         
-        <%# Reusing the summary block from the partial %>
         <%= render partial: "feedbacks/delete_summary", locals: { feedback: @feedback } %>
 
         <div class="flex items-center justify-end gap">
@@ -36,14 +35,14 @@
     </div>
   </div>
 
-  <%# --- Main Content Grid --- %>
-  <div class="grid grid-cols-1 grid-cols-3@lg gap-4 gap">
+  <%# --- Main Content Grid (Corrected) --- %>
+  <div class="grid grid-cols-1 grid-cols-3@lg gap-4">
     
     <%# --- Left Column: Full Comment --- %>
-    <div class="p-4 bg-surface border border-main rounded-lg shadow-sm grid-col-span-2@lg">
+    <%# CORRECTED: Using the "col-span-2" class from your CSS file %>
+    <div class="p-4 bg-surface border border-main rounded-lg shadow-sm col-span-2">
       <h3 class="font-semibold mbe-2">Full Comment</h3>
       <div class="prose">
-        <%# The 'simple_format' helper respects line breaks in the user's comment %>
         <%= simple_format(@feedback.comment, class: "text-primary leading-tight") %>
       </div>
     </div>
@@ -54,7 +53,7 @@
       <%# Details Card %>
       <div class="p-4 bg-surface border border-main rounded-lg shadow-sm">
         <h3 class="font-semibold mbe-3">Details</h3>
-        <dl class="flex flex-col gap text-sm">
+        <dl class="flex flex-col gap-2 text-sm">
           <div class="flex justify-between items-center">
             <dt class="text-subtle">Type</dt>
             <dd><span class="<%= feedback_badge_classes(@feedback.feedback_type) %>"><%= @feedback.feedback_type.humanize %></span></dd>
@@ -69,6 +68,9 @@
               <dd class="flex items-center gap-half">
                 <% @feedback.rating.times do %>
                   <svg style="inline-size: 1rem; block-size: 1rem;" fill="var(--amber-400)" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.455 8.52l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.545 8.52a1.523 1.523 0 0 0 .379-.895Z"/></svg>
+                <% end %>
+                 <% (5 - @feedback.rating).times do %>
+                  <svg style="inline-size: 1rem; block-size: 1rem;" fill="var(--slate-300)" viewBox="0 0 22 20"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.455 8.52l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.545 8.52a1.523 1.523 0 0 0 .379-.895Z"/></svg>
                 <% end %>
               </dd>
             </div>
@@ -87,15 +89,15 @@
           <h3 class="font-semibold mbe-3">Linked Audio Clip</h3>
           <div class="flex justify-between items-center">
             <div class="flex flex-col gap-half text-sm min-i-0">
-              <p class="text-subtle overflow-ellipsis">"<%= audio.text %>"</p>
-              <span class="font-medium text-primary"><%= audio.voice.name %></span>
+              <p class="text-subtle overflow-ellipsis">"<%= audio.text.truncate(40) %>"</p>
+              <span class="font-medium text-primary"><%= audio.voice&.name || 'N/A' %></span>
             </div>
             <% if audio.s3_key.present? %>
               <button type="button" class="btn btn--icon btn--subtle shrink-0"
                       data-action="click->audio-fetcher#fetch"
                       data-audio-fetcher-url-param="<%= audio_url_generated_audio_clip_path(audio) %>"
                       data-audio-fetcher-title-param="<%= audio.text.truncate(40) %>"
-                      data-audio-fetcher-author-param="<%= audio.voice.name %>">
+                      data-audio-fetcher-author-param="<%= audio.voice&.name || 'N/A' %>">
                 <div data-play-icon-url>
                   <svg fill="currentColor" width="15" height="15" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
                 </div>
