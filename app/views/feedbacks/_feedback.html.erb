@@ -1,117 +1,119 @@
-<div id="<%= dom_id feedback %>" class="p-4 bg-surface border border-main rounded-lg shadow-sm">
-  <div class="flex justify-between items-start">
-    <%# User and Metadata %>
-    <div class="flex items-center gap">
-      <%# Avatar using your utility classes %>
-      <div class="flex items-center justify-center rounded-full bg-shade shrink-0" style="block-size: 2.5rem; inline-size: 2.5rem;">
-        <span class="font-semibold text-subtle">
-          <%= feedback.user.name&.first || feedback.user.email.first.upcase %>
-        </span>
+<div id="<%= dom_id feedback %>" class="p-4 bg-surface border border-main rounded-lg shadow-sm" data-controller="card-click">
+  <div class="cursor-pointer" data-action="click->card-click#visit" data-card-click-url="<%= feedback_path(feedback) %>">
+    <div class="flex justify-between items-start">
+      <%# User and Metadata %>
+      <div class="flex items-center gap">
+        <%# Avatar using your utility classes %>
+        <div class="flex items-center justify-center rounded-full bg-shade shrink-0" style="block-size: 2.5rem; inline-size: 2.5rem;">
+          <span class="font-semibold text-subtle">
+            <%= feedback.user.name&.first || feedback.user.email.first.upcase %>
+          </span>
+        </div>
+        <div>
+          <p class="font-semibold"><%= feedback.user.name || feedback.user.email %></p>
+          <p class="text-xs text-subtle">
+            Submitted <%= time_ago_in_words(feedback.created_at) %> ago
+          </p>
+        </div>
       </div>
-      <div>
-        <p class="font-semibold"><%= feedback.user.name || feedback.user.email %></p>
-        <p class="text-xs text-subtle">
-          Submitted <%= time_ago_in_words(feedback.created_at) %> ago
-        </p>
-      </div>
-    </div>
 
-    <div contents data-controller="popover" data-popover-placement-value="bottom-end">
-      <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= feedback.id %>" aria-haspopup="true">
-        <span class="icon icon--more-horizontal" aria-hidden="true"></span>
-      </button>
+      <div contents data-controller="popover" data-popover-placement-value="bottom-end">
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="popover-<%= feedback.id %>" aria-haspopup="true">
+          <span class="icon icon--more-horizontal" aria-hidden="true"></span>
+        </button>
 
-      <div popover id="popover-<%= feedback.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
-        <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+        <div popover id="popover-<%= feedback.id %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+          <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
 
-          <%= link_to "Edit", edit_feedback_path(feedback),
-                      class: "btn menu__item w-full text-left",
-                      data: { turbo_frame: "modal" } %>
+            <%= link_to "Edit", edit_feedback_path(feedback),
+                        class: "btn menu__item w-full text-left",
+                        data: { turbo_frame: "modal" } %>
 
-          <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item i-full text-start text-red-600 hover:text-red-700", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+            <% delete_trigger = button_tag "Delete", type: "button", class: "btn menu__item i-full text-start text-red-600 hover:text-red-700", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
 
-          <%= modal_dialog delete_trigger, title: "Delete feedback?" do %>
-            <p class="text-sm text-subtle mbe-4">This will permanently delete this feedback. This action cannot be undone.</p>
+            <%= modal_dialog delete_trigger, title: "Delete feedback?" do %>
+              <p class="text-sm text-subtle mbe-4">This will permanently delete this feedback. This action cannot be undone.</p>
 
-            <%# --- Improved Summary Block --- %>
-            <div class="p-3 bg-main rounded-md border border-subtle mbe-4">
-              <div class="flex flex-col gap-half text-sm">
-                
-                <%# --- Type (with badge) --- %>
-                <div class="flex justify-between items-center">
-                  <span class="text-subtle">Type</span>
-                  <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
-                    <%= feedback.feedback_type.humanize %>
-                  </span>
-                </div>
-
-                <%# --- Service --- %>
-                <div class="flex justify-between items-center">
-                  <span class="text-subtle">Service</span>
-                  <span class="font-medium text-primary"><%= feedback.service.humanize %></span>
-                </div>
-
-                <%# --- Rating (conditional) --- %>
-                <% if feedback.rating.present? %>
+              <%# --- Improved Summary Block --- %>
+              <div class="p-3 bg-main rounded-md border border-subtle mbe-4">
+                <div class="flex flex-col gap-half text-sm">
+                  
+                  <%# --- Type (with badge) --- %>
                   <div class="flex justify-between items-center">
-                    <span class="text-subtle">Rating</span>
-                    <span class="font-medium text-primary"><%= feedback.rating %> out of 5</span>
+                    <span class="text-subtle">Type</span>
+                    <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
+                      <%= feedback.feedback_type.humanize %>
+                    </span>
                   </div>
-                <% end %>
 
-                <%# --- Comment --- %>
-                <div class="flex flex-col items-start gap-half mbs-2">
-                  <span class="text-subtle">Comment</span>
-                  <p class="text-primary leading-tight"><%= feedback.comment.truncate(100) %></p>
+                  <%# --- Service --- %>
+                  <div class="flex justify-between items-center">
+                    <span class="text-subtle">Service</span>
+                    <span class="font-medium text-primary"><%= feedback.service.humanize %></span>
+                  </div>
+
+                  <%# --- Rating (conditional) --- %>
+                  <% if feedback.rating.present? %>
+                    <div class="flex justify-between items-center">
+                      <span class="text-subtle">Rating</span>
+                      <span class="font-medium text-primary"><%= feedback.rating %> out of 5</span>
+                    </div>
+                  <% end %>
+
+                  <%# --- Comment --- %>
+                  <div class="flex flex-col items-start gap-half mbs-2">
+                    <span class="text-subtle">Comment</span>
+                    <p class="text-primary leading-tight"><%= feedback.comment.truncate(100) %></p>
+                  </div>
+
                 </div>
-
               </div>
-            </div>
-            <%# --- End of Summary Block --- %>
+              <%# --- End of Summary Block --- %>
 
-            <div class="flex items-center justify-end gap">
-              <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
-              
-              <%# Your button_to with the fix to close the modal on submit %>
-              <%= button_to "Continue", feedback, method: :delete, class: "btn btn--negative",
-                            form: { data: { action: "turbo:submit-end->dialog#close" } } %>
-            </div>
-          <% end %>
+              <div class="flex items-center justify-end gap">
+                <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                
+                <%# Your button_to with the fix to close the modal on submit %>
+                <%= button_to "Continue", feedback, method: :delete, class: "btn btn--negative",
+                              form: { data: { action: "turbo:submit-end->dialog#close" } } %>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <%# Feedback Content - Aligned with the avatar using logical margin %>
-  <div class="mbs-2" style="margin-inline-start: 3.5rem;"> <%# 2.5rem (avatar) + 1rem (gap approximation) %>
-    
-    <%# Badges using the new helper %>
-    <div class="flex items-center flex-wrap gap-half mbe-2">
-      <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
-        <%= feedback.feedback_type.humanize %>
-      </span>
-      <span class="text-xs font-medium pi-2 pbe-half rounded bg-shade text-subtle">
-        <%= feedback.service.humanize %>
-      </span>
-    </div>
-
-    <%# Rating (if it exists) with inline SVG colors from your variables %>
-    <% if feedback.rating.present? %>
-      <div class="flex items-center gap-half mbe-2">
-        <% feedback.rating.times do %>
-          <svg style="inline-size: 1rem; block-size: 1rem;" fill="var(--amber-400)" viewBox="0 0 22 20">
-            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.455 8.52l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.545 8.52a1.523 1.523 0 0 0 .379-.895Z"/>
-          </svg>
-        <% end %>
-        <% (5 - feedback.rating).times do %>
-          <svg style="inline-size: 1rem; block-size: 1rem;" fill="var(--color-border)" viewBox="0 0 22 20">
-            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.455 8.52l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.545 8.52a1.523 1.523 0 0 0 .379-.895Z"/>
-          </svg>
-        <% end %>
+    <%# Feedback Content - Aligned with the avatar using logical margin %>
+    <div class="mbs-2" style="margin-inline-start: 3.5rem;"> <%# 2.5rem (avatar) + 1rem (gap approximation) %>
+      
+      <%# Badges using the new helper %>
+      <div class="flex items-center flex-wrap gap-half mbe-2">
+        <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
+          <%= feedback.feedback_type.humanize %>
+        </span>
+        <span class="text-xs font-medium pi-2 pbe-half rounded bg-shade text-subtle">
+          <%= feedback.service.humanize %>
+        </span>
       </div>
-    <% end %>
 
-    <%# The comment using your text color utility %>
-    <p class="text-primary"><%= feedback.comment %></p>
+      <%# Rating (if it exists) with inline SVG colors from your variables %>
+      <% if feedback.rating.present? %>
+        <div class="flex items-center gap-half mbe-2">
+          <% feedback.rating.times do %>
+            <svg style="inline-size: 1rem; block-size: 1rem;" fill="var(--amber-400)" viewBox="0 0 22 20">
+              <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.455 8.52l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.545 8.52a1.523 1.523 0 0 0 .379-.895Z"/>
+            </svg>
+          <% end %>
+          <% (5 - feedback.rating).times do %>
+            <svg style="inline-size: 1rem; block-size: 1rem;" fill="var(--color-border)" viewBox="0 0 22 20">
+              <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.455 8.52l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.545 8.52a1.523 1.523 0 0 0 .379-.895Z"/>
+            </svg>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%# The comment using your text color utility %>
+      <p class="text-primary"><%= feedback.comment %></p>
+    </div>
   </div>
 </div>

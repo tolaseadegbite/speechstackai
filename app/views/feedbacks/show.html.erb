@@ -1,6 +1,6 @@
 <% content_for :title, "Feedback ##{@feedback.id}" %>
-<% content_for :page_header do %>
 
+<% content_for :page_header do %>
   <%# Breadcrumb navigation for context %>
   <div class="flex items-center gap-half text-sm">
     <%= link_to "User Feedbacks", feedbacks_path, class: "text-subtle hover:text-primary" %>
@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-  <div class="i-full p-4 mi-auto" style="max-width: 90rem;">
+<div class="i-full p-4 mi-auto" style="max-width: 90rem;">
   
   <%# --- Page Header with Actions --- %>
   <div class="flex justify-between items-center mbe-4">
