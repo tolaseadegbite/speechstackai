@@ -4,7 +4,18 @@ class FeedbacksController < DashboardController
   # GET /feedbacks or /feedbacks.json
   # Prepares a list of all feedbacks for an admin view and a new object for the form.
   def index
-    @pagy, @feedbacks = pagy_keyset(Feedback.includes(:user, :generated_audio_clip).order(created_at: :desc), limit: 21)
+    @feedbacks = Feedback.includes(:user, :generated_audio_clip).order(created_at: :desc)
+
+    if params[:service].present? && Feedback.services.key?(params[:service])
+      @feedbacks = @feedbacks.for_service(params[:service])
+    end
+
+    if params[:feedback_type].present? && Feedback.feedback_types.key?(params[:feedback_type])
+      @feedbacks = @feedbacks.where(feedback_type: params[:feedback_type])
+    end
+
+    # Apply pagination to the filtered results
+    @pagy, @feedbacks = pagy_keyset(@feedbacks, limit: 21)
     @feedback = Feedback.new
   end
 

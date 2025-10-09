@@ -14,4 +14,21 @@ module FeedbacksHelper
 
     "#{base_classes} #{type_classes}"
   end
+
+  # Creates a filter link that merges params and adds an 'active' class if the filter is applied.
+  def filter_link(text, param, value)
+    # Check if the current filter is active
+    is_active = params[param] == value.to_s
+
+    # Define CSS classes
+    base_classes = "btn btn--subtle text-xs"
+    active_class = "bg-primary-container text-primary"
+    inactive_class = "hover:bg-shade"
+    
+    # Combine classes
+    link_classes = "#{base_classes} #{is_active ? active_class : inactive_class}"
+
+    # Generate the link, merging the new filter param with existing ones (except for pagination)
+    link_to text, feedbacks_path(request.query_parameters.except(:page).merge(param => value)), class: link_classes
+  end
 end
