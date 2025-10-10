@@ -1,4 +1,30 @@
 module FeedbacksHelper
+  # Renders a link for a specific filter option in a dropdown menu.
+  # It highlights the item if it's the currently active filter.
+  def dropdown_filter_item(text, param_key, param_value)
+    is_active = params[param_key].to_s == param_value.to_s
+    active_class = is_active ? "bg-primary-container" : ""
+
+    link_to text,
+            feedbacks_path(request.query_parameters.except(:page).merge(param_key => param_value)),
+            class: "btn menu__item w-full text-left #{active_class}",
+            role: "menuitem"
+  end
+
+  # Renders the "All" link for a filter category in a dropdown menu.
+  # It highlights the item if no specific filter is active for that category.
+  def dropdown_all_filter_item(text, param_to_clear)
+    is_active = !params[param_to_clear].present?
+    active_class = is_active ? "bg-primary-container" : ""
+
+    link_to text,
+            feedbacks_path(request.query_parameters.except(:page, param_to_clear)),
+            class: "btn menu__item w-full text-left #{active_class}",
+            role: "menuitem"
+  end
+
+  # This is the helper for your feedback badges. I've included it here
+  # to ensure all necessary helpers are in one place.
   def feedback_badge_classes(feedback_type)
     # Base classes are consistent for all badges
     base_classes = "text-xs font-medium pi-2 pbe-half rounded"

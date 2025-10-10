@@ -1,0 +1,45 @@
+<div class="flex flex-wrap items-center gap-2 mbe-4">
+  <strong class="text-sm font-semibold mr-2">Filter by:</strong>
+  
+  <%# --- Service Dropdown --- %>
+  <div contents data-controller="popover" data-popover-placement-value="bottom-start">
+    <%# This button shows the currently active filter %>
+    <button type="button" class="btn btn--subtle" data-popover-target="trigger" popovertarget="popover-service" aria-haspopup="true">
+      <span>
+        Service: <%= params[:service].present? ? params[:service].humanize : "All" %>
+      </span>
+      <span class="icon icon--chevron-down text-xs"></span>
+    </button>
+
+    <div popover id="popover-service" class="popover" style="--popover-size: 14rem;" data-popover-target="content" role="menu" aria-label="Service Menu">
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+        <%= dropdown_all_filter_item("All Services", :service) %>
+        <hr class="menu__divider">
+        <% Feedback.services.each_key do |service| %>
+          <%= dropdown_filter_item(service.humanize, :service, service) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <%# --- Feedback Type Dropdown --- %>
+  <div contents data-controller="popover" data-popover-placement-value="bottom-start">
+    <%# This button shows the currently active filter %>
+    <button type="button" class="btn btn--subtle" data-popover-target="trigger" popovertarget="popover-type" aria-haspopup="true">
+      <span>
+        Type: <%= params[:feedback_type].present? ? params[:feedback_type].humanize : "All" %>
+      </span>
+      <span class="icon icon--chevron-down text-xs"></span>
+    </button>
+
+    <div popover id="popover-type" class="popover" style="--popover-size: 14rem;" data-popover-target="content" role="menu" aria-label="Type Menu">
+      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
+        <%= dropdown_all_filter_item("All Types", :feedback_type) %>
+        <hr class="menu__divider">
+        <% Feedback.feedback_types.each_key do |type| %>
+          <%= dropdown_filter_item(type.humanize, :feedback_type, type) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
