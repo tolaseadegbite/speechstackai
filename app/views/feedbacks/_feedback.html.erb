@@ -1,4 +1,4 @@
-<div id="<%= dom_id feedback %>" class="p-4 bg-surface border border-main rounded-lg shadow-sm" data-controller="card-click">
+<div id="<%= dom_id feedback %>" class="p-4 bg-shade border border-main rounded-lg shadow-sm" data-controller="card-click">
   <div class="cursor-pointer" data-action="click->card-click#visit" data-card-click-url="<%= feedback_path(feedback) %>">
     <div class="flex justify-between items-start">
       <%# User and Metadata %>
@@ -97,7 +97,7 @@
         <%# Service Filter Link %>
         <%= link_to feedback.service.humanize,
                     feedbacks_path(request.query_parameters.merge(service: feedback.service)),
-                    class: "text-xs font-medium pi-2 pbe-half rounded-sm bg-shade text-subtle",
+                    class: "text-xs font-medium pi-2 pbe-half rounded-sm bg-main text-subtle",
                     data: { action: "click->card-click#prevent" } %>
       </div>
 

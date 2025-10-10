@@ -56,11 +56,11 @@
         <dl class="flex flex-col gap-2 text-sm">
           <div class="flex justify-between items-center">
             <dt class="text-subtle">Type</dt>
-            <dd><span class="<%= feedback_badge_classes(@feedback.feedback_type) %>"><%= @feedback.feedback_type.humanize %></span></dd>
+            <dd><span class="rounded-sm <%= feedback_badge_classes(@feedback.feedback_type) %>"><%= @feedback.feedback_type.humanize %></span></dd>
           </div>
           <div class="flex justify-between items-center">
             <dt class="text-subtle">Service</dt>
-            <dd class="font-medium text-primary"><%= @feedback.service.humanize %></dd>
+            <dd class="text-xs font-medium pi-2 pbe-half bg-shade rounded-sm"><%= @feedback.service.humanize %></dd>
           </div>
           <% if @feedback.rating.present? %>
             <div class="flex justify-between items-center">

@@ -4,18 +4,26 @@ class FeedbacksController < DashboardController
   # GET /feedbacks or /feedbacks.json
   # Prepares a list of all feedbacks for an admin view and a new object for the form.
   def index
-    @feedbacks = Feedback.includes(:user, :generated_audio_clip).order(created_at: :desc)
+    # 1. Initialize Ransack search object with params[:q]
+    @q = Feedback.ransack(params[:q])
 
-    if params[:service].present? && Feedback.services.key?(params[:service])
-      @feedbacks = @feedbacks.for_service(params[:service])
-    end
+    # 2. Get the base filtered query from Ransack.
+    #    Note: No .order() is applied here yet.
+    feedbacks_query = @q.result(distinct: true)
 
-    if params[:feedback_type].present? && Feedback.feedback_types.key?(params[:feedback_type])
-      @feedbacks = @feedbacks.where(feedback_type: params[:feedback_type])
-    end
+    # 3. Fetch users for the filter dropdown.
+    #    This query is now safe because it has no conflicting ORDER BY clause.
+    #    It's also good practice to order the users themselves for the dropdown.
+    @users = User.where(id: feedbacks_query.select(:user_id)).order(email: :asc)
 
-    # Apply pagination to the filtered results
+    # 4. Now, build the final query for displaying the feedbacks by adding
+    #    the includes and the desired display order.
+    @feedbacks = feedbacks_query.includes(:user).order(created_at: :desc)
+
+    # 5. Apply pagination to the final, sorted results.
     @pagy, @feedbacks = pagy_keyset(@feedbacks, limit: 21)
+
+    # 6. Prepare a new Feedback object for a form, if needed.
     @feedback = Feedback.new
   end
 

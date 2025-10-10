@@ -21,4 +21,16 @@ class Feedback < ApplicationRecord
   scope :bug_reports, -> { where(feedback_type: :bug_report) }
   scope :feature_requests, -> { where(feedback_type: :feature_request) }
   scope :for_service, ->(service_name) { where(service: service_name) }
+
+  # Defines which attributes of the Feedback model are searchable.
+  def self.ransackable_attributes(auth_object = nil)
+    # List only the attributes your filter form actually uses.
+    ["comment", "service", "feedback_type", "user_id", "created_at"]
+  end
+
+  # Defines which associations (related models) are searchable.
+  # In your case, you might want to search by user attributes in the future.
+  def self.ransackable_associations(auth_object = nil)
+    ["user"]
+  end
 end

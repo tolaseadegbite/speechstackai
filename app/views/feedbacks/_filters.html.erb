@@ -1,45 +1,71 @@
-<div class="flex flex-wrap items-center gap-2 mbe-4">
-  <strong class="text-sm font-semibold mr-2">Filter by:</strong>
-  
-  <%# --- Service Dropdown --- %>
-  <div contents data-controller="popover" data-popover-placement-value="bottom-start">
-    <%# This button shows the currently active filter %>
-    <button type="button" class="btn btn--subtle" data-popover-target="trigger" popovertarget="popover-service" aria-haspopup="true">
-      <span>
-        Service: <%= params[:service].present? ? params[:service].humanize : "All" %>
-      </span>
-      <span class="icon icon--chevron-down text-xs"></span>
-    </button>
+<div class="mbe-4" data-controller="search-filter">
 
-    <div popover id="popover-service" class="popover" style="--popover-size: 14rem;" data-popover-target="content" role="menu" aria-label="Service Menu">
-      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-        <%= dropdown_all_filter_item("All Services", :service) %>
-        <hr class="menu__divider">
-        <% Feedback.services.each_key do |service| %>
-          <%= dropdown_filter_item(service.humanize, :service, service) %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  
-  <%# --- Feedback Type Dropdown --- %>
-  <div contents data-controller="popover" data-popover-placement-value="bottom-start">
-    <%# This button shows the currently active filter %>
-    <button type="button" class="btn btn--subtle" data-popover-target="trigger" popovertarget="popover-type" aria-haspopup="true">
-      <span>
-        Type: <%= params[:feedback_type].present? ? params[:feedback_type].humanize : "All" %>
-      </span>
-      <span class="icon icon--chevron-down text-xs"></span>
-    </button>
+  <%# Button to toggle the visibility of the filters %>
+  <button type="button" class="btn btn--subtle" data-action="search-filter#toggle">
+    <span class="icon icon--list-filter"></span>
+    <span>Search</span>
+  </button>
 
-    <div popover id="popover-type" class="popover" style="--popover-size: 14rem;" data-popover-target="content" role="menu" aria-label="Type Menu">
-      <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
-        <%= dropdown_all_filter_item("All Types", :feedback_type) %>
-        <hr class="menu__divider">
-        <% Feedback.feedback_types.each_key do |type| %>
-          <%= dropdown_filter_item(type.humanize, :feedback_type, type) %>
-        <% end %>
+  <%# Ransack search and filter form %>
+  <div class="hide mbe-6 p-4 bg-surface rounded-lg" data-search-filter-target="filters">
+    <%= search_form_for @q, url: feedbacks_path, html: { data: { turbo_frame: "feedbacks_list" } } do |f| %>
+      
+      <%# 
+        - Base: 1-column grid for mobile.
+        - Medium screens and up (@md): 6-column grid.
+      %>
+      <div class="grid grid-cols-1 grid-cols-6@md gap-4">
+
+        <%# Filter by Comment Text: Spans the full width on all screen sizes %>
+        <div class="col-span-full">
+          <%= f.label :comment_cont, "Search Comment", class: "block text-sm font-medium mbe-1" %>
+          <%= f.search_field :comment_cont, class: "input i-full", placeholder: "Search feedback comments..." %>
+        </div>
+
+        <%# Filter by Service: On @md screens, takes up 2 of 6 columns %>
+        <div class="col-span-2@md">
+          <%= f.label :service_eq, "Service", class: "block text-sm font-medium mbe-1" %>
+          <%= f.select :service_eq,
+                       Feedback.services.keys.map { |service| [service.humanize, service] },
+                       { include_blank: "All Services" },
+                       { class: "i-full", data: { controller: 'combobox' } } %>
+        </div>
+
+        <%# Filter by Feedback Type: On @md screens, takes up 2 of 6 columns %>
+        <div class="col-span-2@md">
+          <%= f.label :feedback_type_eq, "Feedback Type", class: "block text-sm font-medium mbe-1" %>
+          <%= f.select :feedback_type_eq,
+                       Feedback.feedback_types.keys.map { |type| [type.humanize, type] },
+                       { include_blank: "All Types" },
+                       { class: "i-full", data: { controller: 'combobox' } } %>
+        </div>
+
+        <%# Filter by User: On @md screens, takes up 2 of 6 columns %>
+        <div class="col-span-2@md">
+          <%= f.label :user_id_eq, "User", class: "block text-sm font-medium mbe-1" %>
+          <%= f.collection_select :user_id_eq, @users, :id, :email,
+                                  { include_blank: "All Users" },
+                                  { class: "i-full", data: { controller: 'combobox' } } %>
+        </div>
+
+        <%# Filter by Date From: On @md screens, takes up 3 of 6 columns (half width) %>
+        <div class="col-span-3@md">
+          <%= f.label :created_at_gteq, "Date From", class: "block text-sm font-medium mbe-1" %>
+          <%= f.date_field :created_at_gteq, placeholder: "Pick a date", class: "input", data: { controller: "datepicker" } %>
+        </div>
+
+        <%# Filter by Date To: On @md screens, takes up 3 of 6 columns (half width) %>
+        <div class="col-span-3@md">
+          <%= f.label :created_at_lteq, "Date To", class: "block text-sm font-medium mbe-1" %>
+          <%= f.date_field :created_at_lteq, placeholder: "Pick a date", class: "input", data: { controller: "datepicker" } %>
+        </div>
       </div>
-    </div>
+
+      <%# Form Actions %>
+      <div class="flex justify-end gap-2 mbs-4">
+        <%= link_to "Clear", request.path, class: "btn btn--secondary" %>
+        <%= f.submit "Apply Filters", class: "btn btn--primary" %>
+      </div>
+    <% end %>
   </div>
 </div>

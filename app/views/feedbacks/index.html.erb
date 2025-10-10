@@ -3,7 +3,7 @@
 
 <div class="i-full p-4 mi-auto" style="max-width: 90rem;">
   <div class="flex items-center justify-between mbe-4">
-    <h1 class="font-bold text-2xl">Feedback Submissions</h1>
+    <h1 class="font-bold text-2xl">Feedbacks</h1>
 
     <%= link_to "New Feedback", new_feedback_path,
                 class: "btn btn--primary",
@@ -13,21 +13,22 @@
   <%# --- Render the filters partial --- %>
   <%= render "feedbacks/filters" %>
 
-  <%# ... (the rest of your index view remains exactly the same) ... %>
-  <% if @feedbacks.any? %>
-    <%= content_tag(:"turbo-frame", id: "feedbacks", target: "_top", class: "grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4") do %>
-      <%= render partial: "feedbacks/feedback", collection: @feedbacks, as: :feedback %>
-    <% end %>
+  <%= turbo_frame_tag "feedbacks_list" do %>
+    <% if @feedbacks.any? %>
+      <%= content_tag(:"turbo-frame", id: "feedbacks", target: "_top", class: "grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4") do %>
+        <%= render partial: "feedbacks/feedback", collection: @feedbacks, as: :feedback %>
+      <% end %>
 
-    <%= render_load_more(@pagy) %>
-    
-  <% else %>
-      <div class="text-center p-8 bg-surface border border-dashed rounded-lg">
-        <h3 class="text-lg font-medium">No Matching Feedback</h3>
-        <p class="text-subtle mt-1">
-          No feedback submissions match the selected filters.
-          <%= link_to "Clear all filters", feedbacks_path, class: "text-primary font-semibold underline" %>
-        </p>
-      </div>
+      <%= render_load_more(@pagy) %>
+      
+    <% else %>
+        <div class="text-center p-8 bg-surface border border-dashed rounded-lg">
+          <h3 class="text-lg font-medium">No Matching Feedback</h3>
+          <p class="text-subtle mt-1">
+            No feedback submissions match the selected filters.
+            <%= link_to "Clear all filters", feedbacks_path, class: "text-primary font-semibold underline" %>
+          </p>
+        </div>
+    <% end %>
   <% end %>
 </div>

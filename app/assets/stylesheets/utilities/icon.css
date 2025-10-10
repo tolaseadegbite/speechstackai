@@ -42,6 +42,7 @@ img.icon {
 * Showcase icons
 *****************************************************************/
 .icon--circle-alert { --svg: url("circle-alert.svg"); }
+.icon--list-filter { --svg: url("list-filter.svg"); }
 .icon--grip-vertical { --svg: url("grip-vertical.svg"); }
 .icon--circle-plus { --svg: url("circle-plus.svg"); }
 .icon--calendar { --svg: url("calendar.svg"); }
