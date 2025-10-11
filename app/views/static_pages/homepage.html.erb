@@ -1,50 +1,50 @@
-<div>
-  <h1 class="font-semibold text-4xl">Hello, Tolase</h1>
-  <p>Find me in app/views/static_pages/homepage.html.erb</p>
-</div>
+<% content_for :title, "Text to Speech for African Languages" %>
 
-<button class="btn rounded-lg bg-rose-500 hover:bg-rose-600 text-white hover:text-gray-200 mbs-5 mbe-10">
-  Hover Me
-</button>
+<section class="header flex flex-col gap-8 items-center text-center" style="margin-bottom: 5vh; margin-top: 5vh">
+  
+  <h1 class="font-bold" style="font-size: 5.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Give Your Content an <span class="text-green-500">Authentic African Voice</span></h1>
+  <p class="text-subtle text-lg" style="width: 40vw">Natural-sounding Text-to-Speech for Yoruba, Twi, Hausa, Ewe, and Lingala. Perfect for news, narration, and customer support.</p>
 
-<div class="grid grid-cols-1 grid-cols-2@md grid-cols-4@lg gap-4 gap">
-  <!-- Card 1 -->
-  <div class="p-4 bg-shade rounded-md shadow-sm">Card 1</div>
-  
-  <!-- Card 2 -->
-  <div class="p-4 bg-shade rounded-md shadow-sm">Card 2</div>
-  
-  <!-- Card 3 -->
-  <div class="p-4 bg-shade rounded-md shadow-sm">Card 3</div>
-  
-  <!-- Card 4 -->
-  <div class="p-4 bg-shade rounded-md shadow-sm">Card 4</div>
-  
-  <!-- ... more cards -->
-</div>
+  <div class="flex items-center gap-4 align-center justify-center">
+    <%= link_to "Generate speech", text_to_speech_path, class: "btn btn--primary" %>
+    <%= link_to "See how it works", "#", class: "btn" %>
+  </div>
 
-<div class="mbs-10">
-  <%= form_with url: nil, class: "card flex flex-col gap" do |form| %>
-    <div class="flex flex-col">
-      <h3 class="font-semibold leading-none mbe-1">Create project</h3>
-      <p class="text-sm text-subtle">Deploy your new project in one-click.</p>
-    </div>
+  <div class="header-playground border rounded-xl border-subtle pbe-8" data-controller="sample-text form-submit voice-selector character-counter">
+    <div class="rounded-lg">
+      <%= render "generated_audio_clips/partials/text_to_speech/sample_texts" %>
 
-    <div class="flex flex-col gap mb-2">
-      <div class="flex flex-col gap-half">
-        <%= form.label :name, class: "text-sm font-medium leading-none" %>
-        <%= form.text_field :name, placeholder: "Name of your project", class: "input" %>
+      <div>
+        <%= text_area_tag 'generated_audio_clip[text]', nil,
+            form: "text_to_speech_form",
+            placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
+            class: "input tts-input responsive-padding border-0 bg-shade text-lg",
+            style: "--input-rows: 3lh; outline: 0; resize: none; max-width: 58rem; margin-bottom: 2dvh",
+            maxlength: 5000,
+            data: { 
+              sample_text_target: "output",
+              action: "input->sample-text#handleInput input->character-counter#update",
+              character_counter_target: "input" 
+            } %>
       </div>
-
-      <div class="flex flex-col gap-half">
-        <%= form.label :framework, class: "text-sm font-medium leading-none" %>
-        <%= form.select :framework, [["Ruby on Rails", "ruby"], ["Laravel", "laravel"], ["Next", "next"]], {}, class: "input" %>
+      
+      <div class="flex items-center justify-between mi-auto" style="max-width: 58rem">
+        <%= link_to "Akinolu", "#", class: "btn" %>
+        <%= link_to "#" do %>
+          <button type="button" class="btn btn--icon btn--positive p-5 rounded-full">
+            <span class="icon icon--play" aria-hidden="true"></span>
+          </button>
+        <% end %>
       </div>
     </div>
+  </div>
 
-    <div class="flex items-center justify-between">
-      <button type="reset" class="btn">Reset</button>
-      <%= form.submit "Destroy", class: "btn btn--primary" %>
-    </div>
-  <% end %>
-</div>
+</section>
+
+<section class="header flex flex-col gap-2 items-center text-center" style="margin-bottom: 10dvh; margin-top: 10dvh">
+
+  <h1 class="font-bold" style="font-size: 3.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Generate speech in minutes</span></h1>
+  <p class="text-subtle text-lg" style="width: 40vw">Our models generates naturally speaking speech</p>
+
+  <%= image_tag("image_home_1.png", class: "rounded-3xl") %>
+</section>
