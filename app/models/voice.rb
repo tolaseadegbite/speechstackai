@@ -13,7 +13,13 @@ class Voice < ApplicationRecord
     "Male": "Male"
   }
 
+  enum :visibility, {
+    public_voice: 0,
+    private_voice: 1
+  }
+
   validates :gender, presence: true, inclusion: { in: genders.keys }
+  validates :visibility, presence: true, inclusion: { in: visibilities.keys }
 
   private
 

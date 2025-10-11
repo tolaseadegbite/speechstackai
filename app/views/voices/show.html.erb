@@ -1,10 +1,105 @@
-<%= render @voice %>
-<% content_for :page_header, @voice.name %>
+<% content_for :title, "Voices - #{@voice.name}" %>
 
-<div class="p-4">
-  <div class="flex flex-wrap items-center gap mbs-6" style="--row-gap: .5rem">
-    <%= link_to "Edit this voice", edit_voice_path(@voice), class: "btn" %>
-    <%= link_to "Back to voices", voices_path, class: "btn" %>
-    <%= button_to "Destroy this voice", @voice, method: :delete, class: "btn" %>
+<% content_for :page_header do %>
+  <%# Breadcrumb navigation for context %>
+  <div class="flex items-center gap-half text-sm">
+    <%= link_to "Voices", voices_path, class: "text-subtle hover:text-primary" %>
+    <span class="text-subtle">/</span>
+    <span class="text-primary">Voice ##<%= @voice.name %></span>
   </div>
+<% end %>
+
+<%# Main container for the voice details, styled as a spacious card %>
+<div class="i-full p-4 mi-auto" style="max-width: 90rem;">
+
+  <%# Top section: combines the swatch, title, description, and the main play button %>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+    
+    <%# Voice Swatch (Gradient Circle) - larger for emphasis on the show page %>
+    <span class="voice-swatch shrink-0" style="--icon-size: 4.5rem; <%= voice_gradient_style(@voice) %>" aria-hidden="true"></span>
+
+    <%# Main Info Column %>
+    <div class="flex-grow">
+      <%# Header row with name and the play button %>
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex gap-2 items-center">
+          <h1 class="text-2xl font-bold"><%= @voice.name %></h1>
+          <div class="badge badge--positive">
+            <span><%= @voice.visibility.humanize %></span>
+          </div>
+        </div>
+
+        <%# Prominent Play/Listen Button %>
+        <% if @voice.s3_key.present? %>
+          <button type="button" class="btn btn--primary"
+                  data-action="click->audio-fetcher#fetch"
+                  data-audio-fetcher-url-param="<%= audio_url_voice_path(@voice) %>"
+                  data-audio-fetcher-title-param="<%= @voice.name %>"
+                  data-audio-fetcher-author-param="<%= @voice.user&.name || 'Community Voice' %>"
+                  data-audio-fetcher-filename-param="<%= "#{@voice.name.parameterize}.mp3" %>"
+                  data-audio-fetcher-gradient-start-param="<%= @voice.gradient_start %>"
+                  data-audio-fetcher-gradient-end-param="<%= @voice.gradient_end %>"
+                  data-audio-fetcher-created-at-param="<%= @voice.created_at.strftime('%-d/%-m/%Y') %>">
+            
+            <div data-play-icon-url class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+            </div>
+            <span class="">Sample</span>
+          </button>
+        <% end %>
+      </div>
+
+      <%# Full Description %>
+      <p class="text-lg text-subtle mbs-2"><%= @voice.description %></p>
+    </div>
+  </div>
+
+  <%# A visual divider before the metadata section %>
+  <hr class="border-base mbs-6 mbe-6">
+
+  <%# Metadata Section: displays key details in a clean grid %>
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <div>
+      <h3 class="text-sm font-semibold tracking-wider text-soft uppercase mbe-2">Languages</h3>
+      <% if @voice.languages.any? %>
+        <p class="text-base"><%= @voice.languages.map(&:name).join(', ') %></p>
+      <% else %>
+        <p class="text-base text-subtle">Not specified</p>
+      <% end %>
+    </div>
+    <div>
+      <h3 class="text-sm font-semibold tracking-wider text-soft uppercase mbe-2">Gender</h3>
+      <p class="text-base"><%= @voice.gender.humanize %></p>
+    </div>
+    <div>
+      <h3 class="text-sm font-semibold tracking-wider text-soft uppercase mbe-2">Created By</h3>
+      <p class="text-base"><%= @voice.user&.email || 'N/A' %></p>
+    </div>
+  </div>
+
+  <%# Page Actions: Navigation and admin controls are placed below the main card %>
+  <div class="flex items-center justify-between gap-4 mbs-6">
+    <%= link_to "Back to all voices", voices_path, class: "btn btn--subtle" %>
+
+    <%# Admin-only actions %>
+    <% if current_user.admin? %>
+      <div class="flex items-center gap-2">
+        <%# Edit button that opens in a modal %>
+        <%= link_to "Edit", edit_voice_path(@voice),
+                    class: "btn btn--secondary",
+                    data: { turbo_frame: "modal" } %>
+
+        <%# Delete button with the same confirmation modal dialog from the partial %>
+        <% delete_trigger = button_tag "Delete", type: "button", class: "btn btn--negative", data: { action: "dialog#showModal" } %>
+        <%= modal_dialog delete_trigger, title: "Delete '#{@voice.name}'?" do %>
+          <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+          <div class="flex items-center justify-end gap">
+            <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+            <%= button_to "Continue", @voice, method: :delete, class: "btn btn--negative" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  
 </div>

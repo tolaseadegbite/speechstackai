@@ -17,6 +17,11 @@
   </div>
 
   <div class="flex flex-col items-start gap-half mbe-4">
+    <%= form.label :visibility, class: "text-sm font-medium leading-none" %>
+    <%= form.select :visibility, Voice.visibilities.keys.map { |v| [v.humanize, v] }, { prompt: "Select visibility" }, class: "i-full", data: { controller: "combobox" } %>
+  </div>
+
+  <div class="flex flex-col items-start gap-half mbe-4">
     <%= form.label :description, class: "text-sm font-medium leading-none" %>
     <%= form.text_area :description, class: "input" %>
   </div>

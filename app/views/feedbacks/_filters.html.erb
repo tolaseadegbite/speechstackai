@@ -42,13 +42,15 @@
                        { autocomplete: "off", class: "i-full", data: { controller: 'combobox' } } %>
         </div>
         
-        <%# Filter by User: Takes up 3 of 12 columns on @md screens %>
-        <div class="col-span-3@md">
-          <%= f.label :user_id_eq, "User", class: "block text-sm font-medium mbe-1" %>
-          <%= f.collection_select :user_id_eq, @users, :id, :email,
-                                  { include_blank: "All Users" },
-                                  { autocomplete: "off", class: "i-full", data: { controller: 'combobox' } } %>
-        </div>
+        <% if current_user.admin? %>
+          <%# Filter by User: Takes up 3 of 12 columns on @md screens %>
+          <div class="col-span-3@md">
+            <%= f.label :user_id_eq, "User", class: "block text-sm font-medium mbe-1" %>
+            <%= f.collection_select :user_id_eq, @users, :id, :email,
+                                    { include_blank: "All Users" },
+                                    { autocomplete: "off", class: "i-full", data: { controller: 'combobox' } } %>
+          </div>
+        <% end %>
 
         <%# Filter by Rating: Takes up 3 of 12 columns on @md screens %>
         <div class="col-span-3@md">
