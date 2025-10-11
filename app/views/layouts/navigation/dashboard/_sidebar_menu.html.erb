@@ -59,11 +59,13 @@
 
   <%# Theme switcher popover %>
   <div class="mbs-auto flex flex-col">
-    <%= link_to feedbacks_path, class: "btn sidebar-menu__button mbe-1", aria: (current_page?(feedbacks_path) ? { current: "page" } : {}) do %>
-      <span class="icon icon--message-square-text" aria-hidden="true"></span>
-      Feedbacks
+    <% if current_user.admin? %>
+      <%= link_to feedbacks_path, class: "btn sidebar-menu__button mbe-1", aria: (current_page?(feedbacks_path) ? { current: "page" } : {}) do %>
+        <span class="icon icon--message-square-text" aria-hidden="true"></span>
+        Feedbacks
+      <% end %>
     <% end %>
-
+    
     <div contents 
          data-controller="popover" 
          data-popover-placement-value="right-center" 

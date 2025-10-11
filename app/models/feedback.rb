@@ -25,7 +25,7 @@ class Feedback < ApplicationRecord
   # Defines which attributes of the Feedback model are searchable.
   def self.ransackable_attributes(auth_object = nil)
     # List only the attributes your filter form actually uses.
-    ["comment", "service", "feedback_type", "user_id", "created_at"]
+    ["comment", "service", "feedback_type", "rating", "user_id", "created_at"]
   end
 
   # Defines which associations (related models) are searchable.
