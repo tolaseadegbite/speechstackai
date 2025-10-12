@@ -1,50 +1,154 @@
 <% content_for :title, "Text to Speech for African Languages" %>
 
-<section class="header flex flex-col gap-8 items-center text-center" style="margin-bottom: 5vh; margin-top: 5vh">
+<section class="header flex flex-col gap-8 items-center text-center mi-auto" style="margin-bottom: 10dvh; margin-top: 5dvh; max-width: 58rem">
   
-  <h1 class="font-bold" style="font-size: 5.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Give Your Content an <span class="text-green-500">Authentic African Voice</span></h1>
-  <p class="text-subtle text-lg" style="width: 40vw">Natural-sounding Text-to-Speech for Yoruba, Twi, Hausa, Ewe, and Lingala. Perfect for news, narration, and customer support.</p>
+  <h1 class="font-bold" style="font-size: 5.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Give your content an <span class="text-green-600">authentic african voice</span></h1>
+  <p class="text-subtle text-lg" style="max-width: 40rem">Natural-sounding Text-to-Speech for Yoruba, Twi, Hausa, Ewe, and Lingala. Perfect for news, narration, and customer support.</p>
 
   <div class="flex items-center gap-4 align-center justify-center">
     <%= link_to "Generate speech", text_to_speech_path, class: "btn btn--primary" %>
     <%= link_to "See how it works", "#", class: "btn" %>
   </div>
 
-  <div class="header-playground border rounded-xl border-subtle pbe-8" data-controller="sample-text form-submit voice-selector character-counter">
-    <div class="rounded-lg">
-      <%= render "generated_audio_clips/partials/text_to_speech/sample_texts" %>
-
+  <div class="header-playground" data-controller="sample-text form-submit voice-selector character-counter">
+    <div class="flex flex-wrap gap-8 justify-center rounded-lg p-5 mbs-10">
       <div>
-        <%= text_area_tag 'generated_audio_clip[text]', nil,
-            form: "text_to_speech_form",
-            placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
-            class: "input tts-input responsive-padding border-0 bg-shade text-lg",
-            style: "--input-rows: 3lh; outline: 0; resize: none; max-width: 58rem; margin-bottom: 2dvh",
-            maxlength: 5000,
-            data: { 
-              sample_text_target: "output",
-              action: "input->sample-text#handleInput input->character-counter#update",
-              character_counter_target: "input" 
-            } %>
+        <%= image_tag("landing page/woman_1.jpg", class: "rounded-full border-4 border-orange-500", size: "100") %>
       </div>
-      
-      <div class="flex items-center justify-between mi-auto" style="max-width: 58rem">
-        <%= link_to "Akinolu", "#", class: "btn" %>
-        <%= link_to "#" do %>
-          <button type="button" class="btn btn--icon btn--positive p-5 rounded-full">
-            <span class="icon icon--play" aria-hidden="true"></span>
-          </button>
-        <% end %>
+      <div>
+        <%= image_tag("landing page/man_1.jpg", class: "rounded-full border-4 border-green-500 mbs-10", size: "100") %>
+      </div>
+      <div>
+        <%= image_tag("landing page/woman_2.jpg", class: "rounded-full border-4 border-yellow-500", size: "100") %>
+      </div>
+      <div>
+        <%= image_tag("landing page/woman_1.jpg", class: "rounded-full border-4 border-red-500 mbs-10", size: "100") %>
+      </div>
+      <div>
+        <%= image_tag("landing page/man_1.jpg", class: "rounded-full border-4 border-teal-500", size: "100") %>
+      </div>
+      <div>
+        <%= image_tag("landing page/woman_2.jpg", class: "rounded-full border-4 border-blue-500 mbs-10", size: "100") %>
       </div>
     </div>
   </div>
 
 </section>
 
-<section class="header flex flex-col gap-2 items-center text-center" style="margin-bottom: 10dvh; margin-top: 10dvh">
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+  <div class="flex flex-col gap-2 items-center">
+    <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">See it in action</span>
+    <h1 class="font-bold" style="font-size: 3.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Generate speech in minutes</span></h1>
+    <p class="text-subtle text-lg" style="max-width: 40rem">Our models generates naturally speaking speech</p>
+  </div>
 
-  <h1 class="font-bold" style="font-size: 3.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Generate speech in minutes</span></h1>
-  <p class="text-subtle text-lg" style="width: 40vw">Our models generates naturally speaking speech</p>
+  <%= image_tag("landing page/image_home_1.png", class: "rounded-3xl border p-3 shadow-lg") %>
 
-  <%= image_tag("image_home_1.png", class: "rounded-3xl") %>
+  <div class="flex flex-col gap-2">
+    <%= link_to "Try it yourself", text_to_speech_path, class: "btn btn--primary" %>
+    <p class="text-subtle text-sm">Start with 5 free credits</p>
+  </div>
+</section>
+
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+  <div class="flex flex-col gap-2 items-center">
+    <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
+    <h2 class="font-bold" style="font-size: 3.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How it works</span></h2>
+    <p class="text-subtle text-lg" style="max-width: 40rem">A straightforward process without technical complexities.</p>
+  </div>
+
+  <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4">
+    <div class="card flex flex-col gap border shadow-lg">
+      <h2 class="font-semibold text-xl">1. Input Text & Select Voice</h2>
+      <p class="text-subtle text-sm">Enter your text, choose an authentic African voice that suits your content, and click the submit button.</p>
+    </div>
+
+    <div class="card flex flex-col gap border shadow-lg">
+      <h2 class="font-semibold text-xl">2. Play and Download Audio</h2>
+      <p class="text-subtle text-sm">Once the speech is generated, you can listen to it and download the audio file for your use.</p>
+    </div>
+
+    <div class="card flex flex-col gap border shadow-lg">
+      <h2 class="font-semibold text-xl">3. No Subscriptions</h2>
+      <p class="text-subtle text-sm">Pay-as-you-go pricing model with no subscriptions or hidden fees. Purchase credits as needed.</p>
+    </div>
+  </div>
+    
+</section>
+
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+  <div class="flex flex-col gap-2 items-center">
+    <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
+    <h2 class="font-bold" style="font-size: 4.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How much does it cost?</span></h2>
+    <p class="text-subtle text-lg" style="max-width: 40rem">The credits consumed depends on your character count. Buy credits when you need them - no monthly fees.</p>
+  </div>
+
+  <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4 i-full">
+    <div class="card flex flex-col gap border shadow-lg">
+      <h2 class="font-semibold text-xl">5 Credits</h2>
+      <p class="text-subtle text-sm">Good for getting started</p>
+      <h2 class="font-bold text-4xl">$4.99</h2>
+      <p class="text-subtle text-sm">$1 per 100 characters</p>
+      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn btn--primary" %>
+    </div>
+    <div class="card flex flex-col gap border shadow-lg">
+      <h2 class="font-semibold text-xl">15 Credits</h2>
+      <p class="text-subtle text-sm">Good for getting started</p>
+      <h2 class="font-bold text-4xl">$4.99</h2>
+      <p class="text-subtle text-sm">$1 per 100 characters</p>
+      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn btn--primary" %>
+    </div>
+    <div class="card flex flex-col gap border shadow-lg">
+      <h2 class="font-semibold text-xl">50 Credits</h2>
+      <p class="text-subtle text-sm">Good for getting started</p>
+      <h2 class="font-bold text-4xl">$4.99</h2>
+      <p class="text-subtle text-sm">$1 per 100 characters</p>
+      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn btn--primary" %>
+    </div>
+  </div>
+    
+</section>
+
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+  <div class="flex flex-col gap-2 items-center">
+    <h2 class="font-bold" style="font-size: 4.5vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">FAQs</span></h2>
+    <p class="text-subtle text-lg" style="max-width: 40rem">How the TTS service works and what you can expect.</p>
+  </div>
+
+  <div class="accordion i-full">
+    <details name="my_accordion">
+      <summary>Product Information</summary>
+      <p class="pbe-4">
+        Our flagship product combines cutting-edge technology with sleek
+        design. Built with premium materials, it offers unparalleled
+        performance and reliability.
+        <br><br>
+        Key features include advanced processing capabilities,
+        and an intuitive user interface designed for both beginners and experts.
+      </p>
+    </details>
+    <details name="my_accordion">
+      <summary>Shipping Details</summary>
+      <p class="pbe-4">
+        We offer worldwide shipping through trusted courier partners.
+        Standard delivery takes 3-5 business days, while express shipping
+        ensures delivery within 1-2 business days.
+        <br><br>
+        All orders are carefully packaged and fully insured. Track your
+        shipment in real-time through our dedicated tracking portal.
+      </p>
+    </details>
+    <details name="my_accordion">
+      <summary>Return Policy</summary>
+      <p class="pbe-4">
+        We stand behind our products with a comprehensive 30-day return
+        policy. If you&apos;re not completely satisfied, simply return the
+        item in its original condition.
+        <br><br>
+        Our hassle-free return process includes free return shipping and
+        full refunds processed within 48 hours of receiving the returned item.
+      </p>
+    </details>
+  </div>
+    
 </section>
