@@ -1,8 +1,8 @@
 <% content_for :title, "Text to Speech for African Languages" %>
 
-<section class="header flex flex-col gap-8 items-center mi-auto" style="margin-bottom: 10dvh; margin-top: 5dvh;">
+<section class="header flex flex-col gap-8 items-center mi-auto" style="margin-bottom: 5dvh; margin-top: 5dvh;">
   
-  <h1 class="font-bold text-center" style="font-size: 5.8vh; text-shadow: horizontal-offset vertical-offset blur-radius black; max-width: 70rem;">Give your content an <span class="text-green-600">authentic african voice</span></h1>
+  <h1 class="font-bold text-center" style="font-size: 6vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Give your content <span class="text-green-600">an authentic african voice</span></h1>
   <p class="text-subtle text-lg" style="max-width: 40rem">Natural-sounding Text-to-Speech for Yoruba, Asante-Twi, Akwapem-Twi, Hausa, Ewe, and Lingala. Perfect for news, narration, and customer support.</p>
 
   <div class="flex items-center gap-4 align-center justify-center">
@@ -115,7 +115,7 @@
     <p class="text-subtle text-lg" style="max-width: 40rem">Our models generates naturally speaking speech</p>
   </div>
 
-  <%= image_tag("landing page/image_home_1.png", class: "rounded-3xl border p-3 shadow-lg") %>
+  <%= image_tag("landing page/image_home.png", class: "rounded-3xl border p-3 shadow-lg") %>
 
   <div class="flex flex-col gap-4">
     <%= link_to "Try it yourself", text_to_speech_path, class: "btn btn--primary" %>
@@ -123,7 +123,7 @@
   </div>
 </section>
 
-<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;">
   <div class="flex flex-col gap-2 items-center">
     <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
     <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How it works</span></h2>
@@ -132,24 +132,36 @@
 
   <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4">
     <div class="card flex flex-col gap border shadow-lg">
-      <h2 class="font-semibold text-xl">1. Input Text & Select Voice</h2>
+      <div class="flex items-center gap justify-center">
+        <span class="icon icon--book-open"></span>
+        <h2 class="font-semibold text-xl">Input Text & Select Voice</h2>
+      </div>
+      
       <p class="text-subtle text-sm">Enter your text, choose an authentic African voice that suits your content, and click the submit button.</p>
     </div>
 
     <div class="card flex flex-col gap border shadow-lg">
-      <h2 class="font-semibold text-xl">2. Play and Download Audio</h2>
+      <div class="flex items-center gap justify-center">
+        <span class="icon icon--play"></span>
+        <h2 class="font-semibold text-xl">Play and Download Audio</h2>
+      </div>
+
       <p class="text-subtle text-sm">Once the speech is generated, you can listen to it and download the audio file for your use.</p>
     </div>
 
     <div class="card flex flex-col gap border shadow-lg">
-      <h2 class="font-semibold text-xl">3. No Subscriptions</h2>
+      <div class="flex items-center gap justify-center">
+        <span class="icon icon--x"></span>
+        <h2 class="font-semibold text-xl">No Subscriptions</h2>
+      </div>
+
       <p class="text-subtle text-sm">Pay-as-you-go pricing model with no subscriptions or hidden fees. Purchase credits as needed.</p>
     </div>
   </div>
     
 </section>
 
-<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;">
   <div class="flex flex-col gap-2 items-center">
     <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
     <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How much does it cost?</span></h2>
@@ -157,32 +169,52 @@
   </div>
 
   <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4 i-full">
-    <div class="card flex flex-col gap border shadow-lg bg--primary">
-      <h2 class="font-semibold text-xl">5 Credits</h2>
-      <p class="text-subtle text-sm">Good for getting started</p>
-      <h2 class="font-bold text-4xl">$4.99</h2>
-      <p class="text-subtle text-sm">$1 per 100 characters</p>
-      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn" %>
-    </div>
-    <div class="card flex flex-col gap border shadow-lg bg--primary">
-      <h2 class="font-semibold text-xl">15 Credits</h2>
-      <p class="text-subtle text-sm">Good for getting started</p>
-      <h2 class="font-bold text-4xl">$4.99</h2>
-      <p class="text-subtle text-sm">$1 per 100 characters</p>
-      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn" %>
-    </div>
-    <div class="card flex flex-col gap border shadow-lg bg-primary">
-      <h2 class="font-semibold text-xl">50 Credits</h2>
-      <p class="text-subtle text-sm">Good for getting started</p>
-      <h2 class="font-bold text-4xl">$4.99</h2>
-      <p class="text-subtle text-sm">$1 per 100 characters</p>
-      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn" %>
-    </div>
-  </div>
     
+    <%# --- CARD 1: The Starter --- %>
+    <div class="card flex flex-col gap-4 text-center border shadow-lg bg--primary p-6">
+      <h2 class="font-semibold text-xl">Starter</h2>
+      <p class="text-subtle text-sm">Perfect for short projects</p>
+      <h3 class="font-bold text-4xl">$4.99</h3>
+      <div class="text-center mbe-2">
+        <p class="font-semibold">5 Credits</p>
+        <p class="text-subtle text-xs">Approx. 3 minutes of audio</p>
+      </div>
+      <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn btn--primary" %>
+    </div>
+
+    <%# --- CARD 2: The Most Popular (with visual highlight) --- %>
+    <div class="card flex flex-col gap-4 text-center border-2 border-green-500 shadow-xl bg-primary p-6 relative">
+      <div class="absolute">
+        <span class="badge badge--primary rounded-full text-xs pi-4 pb-1 border border-gray-500">Most Popular</span>
+      </div>
+      <h2 class="font-semibold text-xl">Creator</h2>
+      <p class="text-subtle text-sm">Our best value for regular use</p>
+      <h3 class="font-bold text-4xl">$9.99</h3>
+      <div class="text-center mbe-2">
+        <p class="font-semibold">15 Credits</p>
+        <p class="font-semibold text-green-400 mbe-1">Save 33% per credit</p>
+        <p class="text-subtle text-xs">Approx. 10 minutes of audio</p>
+      </div>
+      <%= link_to "Buy 15 credits", text_to_speech_path, class: "btn btn--positive" %> <%# Use a different button color to draw attention %>
+    </div>
+
+    <%# --- CARD 3: The Power User --- %>
+    <div class="card flex flex-col gap-4 text-center border shadow-lg bg--primary p-6">
+      <h2 class="font-semibold text-xl">Pro</h2>
+      <p class="text-subtle text-sm">For narration & large projects</p>
+      <h3 class="font-bold text-4xl">$24.99</h3>
+      <div class="text-center mbe-2">
+        <p class="font-semibold">50 Credits</p>
+        <p class="font-semibold text-green-400 mbe-1">Best Value - Save 50%!</p>
+        <p class="text-subtle text-xs">Approx. 35 minutes of audio</p>
+      </div>
+      <%= link_to "Buy 50 credits", text_to_speech_path, class: "btn btn--primary" %>
+    </div>
+
+  </div>
 </section>
 
-<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+<section class="flex flex-col gap-10 items-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
   <div class="flex flex-col gap-2 items-center">
     <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">FAQs</span></h2>
     <p class="text-subtle text-lg" style="max-width: 40rem">How the TTS service works and what you can expect.</p>
@@ -190,36 +222,33 @@
 
   <div class="accordion i-full">
     <details name="my_accordion">
-      <summary>Product Information</summary>
-      <p class="pbe-4">
-        Our flagship product combines cutting-edge technology with sleek
-        design. Built with premium materials, it offers unparalleled
-        performance and reliability.
-        <br><br>
-        Key features include advanced processing capabilities,
-        and an intuitive user interface designed for both beginners and experts.
+      <summary class="cursor-pointer font-medium">What languages and dialects do you support?</summary>
+      <p class="pbe-4 text-subtle">
+        We specialize in providing high-quality, natural-sounding voices for a growing list of African languages. Currently, we offer support for Yoruba, Asante-Twi, Akwapem-Twi, Hausa, Ewe, and Lingala. We are continuously training new models and plan to expand our language library in the future.
       </p>
     </details>
     <details name="my_accordion">
-      <summary>Shipping Details</summary>
-      <p class="pbe-4">
-        We offer worldwide shipping through trusted courier partners.
-        Standard delivery takes 3-5 business days, while express shipping
-        ensures delivery within 1-2 business days.
-        <br><br>
-        All orders are carefully packaged and fully insured. Track your
-        shipment in real-time through our dedicated tracking portal.
+      <summary class="cursor-pointer font-medium">How does the credit system work?</summary>
+      <p class="pbe-4 text-subtle">
+        Our pricing is a simple pay-as-you-go model. You purchase credits, and those credits are used to generate audio. The number of credits consumed depends on the number of characters in your text. This means you only pay for what you use, with no monthly subscriptions, hidden fees, or recurring charges. Your credits never expire.
       </p>
     </details>
     <details name="my_accordion">
-      <summary>Return Policy</summary>
-      <p class="pbe-4">
-        We stand behind our products with a comprehensive 30-day return
-        policy. If you&apos;re not completely satisfied, simply return the
-        item in its original condition.
-        <br><br>
-        Our hassle-free return process includes free return shipping and
-        full refunds processed within 48 hours of receiving the returned item.
+      <summary class="cursor-pointer font-medium">Can I use the generated audio for commercial purposes?</summary>
+      <p class="pbe-4 text-subtle">
+        Yes, absolutely. Once you generate an audio file, you own the rights to it. You are free to use the audio for any personal or commercial project, including YouTube videos, podcasts, advertisements, e-learning courses, and customer support systems without any additional fees or royalties.
+      </p>
+    </details>
+    <details name="my_accordion">
+      <summary class="cursor-pointer font-medium">What audio format can I download?</summary>
+      <p class="pbe-4 text-subtle">
+        All generated audio is provided in a high-quality MP3 format. This format offers an excellent balance of quality and file size, making it compatible with virtually all devices, software, and online platforms.
+      </p>
+    </details>
+    <details name="my_accordion">
+      <summary class="cursor-pointer font-medium">How do I get started?</summary>
+      <p class="pbe-4 text-subtle">
+        Getting started is easy! Simply sign up for a free account to receive 5 complimentary credits. You can use these credits immediately to generate your first audio clips and test our voices. If you like the results, you can purchase more credits from our pricing section.
       </p>
     </details>
   </div>
