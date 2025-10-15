@@ -6,8 +6,11 @@
   <p class="text-subtle text-lg" style="max-width: 40rem">Natural-sounding Text-to-Speech for Yoruba, Asante-Twi, Akwapem-Twi, Hausa, Ewe, and Lingala. Perfect for news, narration, and customer support.</p>
 
   <div class="flex items-center gap-4 align-center justify-center">
-    <%= link_to "Generate speech", text_to_speech_path, class: "btn btn--primary" %>
-    <%= link_to "See how it works", "#", class: "btn" %>
+    <%= link_to text_to_speech_path, class: "btn btn--positive text-lg" do %>
+      Try it for free
+      <span class="icon icon--move-right p-3"></span>
+    <% end %>
+    <%= link_to "See how it works", "#", class: "btn btn--secondary border text-lg" %>
   </div>
 
   <div class="header-playground mb-5">
@@ -108,7 +111,7 @@
 
 </section>
 
-<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 5rem; max-width: 58rem">
   <div class="flex flex-col gap-2 items-center">
     <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">See it in action</span>
     <h1 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Generate speech in minutes</span></h1>
@@ -161,7 +164,7 @@
     
 </section>
 
-<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;">
+<section class="flex flex-col gap-10 items-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;">
   <div class="flex flex-col gap-2 items-center">
     <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
     <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How much does it cost?</span></h2>
@@ -171,44 +174,118 @@
   <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4 i-full">
     
     <%# --- CARD 1: The Starter --- %>
-    <div class="card flex flex-col gap-4 text-center border shadow-lg bg--primary p-6">
-      <h2 class="font-semibold text-xl">Starter</h2>
-      <p class="text-subtle text-sm">Perfect for short projects</p>
-      <h3 class="font-bold text-4xl">$4.99</h3>
-      <div class="text-center mbe-2">
-        <p class="font-semibold">5 Credits</p>
-        <p class="text-subtle text-xs">Approx. 3 minutes of audio</p>
+    <div class="card flex flex-col gap-4 border shadow-xl bg-primary pb-6 pi-3 relative">
+      <div class="flex items-center gap-2">
+        <h2 class="font-semibold text-3xl">Starter</h2>
       </div>
+      <p class="text-subtle">Perfect for short projects</p>
+      <h3 class="font-bold text-4xl">$4.99</h3>
+      
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class=""><span class="text-2xl font-semibold">5</span> Credits</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Download audio files</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">All available voices</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Approx. 3 minutes of audio</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Human support</p>
+        </div>
+      </div>
+
       <%= link_to "Buy 5 credits", text_to_speech_path, class: "btn btn--primary" %>
     </div>
 
     <%# --- CARD 2: The Most Popular (with visual highlight) --- %>
-    <div class="card flex flex-col gap-4 text-center border-2 border-green-500 shadow-xl bg-primary p-6 relative">
-      <div class="absolute">
-        <span class="badge badge--primary rounded-full text-xs pi-4 pb-1 border border-gray-500">Most Popular</span>
+    <div class="card flex flex-col gap-4 border-2 border-green-400 shadow-xl bg-primary pb-6 pi-3 relative h-50dvh">
+      <div class="flex items-center gap-2">
+        <h2 class="font-semibold text-3xl">Creator</h2>
+        <span class="badge badge--positive rounded-full text-xs pi-4 pb-1 border border-green-600">Most Popular</span>
       </div>
-      <h2 class="font-semibold text-xl">Creator</h2>
-      <p class="text-subtle text-sm">Our best value for regular use</p>
+      <p class="text-subtle">Our best value for regular use</p>
       <h3 class="font-bold text-4xl">$9.99</h3>
-      <div class="text-center mbe-2">
-        <p class="font-semibold">15 Credits</p>
-        <p class="font-semibold text-green-400 mbe-1">Save 33% per credit</p>
-        <p class="text-subtle text-xs">Approx. 10 minutes of audio</p>
+      
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class=""><span class="text-2xl font-semibold">15</span> Credits</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Download audio files</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">All available voices</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Approx. 10 minutes of audio</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Human support</p>
+        </div>
       </div>
+
       <%= link_to "Buy 15 credits", text_to_speech_path, class: "btn btn--positive" %> <%# Use a different button color to draw attention %>
     </div>
 
     <%# --- CARD 3: The Power User --- %>
-    <div class="card flex flex-col gap-4 text-center border shadow-lg bg--primary p-6">
-      <h2 class="font-semibold text-xl">Pro</h2>
-      <p class="text-subtle text-sm">For narration & large projects</p>
-      <h3 class="font-bold text-4xl">$24.99</h3>
-      <div class="text-center mbe-2">
-        <p class="font-semibold">50 Credits</p>
-        <p class="font-semibold text-green-400 mbe-1">Best Value - Save 50%!</p>
-        <p class="text-subtle text-xs">Approx. 35 minutes of audio</p>
+    <div class="card flex flex-col gap-4 shadow-xl bg-primary pb-6 pi-3 relative">
+      <div class="flex items-center gap-2">
+        <h2 class="font-semibold text-3xl">Pro</h2>
       </div>
-      <%= link_to "Buy 50 credits", text_to_speech_path, class: "btn btn--primary" %>
+      <p class="text-subtle">Best for narration and large projects</p>
+      <h3 class="font-bold text-4xl">$24.99</h3>
+      
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class=""><span class="text-2xl font-semibold">50</span> Credits</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Download audio files</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">All available voices</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Approx. 35 minutes of audio</p>
+        </div>
+        
+        <div class="flex items-center gap">
+          <span class="relative icon icon--check p-3 text-green-500" style="top: 2px;"></span>
+          <p class="text-md">Priority human support</p>
+        </div>
+      </div>
+
+      <%= link_to "Buy 50 credits", text_to_speech_path, class: "btn btn--primary" %> <%# Use a different button color to draw attention %>
     </div>
 
   </div>
