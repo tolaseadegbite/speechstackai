@@ -13,6 +13,9 @@
     <nav class="flex flex-col gap settings-sidebar">
       
       <%# These links target the Turbo Frame for a fast, single-page experience on desktop %>
+      <%= link_to "Change name", edit_identity_name_path,
+            class: "btn sidebar-menu__button",
+            data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
       <%= link_to "Change password", edit_password_path,
             class: "btn sidebar-menu__button",
             data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
@@ -50,7 +53,7 @@
 
   <%# --- RIGHT COLUMN: DESKTOP DYNAMIC CONTENT AREA --- %>
   <main class="grow border-is border-main">
-    <%= turbo_frame_tag "settings_content", src: edit_password_path do %>
+    <%= turbo_frame_tag "settings_content", src: edit_identity_name_path do %>
       <div class="p-4 flex items-center gap-3">
         <h2 class="text-2xl">Loading settings</h2>
         <span class="icon icon--loading animate-spin p-4" aria-hidden="true"></span>
@@ -67,6 +70,7 @@
   <nav class="flex flex-col gap">
     
     <%# These are NORMAL links for full-page navigation on mobile. NO Turbo Frame attributes. %>
+    <%= link_to "Change name", edit_identity_name_path, class: "btn sidebar-menu__button" %>
     <%= link_to "Change password", edit_password_path, class: "btn sidebar-menu__button" %>
     <%= link_to "Change email address", edit_identity_email_path, class: "btn sidebar-menu__button" %>
     <%= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path, class: "btn sidebar-menu__button" %>
