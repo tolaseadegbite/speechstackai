@@ -4,38 +4,42 @@ export default class extends Controller {
   async fetch(event) {
     const buttonElement = event.currentTarget;
     const playIconDiv = buttonElement.querySelector("[data-play-icon-url]");
+    const params = event.params;
 
-    // Find the audio-player controller first.
     const audioPlayer = this.application.getControllerForElementAndIdentifier(document.body, "audio-player");
     if (!audioPlayer) {
       console.error("The global audio-player controller was not found.");
       return;
     }
 
-    // --- THE FIX IS HERE ---
-    // Check if the URL has already been fetched and set.
-    const hasAlreadyBeenFetched = playIconDiv.dataset.playIconUrl
+    const presignedUrl = playIconDiv.dataset.playIconUrl;
 
-    if (hasAlreadyBeenFetched) {
-      // If the URL exists, don't fetch again. Just tell the player to toggle.
-      audioPlayer.togglePlay();
+    if (presignedUrl) {
+      // URL already exists. Call the main play function with the item's specific data.
+      // The audio_player controller will correctly determine if it should toggle or switch tracks.
+      audioPlayer.play({
+        params: { ...params, url: presignedUrl }
+      });
     } else {
-      // If the URL has NOT been fetched, then run the fetch logic.
-      const params = event.params;
-      const response = await fetch(params.url);
-      const data = await response.json();
-      const presignedUrl = data.url;
+      // URL has not been fetched yet. Fetch it now.
+      try {
+        const response = await fetch(params.url);
+        const data = await response.json();
+        const newPresignedUrl = data.url;
 
-      if (presignedUrl) {
-        // Set the URL on the icon div so we know it's fetched for next time.
-        playIconDiv.dataset.playIconUrl = presignedUrl;
+        if (newPresignedUrl) {
+          // Cache the fetched URL on the element for future clicks.
+          playIconDiv.dataset.playIconUrl = newPresignedUrl;
 
-        // Command the player to play with all the necessary data.
-        audioPlayer.play({
-          params: { ...params, url: presignedUrl }
-        });
-      } else {
-        console.error("Failed to fetch presigned URL:", data.error);
+          // Command the player to play the new clip.
+          audioPlayer.play({
+            params: { ...params, url: newPresignedUrl }
+          });
+        } else {
+          console.error("Failed to fetch presigned URL:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching audio URL:", error);
       }
     }
   }
