@@ -1,14 +1,3 @@
-<%#
-  This is a reusable component for a trigger button that opens a bottom sheet.
-  - trigger: A block that defines the button HTML.
-  - content_partial: The path to the partial to render inside the sheet.
-  - label: A string for the aria-label.
-  - context: (Optional) A symbol (:desktop, :mobile) for generating unique IDs.
-  - f: (Optional) The form builder object, to be passed down.
-  - generated_audio_clips: (Optional) The collection of audio clips.
-%>
-
-<%# THIS IS THE CONTROLLER THAT LISTENS FOR THE ACTION %>
 <div contents data-controller="dialog">
   <%= trigger %>
 
@@ -26,7 +15,6 @@
     </div>
 
     <div class="sheet__content sheet_wrapper pis-3 pie-4 pbs-0 grow flex flex-col min-b-0">
-      <%# Build a hash of locals to pass down to the content partial %>
       <% final_locals = { context: local_assigns.fetch(:context, :mobile) } %>
       
       <% final_locals[:form_id] = form_id if local_assigns.key?(:form_id) %>

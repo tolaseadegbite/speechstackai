@@ -35,21 +35,17 @@
     </div>
 
     <div class="flex items-center gap-2">
-      <%# --- KEPT: The efficient S3 URL fetching button --- %>
       <% if voice.s3_key.present? %>
         <button type="button" class="btn btn--icon btn--subtle"
                 data-action="click->audio-fetcher#fetch"
-                <%# --- These params are passed to the audio-fetcher controller --- %>
                 data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
                 data-audio-fetcher-title-param="<%= voice.name %>"
                 data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
                 data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
-                <%# --- ADDED: The missing data for full player functionality --- %>
                 data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
                 data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>"
                 data-audio-fetcher-created-at-param="<%= voice.created_at.strftime('%-d/%-m/%Y') %>">
 
-          <%# ADDED: An empty data-play-icon-url for the audio-player to find and update %>
           <div data-play-icon-url>
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
           </div>

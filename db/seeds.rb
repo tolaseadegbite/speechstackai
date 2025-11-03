@@ -16,8 +16,6 @@ ApplicationRecord.transaction do
     feedback_type = Feedback.feedback_types.keys.sample
     service_type = Feedback.services.keys.sample
     
-    # --- THIS IS THE FIX ---
-    # Compare the string from .keys.sample with another string.
     rating = feedback_type == "review" ? rand(1..5) : nil
 
     comment_length = rand(1500..2500)

@@ -2,7 +2,6 @@
   <div class="alert alert--negative flex items-start mbe-5" role="alert">
     <span class="icon icon--circle-alert" aria-hidden="true"></span>
     <div class="flex flex-col mis-3">
-      <%# We can even make the title dynamic using the object's class name %>
       <h5 class="font-medium leading-none mbe-1">Unable to create <%= object.class.model_name.human.downcase %>.</h5>
       <div class="flex flex-col text-sm">
         <p class="mbe-2"><%= pluralize(object.errors.count, "error") %> prohibited this from being saved:</p>

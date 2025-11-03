@@ -1,30 +1,20 @@
 <div class="mbe-4" data-controller="search-filter">
 
-  <%# Button to toggle the visibility of the filters %>
   <button type="button" class="btn btn--subtle" data-action="search-filter#toggle">
     <span class="icon icon--list-filter"></span>
     <span>Search</span>
   </button>
 
-  <%# Ransack search and filter form %>
   <div class="hide mbe-6 p-4 bg-surface rounded-lg bg-shade mbs-4" data-search-filter-target="filters">
     <%= search_form_for @q, url: feedbacks_path, html: { data: { turbo_frame: "feedbacks_list" } } do |f| %>
       
-      <%# 
-        - Base: 1-column grid for mobile.
-        - Medium screens and up (@md): 12-column grid for more flexible layouts.
-      %>
       <div class="grid grid-cols-1 grid-cols-12@md gap-4">
 
-        <%# ROW 1: Filter by Comment Text (Full Width) %>
         <div class="col-span-full">
           <%= f.label :comment_cont, "Search Comment", class: "block text-sm font-medium mbe-1" %>
           <%= f.search_field :comment_cont, class: "input i-full bg-main", placeholder: "Search feedback comments..." %>
         </div>
 
-        <%# ROW 2: Four-Column Filters %>
-        
-        <%# Filter by Service: Takes up 3 of 12 columns on @md screens %>
         <div class="col-span-3@md">
           <%= f.label :service_eq, "Service", class: "block text-sm font-medium mbe-1" %>
           <%= f.select :service_eq,
@@ -33,7 +23,6 @@
                        { autocomplete: "off", class: "i-full", data: { controller: 'combobox' } } %>
         </div>
 
-        <%# Filter by Feedback Type: Takes up 3 of 12 columns on @md screens %>
         <div class="col-span-3@md">
           <%= f.label :feedback_type_eq, "Feedback Type", class: "block text-sm font-medium mbe-1" %>
           <%= f.select :feedback_type_eq,
@@ -43,7 +32,6 @@
         </div>
         
         <% if current_user.admin? %>
-          <%# Filter by User: Takes up 3 of 12 columns on @md screens %>
           <div class="col-span-3@md">
             <%= f.label :user_id_eq, "User", class: "block text-sm font-medium mbe-1" %>
             <%= f.collection_select :user_id_eq, @users, :id, :email,
@@ -52,11 +40,9 @@
           </div>
         <% end %>
 
-        <%# Filter by Rating: Takes up 3 of 12 columns on @md screens %>
         <div class="col-span-3@md">
           <%= f.label :rating_eq, "Rating", class: "block text-sm font-medium mbe-1" %>
           <div class="rating">
-            <%# The collection is reversed for standard CSS star rating behavior. %>
             <%= f.collection_radio_buttons(:rating_eq, [5, 4, 3, 2, 1], :to_s, :to_s) do |star| %>
               <%= star.radio_button(autocomplete: 'off') %>
               <%= star.label(class: "text-white") %>
@@ -64,22 +50,17 @@
           </div>
         </div>
 
-        <%# ROW 3: Two-Column Filters %>
-
-        <%# Filter by Date From: Takes up 6 of 12 columns (half width) on @md screens %>
         <div class="col-span-6@md">
           <%= f.label :created_at_gteq, "Date From", class: "block text-sm font-medium mbe-1" %>
           <%= f.date_field :created_at_gteq, placeholder: "Pick a date", class: "bg-main input i-full", data: { controller: "datepicker" } %>
         </div>
 
-        <%# Filter by Date To: Takes up 6 of 12 columns (half width) on @md screens %>
         <div class="col-span-6@md">
           <%= f.label :created_at_lteq, "Date To", class: "block text-sm font-medium mbe-1" %>
           <%= f.date_field :created_at_lteq, placeholder: "Pick a date", class: "bg-main input i-full", data: { controller: "datepicker" } %>
         </div>
       </div>
 
-      <%# Form Actions %>
       <div class="flex justify-end gap-2 mbs-4">
         <%= link_to "Clear", request.path, class: "btn btn--secondary" %>
         <%= f.submit "Apply Filters", class: "btn btn--primary" %>

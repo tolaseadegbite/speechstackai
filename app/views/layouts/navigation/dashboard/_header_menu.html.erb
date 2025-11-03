@@ -8,14 +8,12 @@
       <%= yield :header_action_buttons %>
     </div>
 
-   <%# 1. Define the trigger button using the button_tag helper. %>
     <% trigger = button_tag type: "button", class: "btn btn--icon hide@md", data: { action: "dialog#showModal" } do %>
       <span class="icon icon--sun icon--color-scheme-light" aria-hidden="true"></span>
       <span class="icon icon--moon icon--color-scheme-dark" aria-hidden="true"></span>
       <span class="sr-only">Theme switcher</span>
     <% end %>
 
-    <%# 2. Call our generic modal_dialog helper with the trigger and content. %>
     <%= modal_dialog trigger, title: "Select a theme" do %>
       <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
         
@@ -33,10 +31,9 @@
       </div>
     <% end %>
     
-    <%# Notifications dropdown %>
     <div contents 
          data-controller="popover" 
-         data-popover-placement-value="bottom-center" <%# Placement for header %>
+         data-popover-placement-value="bottom-center"
          data-action="click@window->popover#clickOutside">
 
       <button type="button" class="btn btn--icon hide@md" 
@@ -49,12 +46,10 @@
       <% end %>
     </div>
 
-    <%# User profile dropdown %>
     <% trigger = button_tag type: "button", class: "btn p-0 rounded-full border-2 border-green-500 hide@md", data: { action: "dialog#showModal" } do %>
       <%= image_tag "robot.png", size: 32, class: "rounded-full", alt: "User Avatar" %>
     <% end %>
 
-    <%# 2. Call our generic modal_dialog helper with the trigger and a title. %>
     <%= modal_dialog trigger, title: "Menu", size: '12rem' do %>
       <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
         

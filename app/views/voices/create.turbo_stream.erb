@@ -1,12 +1,9 @@
-<%# 1. Prepend the newly created voice to the top of the #voices list %>
 <%= turbo_stream.prepend "voices", @voice %>
 
-<%# 2. Update the flash messages container with the success notice %>
 <%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
 
 <%= turbo_stream.update "new_voice_form" do %>
   <%= render "form", voice: Voice.new %>
 <% end %>
 
-<%# 4. Write the custom turbo-stream tag directly as plain HTML %>
 <turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>

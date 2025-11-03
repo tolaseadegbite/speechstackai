@@ -1,6 +1,5 @@
 require "aws-sdk-s3"
 
-# Fetch credentials from Rails' encrypted credentials
 aws_creds = Rails.application.credentials.aws
 
 Aws.config.update(

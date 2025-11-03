@@ -1,5 +1,4 @@
 <div class="sidebar-menu">
-  <%# -- TOP AND MIDDLE SECTIONS (UNCHANGED) -- %>
   <%= link_to root_path, class: "flex items-center gap mbs-4 mis-1" do %>
     <span class="icon icon--audio-waveform" style="--icon-size: 1.5rem" aria-hidden="true"></span>
     <span class="font-bold">2Yarn</span>
@@ -27,8 +26,6 @@
       <div class="sidebar-menu__items">  
         <nav>
 
-          <%# --- THE FIX: Updated Text to Speech Link --- %>
-          <%# Adds `aria-current="page"` if the current page matches the link's path. %>
           <%= link_to text_to_speech_path, 
                       class: "btn sidebar-menu__button mbe-1", 
                       aria: (current_page?(text_to_speech_path) ? { current: "page" } : {}) do %>
@@ -54,8 +51,6 @@
       </div>
     </div>
   </div>
-
-  <%# --- START OF MODIFIED BOTTOM SECTION --- %>
 
   <%# Theme switcher popover %>
   <div class="mbs-auto flex flex-col">
@@ -160,5 +155,4 @@
       <%= render "layouts/shared/credits_card" %>
     </div>    
   </div>
-  <%# --- END OF BOTTOM SECTION --- %>
 </div>

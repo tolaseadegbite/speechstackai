@@ -1,88 +1,48 @@
 source "https://rubygems.org"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.2"
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft"
-# Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
-gem "sqlite3",                              "2.5.0"
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+gem "authentication-zero", "~> 4.0"
+gem "aws-sdk-s3", "~> 1"
 gem "bcrypt", "~> 3.1.7"
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
-
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "bootsnap", require: false
+gem "css-zero", "~> 1.2", github: "lazaronixon/css-zero"
+gem "importmap-rails"
+gem "jbuilder"
+gem "kamal", require: false
+gem "mission_control-jobs"
+gem "omniauth"
+gem "omniauth-rails_csrf_protection"
+gem "pagy", "~> 9.4"
+gem "pg", "~> 1.1"
+gem "propshaft"
+gem "puma", ">= 5.0"
+gem "pwned"
+gem "rails", "~> 8.0.2"
+gem "ransack", "~> 4.4"
+gem "rotp"
+gem "rqrcode"
+gem "solid_cable"
 gem "solid_cache"
 gem "solid_queue"
-gem "solid_cable"
-
-# Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
-
-# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem "kamal", require: false
-
-# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "sqlite3", "2.5.0"
+gem "stimulus-rails"
 gem "thruster", require: false
-
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "turbo-rails"
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "webauthn"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "rubocop-rails-omakase", require: false
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
-  # gem "hotwire-spark"
-  gem "letter_opener_web", "~> 3.0"
   gem "faker", "~> 3.5"
+  gem "letter_opener_web", "~> 3.0"
+  gem "web-console"
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-gem "css-zero", "~> 1.2", github: "lazaronixon/css-zero"
-gem "authentication-zero", "~> 4.0"
-# Use Pwned to check if a password has been found in any of the huge data breaches [https://github.com/philnash/pwned]
-gem "pwned"
-# Use OmniAuth to support multi-provider authentication [https://github.com/omniauth/omniauth]
-gem "omniauth"
-# Provides a mitigation against CVE-2015-9284 [https://github.com/cookpad/omniauth-rails_csrf_protection]
-gem "omniauth-rails_csrf_protection"
-# Use rotp for generating and validating one time passwords [https://github.com/mdp/rotp]
-gem "rotp"
-# Use rqrcode for creating and rendering QR codes into various formats [https://github.com/whomwah/rqrcode]
-gem "rqrcode"
-# Use webauthn for making rails become a conformant web authn relying party [https://github.com/cedarcode/webauthn-ruby]
-gem "webauthn"
-gem "aws-sdk-s3", "~> 1"
-gem "mission_control-jobs"
-
-gem "ransack", "~> 4.4"
-
-gem "pagy", "~> 9.4"

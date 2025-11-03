@@ -1,10 +1,8 @@
 <% content_for :title, "Settings" %>
 <% content_for :page_header, "Settings" %>
 
-<%# --- DESKTOP LAYOUT (Visible on medium screens and up) --- %>
 <div class="show@lg flex i-full mi-auto"> <%# Use the appropriate breakpoint class, e.g., @lg or @md %>
   
-  <%# --- LEFT COLUMN: DESKTOP SIDEBAR --- %>
   <aside
     class="shrink-0 p-4"
     style="width: 280px;"
@@ -12,7 +10,6 @@
 
     <nav class="flex flex-col gap settings-sidebar">
       
-      <%# These links target the Turbo Frame for a fast, single-page experience on desktop %>
       <%= link_to "Change name", edit_identity_name_path,
             class: "btn sidebar-menu__button",
             data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>

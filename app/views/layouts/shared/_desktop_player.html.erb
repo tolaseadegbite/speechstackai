@@ -1,6 +1,5 @@
 <div class="audio-player flex flex-col show@lg i-full p-2 gap-1">
 
-  <%# --- START: Always Visible Section (with seek functionality) --- %>
   <button type="button" class="btn btn--plain i-full progress-bar-container" data-action="player-visibility#expand audio-player#seek" data-audio-player-target="progressContainers">
     <div class="flex items-center grow gap-2 min-i-0 progress-bar">
       <span class="text-xs text-subtle whitespace-nowrap" data-audio-player-target="currentTimes">0:00</span>
@@ -10,13 +9,9 @@
       <span class="text-xs text-subtle whitespace-nowrap" data-audio-player-target="durations">0:00</span>
     </div>
   </button>
-  <%# --- END: Always Visible Section --- %>
 
-
-  <%# Section 2: Collapsible Content (structure fully restored) %>
   <div class="flex items-center i-full gap-4" data-player-visibility-target="collapsible">
     
-    <!-- Left Section: Info (Original structure is preserved) -->
     <div class="flex flex-col shrink-0">
       <p class="text-sm font-medium whitespace-nowrap overflow-ellipsis" style="max-inline-size: 40ch;" data-audio-player-target="clipTitles">Settle into a comfortable position and gently cl...</p>
 
@@ -34,7 +29,6 @@
       </div>
     </div>
     
-    <!-- Middle Section: Player Controls (Actions added) -->
     <div class="flex items-center grow gap-4 justify-center">
       <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="audio-player#rewind">
         <span class="icon icon--rotate-ccw" style="--icon-size: 1.2rem" aria-hidden="true"></span>
@@ -55,7 +49,6 @@
       </div>
     </div>
     
-    <!-- Right Section: Actions (Original structure is preserved) -->
     <div class="flex items-center gap-2 shrink-0">
       <button type="button" class="btn border-0 btn--icon shrink-0 bg-primary rounded-full" data-action="click->player-visibility#minimize">
         <span class="icon icon--chevron-down" style="--icon-size: 1.2rem" aria-hidden="true"></span>
@@ -65,6 +58,5 @@
         <span class="icon icon--x" style="--icon-size: 1.2rem" aria-hidden="true"></span>
       </button>
     </div>
-
   </div>
 </div>

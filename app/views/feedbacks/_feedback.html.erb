@@ -1,9 +1,7 @@
 <div id="<%= dom_id feedback %>" class="p-4 bg-shade border border-main rounded-lg shadow-sm" data-controller="card-click">
   <div class="cursor-pointer" data-action="click->card-click#visit" data-card-click-url="<%= feedback_path(feedback) %>">
     <div class="flex justify-between items-start">
-      <%# User and Metadata %>
       <div class="flex items-center gap">
-        <%# Avatar using your utility classes %>
         <div class="flex items-center justify-center rounded-full bg-shade shrink-0" style="block-size: 2.5rem; inline-size: 2.5rem;">
           <span class="font-semibold text-subtle">
             <%= feedback.user.name&.first || feedback.user.email.first.upcase %>
@@ -34,11 +32,9 @@
             <%= modal_dialog delete_trigger, title: "Delete feedback?" do %>
               <p class="text-sm text-subtle mbe-4">This will permanently delete this feedback. This action cannot be undone.</p>
 
-              <%# --- Improved Summary Block --- %>
               <div class="p-3 bg-main rounded-md border border-subtle mbe-4">
                 <div class="flex flex-col gap-half text-sm">
                   
-                  <%# --- Type (with badge) --- %>
                   <div class="flex justify-between items-center">
                     <span class="text-subtle">Type</span>
                     <span class="<%= feedback_badge_classes(feedback.feedback_type) %>">
@@ -46,13 +42,11 @@
                     </span>
                   </div>
 
-                  <%# --- Service --- %>
                   <div class="flex justify-between items-center">
                     <span class="text-subtle">Service</span>
                     <span class="font-medium text-primary"><%= feedback.service.humanize %></span>
                   </div>
 
-                  <%# --- Rating (conditional) --- %>
                   <% if feedback.rating.present? %>
                     <div class="flex justify-between items-center">
                       <span class="text-subtle">Rating</span>
@@ -60,7 +54,6 @@
                     </div>
                   <% end %>
 
-                  <%# --- Comment --- %>
                   <div class="flex flex-col items-start gap-half mbs-2">
                     <span class="text-subtle">Comment</span>
                     <p class="text-primary leading-tight"><%= feedback.comment.truncate(100) %></p>
@@ -68,12 +61,10 @@
 
                 </div>
               </div>
-              <%# --- End of Summary Block --- %>
 
               <div class="flex items-center justify-end gap">
                 <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
                 
-                <%# Your button_to with the fix to close the modal on submit %>
                 <%= button_to "Continue", feedback, method: :delete, class: "btn btn--negative",
                               form: { data: { action: "turbo:submit-end->dialog#close" } } %>
               </div>
@@ -83,25 +74,19 @@
       </div>
     </div>
 
-    <%# Feedback Content - Aligned with the avatar using logical margin %>
-    <div class="mbs-2" style="margin-inline-start: 3.5rem;"> <%# 2.5rem (avatar) + 1rem (gap approximation) %>
-      
-      <%# Badges using the new helper %>
+    <div class="mbs-2" style="margin-inline-start: 3.5rem;">      
       <div class="flex items-center flex-wrap gap-half mbe-2">
-        <%# Feedback Type Filter Link %>
         <%= link_to feedback.feedback_type.humanize,
                     feedbacks_path(request.query_parameters.merge(feedback_type: feedback.feedback_type)),
                     class: "rounded-sm #{feedback_badge_classes(feedback.feedback_type)}",
                     data: { action: "click->card-click#prevent" } %>
 
-        <%# Service Filter Link %>
         <%= link_to feedback.service.humanize,
                     feedbacks_path(request.query_parameters.merge(service: feedback.service)),
                     class: "text-xs font-medium pi-2 pbe-half rounded-sm bg-main text-subtle",
                     data: { action: "click->card-click#prevent" } %>
       </div>
 
-      <%# Rating (if it exists) with inline SVG colors from your variables %>
       <% if feedback.rating.present? %>
         <div class="flex items-center gap-half mbe-2">
           <% feedback.rating.times do %>
@@ -117,7 +102,6 @@
         </div>
       <% end %>
 
-      <%# The comment using your text color utility %>
       <p class="text-primary"><%= simple_format(feedback.comment.truncate(250)) %></p>
     </div>
   </div>

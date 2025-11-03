@@ -1,7 +1,6 @@
 <% content_for :title, "Voices - #{@voice.name}" %>
 
 <% content_for :page_header do %>
-  <%# Breadcrumb navigation for context %>
   <div class="flex items-center gap-half text-sm">
     <%= link_to "Voices", voices_path, class: "text-subtle hover:text-primary" %>
     <span class="text-subtle">/</span>
@@ -9,18 +8,13 @@
   </div>
 <% end %>
 
-<%# Main container for the voice details, styled as a spacious card %>
 <div class="i-full p-4 mi-auto" style="max-width: 90rem;">
 
-  <%# Top section: combines the swatch, title, description, and the main play button %>
   <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
     
-    <%# Voice Swatch (Gradient Circle) - larger for emphasis on the show page %>
     <span class="voice-swatch shrink-0" style="--icon-size: 4.5rem; <%= voice_gradient_style(@voice) %>" aria-hidden="true"></span>
 
-    <%# Main Info Column %>
     <div class="flex-grow">
-      <%# Header row with name and the play button %>
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="flex gap-2 items-center">
           <h1 class="text-2xl font-bold"><%= @voice.name %></h1>
@@ -29,7 +23,6 @@
           </div>
         </div>
 
-        <%# Prominent Play/Listen Button %>
         <% if @voice.s3_key.present? %>
           <button type="button" class="btn btn--primary"
                   data-action="click->audio-fetcher#fetch"
@@ -49,15 +42,12 @@
         <% end %>
       </div>
 
-      <%# Full Description %>
       <p class="text-lg text-subtle mbs-2"><%= @voice.description %></p>
     </div>
   </div>
 
-  <%# A visual divider before the metadata section %>
   <hr class="border-base mbs-6 mbe-6">
 
-  <%# Metadata Section: displays key details in a clean grid %>
   <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
     <div>
       <h3 class="text-sm font-semibold tracking-wider text-soft uppercase mbe-2">Languages</h3>
@@ -77,19 +67,15 @@
     </div>
   </div>
 
-  <%# Page Actions: Navigation and admin controls are placed below the main card %>
   <div class="flex items-center justify-between gap-4 mbs-6">
     <%= link_to "Back to all voices", voices_path, class: "btn btn--subtle" %>
 
-    <%# Admin-only actions %>
     <% if current_user.admin? %>
       <div class="flex items-center gap-2">
-        <%# Edit button that opens in a modal %>
         <%= link_to "Edit", edit_voice_path(@voice),
                     class: "btn btn--secondary",
                     data: { turbo_frame: "modal" } %>
 
-        <%# Delete button with the same confirmation modal dialog from the partial %>
         <% delete_trigger = button_tag "Delete", type: "button", class: "btn btn--negative", data: { action: "dialog#showModal" } %>
         <%= modal_dialog delete_trigger, title: "Delete '#{@voice.name}'?" do %>
           <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
@@ -100,6 +86,5 @@
         <% end %>
       </div>
     <% end %>
-  </div>
-  
+  </div>  
 </div>

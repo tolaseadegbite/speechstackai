@@ -29,7 +29,6 @@ class Voice < ApplicationRecord
   end
 
   def generate_random_color
-    # Formats a random number as a 6-digit hex string
     "#%06x" % (rand * 0xffffff)
   end
 end
