@@ -4,7 +4,7 @@ gem "authentication-zero", "~> 4.0"
 gem "aws-sdk-s3", "~> 1"
 gem "bcrypt", "~> 3.1.7"
 gem "bootsnap", require: false
-gem "css-zero", "~> 1.2", github: "lazaronixon/css-zero"
+gem "css-zero", "~> 2.2", github: "lazaronixon/css-zero"
 gem "importmap-rails"
 gem "jbuilder"
 gem "kamal", require: false
