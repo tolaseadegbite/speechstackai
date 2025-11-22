@@ -8,14 +8,12 @@ module DialogHelper
   # - &block:  The content to be rendered inside the dialog body.
   #
   def modal_dialog(trigger, title: nil, label: nil, size: "430px", &block)
-    # The 'capture' method takes the block from the view and renders it as a string.
     content = capture(&block) if block
 
-    # Render the generic partial, passing all our pieces as local variables.
     render "layouts/shared/dialog",
       trigger: trigger,
       title:   title,
-      label:   label || title, # Use title as a fallback for the ARIA label
+      label:   label || title,
       size:    size,
       content: content
   end

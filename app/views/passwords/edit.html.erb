@@ -3,13 +3,11 @@
 
     <%= render "shared/settings_back_button" %>
 
-    <div class="max-i-full" style="max-width: 48rem;">
+    <div class="max-i-full">
       <h1 class="font-bold text-2xl mbe-4">Change your password</h1>
       <p class="text-subtle mbe-4">For your security, please choose a strong, unique password that you don't use for any other online account.</p>
 
       <div id="edit_password_form">
-        <%# I'm using your provided form code. I noticed it's missing the model, which might cause errors. %>
-        <%# The form_with should ideally be: form_with(model: @user, url: password_path, method: :patch) %>
         <%= render 'form', user: @user %>
       </div>
     </div>

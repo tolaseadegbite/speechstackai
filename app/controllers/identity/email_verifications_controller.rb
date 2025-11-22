@@ -22,7 +22,6 @@ class Identity::EmailVerificationsController < ApplicationController
         render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash")
       end
 
-      # This is the fallback for non-JS browsers
       format.html do
         redirect_to root_path, notice: "We sent a verification email to your email address"
       end

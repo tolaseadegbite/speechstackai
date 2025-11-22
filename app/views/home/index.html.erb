@@ -1,7 +1,7 @@
 <% content_for :title, "Settings" %>
 <% content_for :page_header, "Settings" %>
 
-<div class="show@lg flex i-full mi-auto"> <%# Use the appropriate breakpoint class, e.g., @lg or @md %>
+<div class="show@lg flex i-full mi-auto">
   
   <aside
     class="shrink-0 p-4"
@@ -19,7 +19,7 @@
       <%= link_to "Change email address", edit_identity_email_path,
             class: "btn sidebar-menu__button",
             data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
-      <%= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path,
+      <%#= link_to "Two-Factor Authentication", new_two_factor_authentication_profile_totp_path,
             class: "btn sidebar-menu__button",
             data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
             
@@ -28,7 +28,7 @@
         <%= link_to "Security keys", two_factor_authentication_profile_security_keys_path, class: "btn sidebar-menu__button", data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
       <% end %>
 
-      <%= link_to "Send invitation", new_invitation_path,
+      <%#= link_to "Send invitation", new_invitation_path,
             class: "btn sidebar-menu__button",
             data: { turbo_frame: "settings_content", action: "click->settings-sidebar#select", settings_sidebar_target: "link" } %>
             

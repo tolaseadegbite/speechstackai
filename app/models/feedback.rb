@@ -10,7 +10,7 @@ class Feedback < ApplicationRecord
   validates :feedback_type, presence: true
 
   validates :rating, presence: true, if: :review?
-  validates :rating, numericality: { in: 1..5 }, allow_nil: true # Allow rating to be blank unless it's a review.
+  validates :rating, numericality: { in: 1..5 }, allow_nil: true
 
   scope :bug_reports, -> { where(feedback_type: :bug_report) }
   scope :feature_requests, -> { where(feedback_type: :feature_request) }

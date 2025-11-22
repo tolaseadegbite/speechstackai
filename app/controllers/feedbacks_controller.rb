@@ -2,43 +2,31 @@ class FeedbacksController < DashboardController
   before_action :set_feedback, only: %i[show edit update destroy]
   before_action :authorize_admin!, only: %i[edit update destroy]
 
-  # GET /feedbacks or /feedbacks.json
-  # Prepares a list of feedbacks based on user role and a new object for the form.
   def index
-    # 1. Determine the base query based on user role
     base_query = if current_user.admin?
                    Feedback.all
                  else
                    current_user.feedbacks
                  end
 
-    # 2. Initialize Ransack search object with params[:q]
     @q = base_query.ransack(params[:q])
 
-    # 3. Get the base filtered query from Ransack.
     feedbacks_query = @q.result(distinct: true)
 
-    # 4. Fetch users for the filter dropdown (only for admins)
     if current_user.admin?
       @users = User.where(id: feedbacks_query.select(:user_id)).order(email: :asc)
     end
 
-    # 5. Build the final query for displaying the feedbacks
     @feedbacks = feedbacks_query.includes(:user).order(created_at: :desc)
 
-    # 6. Apply pagination to the final, sorted results.
     @pagy, @feedbacks = pagy_keyset(@feedbacks, limit: 21)
 
-    # 7. Prepare a new Feedback object for a form, if needed.
     @feedback = Feedback.new
   end
 
-  # GET /feedbacks/1 or /feedbacks/1.json
   def show
-    # Authorization is handled by set_feedback
   end
 
-  # GET /feedbacks/new
   def new
     if params[:generated_audio_clip_id]
       audio_clip = current_user.generated_audio_clips.find(params[:generated_audio_clip_id])
@@ -53,12 +41,9 @@ class FeedbacksController < DashboardController
     end
   end
 
-  # GET /feedbacks/1/edit
   def edit
-    # Authorization is handled by set_feedback and authorize_admin!
   end
 
-  # POST /feedbacks or /feedbacks.json
   def create
     @feedback = current_user.feedbacks.new(feedback_params)
 
@@ -76,7 +61,6 @@ class FeedbacksController < DashboardController
     end
   end
 
-  # PATCH/PUT /feedbacks/1 or /feedbacks/1.json
   def update
     respond_to do |format|
       if @feedback.update(feedback_params)
@@ -92,7 +76,6 @@ class FeedbacksController < DashboardController
     end
   end
 
-  # DELETE /feedbacks/1 or /feedbacks/1.json
   def destroy
     @feedback.destroy!
     respond_to do |format|
@@ -104,7 +87,6 @@ class FeedbacksController < DashboardController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_feedback
     if current_user.admin?
       @feedback = Feedback.find(params[:id])
@@ -115,16 +97,13 @@ class FeedbacksController < DashboardController
     redirect_to feedbacks_url, alert: "Feedback not found."
   end
 
-  # Only allow a list of trusted parameters through.
   def feedback_params
     params.require(:feedback).permit(:comment, :rating, :feedback_type, :service, :generated_audio_clip_id)
   end
 
-  # Authorization method to check for admin privileges.
   def authorize_admin!
     return if current_user.admin?
 
-    # Non-admins can only edit or delete their own feedback.
     unless @feedback.user == current_user
       redirect_to feedbacks_url, alert: "You are not authorized to perform this action."
     end

@@ -1,5 +1,4 @@
 module S3Helper
-  # Generates a temporary, secure URL for a private object in S3.
   def presigned_s3_url(key, expires_in: 3600)
     return nil if key.blank?
 
@@ -11,12 +10,10 @@ module S3Helper
 
   private
 
-  # Memoizes the S3 presigner client to be more efficient.
   def s3_presigner
     @s3_presigner ||= begin
       aws_creds = Rails.application.credentials.aws
 
-      # Create an S3 client and explicitly provide BOTH the region AND the credentials.
       s3_client = Aws::S3::Client.new(
         region:            aws_creds[:region],
         access_key_id:     aws_creds[:access_key_id],

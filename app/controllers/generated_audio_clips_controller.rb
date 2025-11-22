@@ -4,10 +4,8 @@ class GeneratedAudioClipsController < DashboardController
   def new
     @service_type = params[:service_type]
 
-    # Initialize Ransack search object
     @q = current_user.generated_audio_clips.ransack(params[:q])
 
-    # Get the search results and then apply the rest of your logic
     @generated_audio_clips = @q.result(distinct: true)
                               .includes(:voice)
                               .order(created_at: :desc)
@@ -19,7 +17,7 @@ class GeneratedAudioClipsController < DashboardController
 
   def create
     @generated_audio_clip = current_user.generated_audio_clips.new(audio_clip_params)
-    @service_type = params[:generated_audio_clip][:service_type] # Use @service_type for consistency
+    @service_type = params[:generated_audio_clip][:service_type]
 
     if @generated_audio_clip.save
       case @service_type

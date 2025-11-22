@@ -41,7 +41,6 @@
             <%= render partial: "layouts/shared/voice_library_content", locals: { form_id: "text_to_speech_form", context: :desktop } %>
           </div>
           <div hidden data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%# This partial now contains a clean, non-nested search form %>
             <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips, locals: { context: :desktop } %>
           </div>
         </div>

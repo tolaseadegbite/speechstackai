@@ -1,8 +1,6 @@
 <%= form_with model: generated_audio_clip, id: "text_to_speech_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "sample-text form-submit" } do |f| %>
 
-  <%# --- LEFT COLUMN --- %>
   <div class="col-span-8@md">
-    <%# This section can be simplified later, for now it works %>
     <div>
       <%= f.text_area :text,
         placeholder: "Start typing here or paste any text you want to turn to a natural speech...",
@@ -17,7 +15,6 @@
     </div>
   </div>
 
-  <%# --- RIGHT COLUMN --- %>
   <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
     <div class="show@lg p-4 flex flex-col grow min-h-0">
       <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">

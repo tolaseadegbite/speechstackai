@@ -1,9 +1,7 @@
 <div data-controller="player-visibility" class="flex flex-col grow min-b-0">
   <%= form_with model: @generated_audio_clip, id: "voice_changer_form", class: "grow min-b-0 grid@lg grid-cols-12@lg wrapper overflow-y-auto", data: { controller: "form-submit" } do |f| %>
-    <%# This hidden field tells the controller which service was used. %>
     <%= f.hidden_field :service_type, value: "voice_changer" %>
 
-    <%# --- LEFT COLUMN --- %>
     <div class="col-span-8@md flex flex-col p-4">
       <div class="grow flex items-center justify-center">
         <%= f.label :source_audio, class: "dropzone i-full max-i-lg bg-shade cursor-pointer", style: "border-style: dashed;" do %>
@@ -17,7 +15,6 @@
       <%= render "generated_audio_clips/partials/voice_changer/desktop_info_bar" %>
     </div>
 
-    <%# --- RIGHT COLUMN --- %>
     <div id="settings-column" class="col-span-4@md flex flex-col fixed-right-col@lg">
       <div class="show@lg p-4 flex flex-col grow min-h-0">
         <div class="tabs flex flex-col grow min-h-0" data-controller="tabs">
@@ -26,22 +23,18 @@
             <button type="button" class="btn tabs__button" data-tabs-target="button" data-action="tabs#select" role="tab" aria-controls="vc_history_tab">History</button>
           </div>
           <div hidden id="vc_voice_library_tab" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%# We pass `f` so the voice library can add its `f.select` to the form. %>
             <%= render partial: "layouts/shared/voice_library_content", locals: { f: f, context: :desktop } %>
           </div>
           <div hidden id="vc_history_tab" data-tabs-target="tab" role="tabpanel" class="grow flex flex-col min-h-0">
-            <%# THE FIX: Added the missing `}` and removed the duplicate variable. %>
             <%= render "layouts/shared/history_content", generated_audio_clips: @generated_audio_clips, locals: { context: :desktop } %>
           </div>
         </div>
       </div>
 
-      <%# Mobile UI partial for the voice changer. It also needs the form builder `f`. %>
       <%= render "generated_audio_clips/partials/voice_changer/mobile_info_bar", f: f %>
     </div>
   <% end %>
 
-  <%# --- RESPONSIVE AUDIO PLAYER (Outside the form) --- %>
   <div data-player-visibility-target="playerContainer" class="fixed-player border-bs border-shade" hidden>
     <%= render "layouts/shared/desktop_player" %>
     <%= render "layouts/shared/mobile_player" %>
