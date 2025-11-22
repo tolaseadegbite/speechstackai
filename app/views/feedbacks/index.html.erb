@@ -19,7 +19,7 @@
         <%= render partial: "feedbacks/feedback", collection: @feedbacks, as: :feedback %>
       <% end %>
 
-      <%= render_load_more(@pagy) %>
+      <%= render "shared/pagination", pagy: @pagy %>
       
     <% else %>
         <div class="text-center p-8 bg-surface border border-dashed rounded-lg">

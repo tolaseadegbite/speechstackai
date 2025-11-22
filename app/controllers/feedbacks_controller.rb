@@ -19,7 +19,7 @@ class FeedbacksController < DashboardController
 
     @feedbacks = feedbacks_query.includes(:user).order(created_at: :desc)
 
-    @pagy, @feedbacks = pagy_keyset(@feedbacks, limit: 21)
+    @pagy, @feedbacks = pagy(@feedbacks)
 
     @feedback = Feedback.new
   end

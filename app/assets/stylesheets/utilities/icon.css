@@ -28,6 +28,8 @@ img.icon {
 .icon--chevron-up { --svg: url("chevron-up.svg"); }
 .icon--ellipsis { --svg: url("ellipsis.svg"); }
 .icon--chevrons-up-down { --svg: url("chevrons-up-down.svg"); }
+.icon--chevrons-right { --svg: url("chevrons-right.svg"); }
+.icon--chevrons-left { --svg: url("chevrons-left.svg"); }
 .icon--menu { --svg: url("menu.svg"); }
 .icon--x { --svg: url("x.svg"); }
 .icon--search { --svg: url("search.svg"); }
