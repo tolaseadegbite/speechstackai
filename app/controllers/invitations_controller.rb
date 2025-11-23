@@ -1,4 +1,4 @@
-class InvitationsController < DashboardController
+class InvitationsController < DashboardsController
   def new
     @user = User.new
   end

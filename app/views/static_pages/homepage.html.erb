@@ -1,5 +1,54 @@
 <% content_for :title, "Text to Speech for African Languages" %>
 
+<%
+  # 1. Configuration
+  # We added the "african-tts-audio/" folder prefix to the keys so S3 can find them.
+  voice_config = {
+    "Akinolú" => { 
+      image: "landing page/Yoruba man.png",     
+      color: "red",
+      key: "african-tts-audio/f6a7002e-dcff-4a47-99ef-2da06dc6eace.wav" 
+    },
+    "Ọmọ́wùnmí" => { 
+      image: "landing page/Yoruba woman 1.jpg", 
+      color: "orange",
+      key: "african-tts-audio/0e0ee16e-3076-4118-86fd-31f728e9d574.wav" 
+    },
+    "Kwame" => { 
+      image: "landing page/Asante_twi.png",     
+      color: "gray",
+      key: "african-tts-audio/38d3f1e9-24ee-40f0-b62d-bd1e7dd24710.wav" 
+    },
+    "Kwesi" => { 
+      image: "landing page/akwapem_twi.jpg",    
+      color: "teal",
+      key: "african-tts-audio/b7004abf-b71c-4faa-8ff6-7b0c5bf55b10.wav" 
+    },
+    "Uzima" => { 
+      image: "landing page/Lingala_man.png",    
+      color: "blue",
+      key: "african-tts-audio/bd2a43b6-c495-41a9-87d8-a20ac5945628.wav" 
+    },
+    "Danjuma" => { 
+      image: "landing page/Hausa man 2.png",    
+      color: "green",
+      key: "african-tts-audio/5fef3ae2-fa7b-4f62-999f-4ad9003096d8.wav" 
+    },
+    "Kofi" => { 
+      image: "landing page/Yoruba man.png",     
+      color: "cyan",
+      key: "african-tts-audio/44004682-923e-4487-8b80-b10cc11acbd9.wav" 
+    },
+    "Àrẹ̀mú" => { 
+      image: "landing page/Yoruba_man_2.png",   
+      color: "yellow",
+      key: "african-tts-audio/8f5cb648-c13e-4cab-a9ed-81588d3e89f5.wav" 
+    }
+  }
+
+  playground_voices = Voice.where(name: voice_config.keys).index_by(&:name)
+%>
+
 <section class="header flex flex-col gap-8 items-center mi-auto" style="margin-bottom: 5dvh; margin-top: 5dvh;">
   
   <h1 class="font-bold text-center" style="font-size: 6vh; text-shadow: horizontal-offset vertical-offset blur-radius black; max-inline-size: 48rem;">Give your content <span class="text-green-600">an authentic african voice</span></h1>
@@ -10,105 +59,53 @@
       Try it for free
       <span class="icon icon--move-right p-3"></span>
     <% end %>
-    <%#= link_to "See how it works", "#", class: "btn btn--secondary border text-lg" %>
   </div>
 
-  <div class="header-playground mb-5">
+  <div class="header-playground mb-5" data-controller="audio-fetcher">
     <div class="flex flex-wrap gap-10 rounded-lg p-5 justify-center">
 
-      <div class="relative">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Ọmọ́wùnmí</h3>
-          <p class="text-subtle text-sm">Yoruba</p>
-        </div>
-        <%= image_tag("landing page/Yoruba woman 1.jpg", class: "rounded-full border-4 border-orange-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
+      <% voice_config.each do |name, config| %>
+        <% voice = playground_voices[name] %>
+        
+        <% if voice %>
+          <% 
+             # Your helper now receives the full path (folder/filename)
+             secure_audio_url = presigned_s3_url(config[:key])
+          %>
 
-      <div class="relative mbs-10">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Danjuma</h3>
-          <p class="text-subtle text-sm">Hausa</p>
-        </div>
-        <%= image_tag("landing page/Hausa man 2.png", class: "rounded-full border-4 border-green-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
+          <div class="relative">
+            <div class="text-center mbe-3">
+              <h3 class="text-lg font-semibold"><%= voice.name %></h3>
+              <p class="text-subtle text-sm"><%= voice.languages.first&.name || "African Voice" %></p>
+            </div>
+            
+            <%= image_tag(config[:image], class: "rounded-full border-4 border-#{config[:color]}-500 shadow-lg", size: "130") %>
+            
+            <button type="button" 
+                    class="btn btn--primary rounded-full p-1 border absolute" 
+                    style="left: 6rem; bottom: 8rem;"
+                    data-action="click->audio-fetcher#fetch"
+                    data-audio-fetcher-url-param="<%= secure_audio_url %>"
+                    data-audio-fetcher-title-param="<%= voice.name %>"
+                    data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                    data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.wav" %>"
+                    data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                    data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>"
+                    data-audio-fetcher-created-at-param="<%= voice.created_at.strftime('%-d/%-m/%Y') %>"
+                    
+                    <%# --- ADD THIS LINE --- %>
+                    data-audio-fetcher-show-player-param="false">
+              
+              <div data-play-icon-url="<%= secure_audio_url %>">
+                <span class="icon icon--play"></span>
+              </div>
+            </button>
+          </div>
+        <% end %>
+      <% end %>
 
-      <div class="relative">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Akinolú</h3>
-          <p class="text-subtle text-sm">Yoruba</p>
-        </div>
-        <%= image_tag("landing page/Yoruba man.png", class: "rounded-full border-4 border-red-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
-
-      <div class="relative mbs-10">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Uzima</h3>
-          <p class="text-subtle text-sm">Lingala</p>
-        </div>
-        <%= image_tag("landing page/Lingala_man.png", class: "rounded-full border-4 border-blue-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Àrẹ̀mú</h3>
-          <p class="text-subtle text-sm">Yoruba</p>
-        </div>
-        <%= image_tag("landing page/Yoruba_man_2.png", class: "rounded-full border-4 border-yellow-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
-      
-      <div class="relative mbs-10">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Kwame</h3>
-          <p class="text-subtle text-sm">Asante-Twi</p>
-        </div>
-        <%= image_tag("landing page/Asante_twi.png", class: "rounded-full border-4 border-gray-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">kwesi</h3>
-          <p class="text-subtle text-sm">Akwapem-Twi</p>
-        </div>
-        <%= image_tag("landing page/akwapem_twi.jpg", class: "rounded-full border-4 border-teal-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="flex flex-wrap gap-10 rounded-lg p-5 justify-center">
-      <div class="relative">
-        <div class="text-center mbe-3">
-          <h3 class="text-lg font-semibold">Kofi</h3>
-          <p class="text-subtle text-sm">Ewe</p>
-        </div>
-        <%= image_tag("landing page/Yoruba man.png", class: "rounded-full border-4 border-cyan-500 shadow-lg", size: "130") %>
-        <div class="btn btn--primary rounded-full p-1 border absolute" style="left: 6rem; bottom: 8rem;">
-          <span class="icon icon--play"></span>
-        </div>
-      </div>
     </div>
   </div>
-
 </section>
 
 <section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 5rem; max-width: 58rem">
@@ -126,7 +123,7 @@
   </div>
 </section>
 
-<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;">
+<section class="flex flex-col gap-10 items-center text-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;" id="how_it_works">
   <div class="flex flex-col gap-2 items-center">
     <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
     <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How it works</span></h2>
@@ -164,14 +161,37 @@
     
 </section>
 
-<section class="flex flex-col gap-10 items-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;">
+<section class="flex flex-col gap-10 items-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem;" id="join">
   <div class="flex flex-col gap-2 items-center">
-    <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Natural sounding speech generation</span>
-    <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">How much does it cost?</span></h2>
-    <p class="text-subtle text-lg" style="max-width: 40rem">The credits consumed depends on your character count. Buy credits when you need them - no monthly fees.</p>
+    <span class="badge badge--secondary rounded-full text-sm mbe-2 pi-4 pb-2">Launch with us</span>
+    <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">Join the Beta launch</span></h2>
+    <p class="text-subtle text-lg text-center" style="max-width: 40rem">Get free, extended access to 2yarn and help us build the future of natural sounding speech generation</p>
   </div>
 
-  <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4 i-full">
+  <!-- Embedded Sign-Up Form -->
+  <div class="mbs-4" style="max-inline-size: 400px; inline-size: 100%;">
+      <%= form_with url: sign_up_path, html: { autocomplete: "off" }, class: "card flex flex-col gap text-start text-primary" do |form| %>
+          <div class="flex flex-col gap-half">
+              <%= form.label :name, class: "text-sm font-medium leading-none font-semibold" %>
+              <%= form.text_field :name, placeholder: "John Doe", required: true, class: "input" %>
+          </div>
+
+          <div class="flex flex-col gap-half">
+              <%= form.label :email, "Email", class: "text-sm font-medium leading-none font-semibold" %>
+              <%= form.email_field :email, placeholder: "you@example.com", required: true, class: "input" %>
+          </div>
+          
+          <div class="flex flex-col gap-half">
+              <%= form.label :password, class: "text-sm font-medium leading-none font-semibold" %>
+              <%= form.password_field :password, placeholder: "************", required: true, class: "input" %>
+          </div>
+
+          <%= form.submit "Get My Free Account", class: "btn btn--primary mbs-2" %>
+      <% end %>
+      <p class="text-xs mbs-2">No credit card required. Ever.</p>
+  </div>
+
+  <!--<div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-3@lg gap-4 i-full">
     
     <%# --- CARD 1: The Starter --- %>
     <div class="card flex flex-col gap-4 border shadow-xl bg-primary pb-6 pi-3 relative">
@@ -288,10 +308,10 @@
       <%= link_to "Buy 50 credits", text_to_speech_path, class: "btn btn--primary" %> <%# Use a different button color to draw attention %>
     </div>
 
-  </div>
+  </div>-->
 </section>
 
-<section class="flex flex-col gap-10 items-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem">
+<section class="flex flex-col gap-10 items-center mi-auto" style="margin-bottom: 8rem; margin-top: 8rem; max-width: 58rem" id="faqs">
   <div class="flex flex-col gap-2 items-center">
     <h2 class="font-bold" style="font-size: 4vh; text-shadow: horizontal-offset vertical-offset blur-radius black;">FAQs</span></h2>
     <p class="text-subtle text-lg" style="max-width: 40rem">How the TTS service works and what you can expect.</p>

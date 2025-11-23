@@ -69,6 +69,8 @@ Rails.application.routes.draw do
   
   resources :feedbacks
 
+  resource :dashboard, only: [ :show ]
+
   get "/playground", to: "static_pages#playground"
   get "/text-to-speech", to: "generated_audio_clips#new", as: :text_to_speech, defaults: { service_type: "text_to_speech" }
   get "/voice-changer",  to: "generated_audio_clips#new", as: :voice_changer,  defaults: { service_type: "voice_changer" }

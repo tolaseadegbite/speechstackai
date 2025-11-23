@@ -84,7 +84,9 @@ export default class extends Controller {
    * Called from the list of audio clips to start a new track.
    */
   play(event) {
-    const { url, title, author, filename, gradientStart, gradientEnd, createdAt } = event.params;
+    // 1. Extract the 'showPlayer' param from the event
+    const { url, title, author, filename, gradientStart, gradientEnd, createdAt, showPlayer } = event.params;
+    
     const isSameClip = this.audio.src === url;
 
     if (isSameClip) {
@@ -93,21 +95,22 @@ export default class extends Controller {
       this.audio.src = url;
       this.currentClipData = { url, title, author, filename, gradientStart, gradientEnd, createdAt };
       this.updateMetadataUI();
-      this.updateGradientUI(); // Call the new method
+      this.updateGradientUI();
       this.audio.play().catch(e => console.error("Audio playback failed:", e));
     }
 
-    // --- THIS IS THE FINAL, WORKING LOGIC ---
-    // Find the player-visibility controller instance on the page...
-    const playerElement = document.querySelector('[data-controller="player-visibility"]');
-    if (playerElement) {
-      const playerVisibilityController = this.application.getControllerForElementAndIdentifier(
-        playerElement,
-        "player-visibility"
-      );
-      // ...and command it to run its `show` method.
-      if (playerVisibilityController) {
-        playerVisibilityController.show();
+    // 2. Wrap the Visibility Logic in a conditional check
+    // Only show the player if 'showPlayer' is NOT explicitly false
+    if (showPlayer !== false && showPlayer !== "false") {
+      const playerElement = document.querySelector('[data-controller="player-visibility"]');
+      if (playerElement) {
+        const playerVisibilityController = this.application.getControllerForElementAndIdentifier(
+          playerElement,
+          "player-visibility"
+        );
+        if (playerVisibilityController) {
+          playerVisibilityController.show();
+        }
       }
     }
   }

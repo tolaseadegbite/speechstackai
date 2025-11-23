@@ -1,4 +1,4 @@
-class PasswordsController < DashboardController
+class PasswordsController < DashboardsController
   before_action :set_user
 
   def edit

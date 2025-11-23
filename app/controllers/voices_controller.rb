@@ -1,4 +1,4 @@
-class VoicesController < DashboardController
+class VoicesController < DashboardsController
   include S3Helper
 
   before_action :set_voice, only: %i[ show edit update destroy audio_url ]

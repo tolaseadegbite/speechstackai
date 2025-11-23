@@ -1,4 +1,4 @@
-class GeneratedAudioClipsController < DashboardController
+class GeneratedAudioClipsController < DashboardsController
   before_action :set_generated_audio_clip, only: %i[ destroy audio_url ]
 
   def new

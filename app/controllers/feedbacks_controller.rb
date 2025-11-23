@@ -1,4 +1,4 @@
-class FeedbacksController < DashboardController
+class FeedbacksController < DashboardsController
   before_action :set_feedback, only: %i[show edit update destroy]
   before_action :authorize_admin!, only: %i[edit update destroy]
 

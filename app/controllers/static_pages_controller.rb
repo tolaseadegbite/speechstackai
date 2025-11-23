@@ -5,6 +5,8 @@ class StaticPagesController < ApplicationController
     if user_signed_in?
       redirect_to text_to_speech_path
     end
+
+    @voices = Voice.includes(:languages, :user).order(id: :desc)
   end
 
   def dashboard
