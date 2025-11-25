@@ -12,6 +12,40 @@
  html {
   overflow-x: hidden;
  }
+
+ @font-face {
+  font-family: 'Rubik';
+  src: font-url('rubik/Rubik-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: font-url('rubik/Rubik-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Rubik", sans-serif;
+}
+
+h1 {
+  font-weight: 600; /* Maps to Rubik-semiBold */
+}
+
+h2 {
+  font-weight: 600; /* Maps to Rubik-SemiBold */
+}
+
+h3 {
+  font-weight: 500; /* Maps to Rubik-Medium */
+}
+
+h4, h5, h6 {
+  font-weight: 400; /* Maps to Rubik-Regular */
+}
  
 .min-b-screen {
   min-block-size: 100dvh; /* 100vh = 100% of the viewport height */
