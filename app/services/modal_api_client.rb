@@ -10,8 +10,9 @@ class ModalApiClient
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
 
-    http.open_timeout = 10
+    http.open_timeout = 30
     http.read_timeout = REQUEST_TIMEOUT
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     request = Net::HTTP::Post.new(uri.request_uri)
     request["Content-Type"] = "application/json"
