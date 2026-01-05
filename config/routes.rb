@@ -1,14 +1,88 @@
 Rails.application.routes.draw do
+  # ==========================================
+  # 1. System & Engines
+  # ==========================================
   mount MissionControl::Jobs::Engine, at: "/jobs"
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  get  "sign_in", to: "sessions#new"
-  post "sign_in", to: "sessions#create"
-  get  "sign_up", to: "registrations#new"
-  post "sign_up", to: "registrations#create"
+  # Health check & PWA
+  get "up" => "rails/health#show", as: :rails_health_check
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  get "serviceworker.js" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+
+  # ==========================================
+  # 2. Marketing & Static Pages
+  # ==========================================
+  root "static_pages#homepage"
+
+  get "/pricing",       to: "static_pages#pricing"
+  get "/documentation", to: "static_pages#documentation"
+  get "/about",         to: "static_pages#about"
+  get "/playground",    to: "static_pages#playground"
+
+
+  # ==========================================
+  # 3. Core App Features (Audio Generation)
+  # ==========================================
+
+  # Global History & Shared Actions (Delete, S3 URL)
+  resources :generated_audio_clips, only: [ :index, :destroy ] do
+    get :audio_url, on: :member
+  end
+
+  # Specific Features (Using the new Controller Structure)
+  # Note: I used 'scope' to avoid repeating 'module: :audio_generations' 3 times
+  scope module: :audio_generations do
+    resources :text_to_speeches,  only: [ :index, :create ], path: "text-to-speech"
+    resources :voice_conversions, only: [ :index, :create ], path: "voice-changer"
+    resources :sound_effects,     only: [ :index, :create ], path: "sound-effects"
+  end
+
+  resources :feedbacks
+  resources :voices do
+    get :audio_url, on: :member
+  end
+  resource :dashboard, only: [ :show ]
+  get "/settings", to: "home#index"
+
+
+  # ==========================================
+  # 4. Authentication & Identity
+  # ==========================================
+  get  "sign_in",  to: "sessions#new"
+  post "sign_in",  to: "sessions#create"
+  get  "sign_up",  to: "registrations#new"
+  post "sign_up",  to: "registrations#create"
+
   resources :sessions, only: [ :index, :show, :destroy ]
+  resource  :session # Current session management
   resource  :password, only: [ :edit, :update ]
-  # root "home#index"
+  resources :passwords, param: :token
+  resource  :invitation, only: [ :new, :create ]
+
+  # OAuth / Masquerading
+  get  "/auth/failure",            to: "sessions/omniauth#failure"
+  get  "/auth/:provider/callback", to: "sessions/omniauth#create"
+  post "/auth/:provider/callback", to: "sessions/omniauth#create"
+  post "users/:user_id/masquerade", to: "masquerades#create", as: :user_masquerade
+
+  namespace :sessions do
+    resource :passwordless, only: [ :new, :edit, :create ]
+    resource :sudo, only: [ :new, :create ]
+  end
+
+  namespace :identity do
+    resource :email,              only: [ :edit, :update ]
+    resource :name,               only: [ :edit, :update ]
+    resource :email_verification, only: [ :show, :create ]
+    resource :password_reset,     only: [ :new, :edit, :create, :update ]
+  end
+
+  namespace :authentications do
+    resources :events, only: :index
+  end
+
   namespace :two_factor_authentication do
     namespace :challenge do
       resource :security_keys,  only: [ :new, :create ]
@@ -21,64 +95,4 @@ Rails.application.routes.draw do
       resources :recovery_codes, only: [ :index, :create ]
     end
   end
-  get  "/auth/failure",            to: "sessions/omniauth#failure"
-  get  "/auth/:provider/callback", to: "sessions/omniauth#create"
-  post "/auth/:provider/callback", to: "sessions/omniauth#create"
-  post "users/:user_id/masquerade", to: "masquerades#create", as: :user_masquerade
-  resource :invitation, only: [ :new, :create ]
-  namespace :sessions do
-    resource :passwordless, only: [ :new, :edit, :create ]
-    resource :sudo, only: [ :new, :create ]
-  end
-  resources :sessions, only: [ :index, :show, :destroy ]
-  resource  :password, only: [ :edit, :update ]
-  namespace :identity do
-    resource :email,              only: [ :edit, :update ]
-    resource :name,               only: [ :edit, :update ]
-    resource :email_verification, only: [ :show, :create ]
-    resource :password_reset,     only: [ :new, :edit, :create, :update ]
-    resource :email,              only: [ :edit, :update ]
-    resource :email_verification, only: [ :show, :create ]
-    resource :password_reset,     only: [ :new, :edit, :create, :update ]
-  end
-  namespace :authentications do
-    resources :events, only: :index
-  end
-  resource :session
-  resources :passwords, param: :token
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  root "static_pages#homepage"
-  
-  resources :generated_audio_clips, only: [ :create, :destroy ] do
-    get :audio_url, on: :member
-  end
-
-  resources :voices do
-    get :audio_url, on: :member
-  end  
-  
-  resources :feedbacks
-
-  resource :dashboard, only: [ :show ]
-
-  get "/playground", to: "static_pages#playground"
-  get "/text-to-speech", to: "generated_audio_clips#new", as: :text_to_speech, defaults: { service_type: "text_to_speech" }
-  get "/voice-changer",  to: "generated_audio_clips#new", as: :voice_changer,  defaults: { service_type: "voice_changer" }
-  get "/sound-effects",  to: "generated_audio_clips#new", as: :sound_effects,  defaults: { service_type: "sound_effects" }
-  get "/pricing", to: "static_pages#pricing"
-  get "/documentation", to: "static_pages#documentation"
-  get "/about", to: "static_pages#about"
-
-  # Settings routes
-  get "/settings", to: "home#index"
 end

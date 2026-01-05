@@ -1,0 +1,15 @@
+<% grouped_clips.each do |date, clips| %>
+  <div id="date-group-<%= date %>">
+    <div class="flex justify-end">
+      <h3 class="pi-3 pb-1 border rounded-2xl mb-4 text-xs bg-shade"><%= date.strftime("%B %d, %Y") %></h3>
+    </div>
+    
+    <% clips.each do |clip| %>
+       <!-- 
+          Force the partial path manually. 
+          This bypasses Rails trying to guess the folder based on the class name.
+       -->
+       <%= render partial: clip.to_partial_path, object: clip %> 
+    <% end %>
+  </div>
+<% end %>

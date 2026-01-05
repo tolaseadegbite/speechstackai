@@ -1,0 +1,13 @@
+<div class="flex items-center space-x-2">
+  <!-- Download Button -->
+  <%= link_to "Download", 
+      audio_url_generated_audio_clip_path(clip), 
+      download: true, 
+      class: "text-sm text-blue-600 hover:underline" %>
+
+  <!-- Delete Button (Polymorphic route works for all types) -->
+  <%= button_to "Delete", 
+      generated_audio_clip_path(clip), 
+      method: :delete, 
+      class: "text-sm text-red-600 hover:underline" %>
+</div>

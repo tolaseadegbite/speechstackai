@@ -19,6 +19,12 @@ class User < ApplicationRecord
   has_many :events, dependent: :destroy
 
   has_many :generated_audio_clips, dependent: :destroy
+
+  # Add these STI Associations (Children)
+  has_many :text_to_speech_clips, class_name: "TextToSpeechClip"
+  has_many :voice_conversion_clips, class_name: "VoiceConversionClip"
+  has_many :sound_effect_clips, class_name: "SoundEffectClip"
+
   has_many :voices, dependent: :destroy
   has_many :languages, dependent: :destroy
 

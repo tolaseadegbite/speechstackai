@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Voice Changer</h1>
+  
+  <!-- Specific Form for VC -->
+  <div class="creation-form">
+    <%= form_with model: @clip, url: voice_conversions_path do |f| %>
+       <%= f.file_field :original_voice_s3_key %>
+       <%= f.submit "Convert Voice" %>
+    <% end %>
+  </div>
+
+  <!-- History List (Reusing the same partial!) -->
+  <div id="history">
+    <%= render "generated_audio_clips/history_list", grouped_clips: @generated_audio_clips %>
+  </div>
+</div>

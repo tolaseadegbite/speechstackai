@@ -111,8 +111,7 @@
 
 .voice-list-item {
   /* Add a transparent border to prevent layout shift on hover */
-  border: 1px solid transparent;
-  border-radius: var(--rounded-md);
+  /* border: 1px solid transparent; */
   transition: background-color var(--time-150), border-color var(--time-150);
 }
 
@@ -121,6 +120,7 @@
   /* border-color: var(--color-border-dark); */
   background-color: var(--color-border-light);
   cursor: pointer;
+  border-radius: var(--rounded-md);
 }
 
 /* ADD THIS BLOCK AT THE TOP */

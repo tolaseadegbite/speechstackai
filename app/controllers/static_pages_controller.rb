@@ -3,7 +3,7 @@ class StaticPagesController < ApplicationController
   skip_before_action :authenticate, only: [ :homepage, :pricing, :documentation, :playground, :about ]
   def homepage
     if user_signed_in?
-      redirect_to text_to_speech_path
+      redirect_to text_to_speeches_path
     end
 
     @voices = Voice.includes(:languages, :user).order(id: :desc)

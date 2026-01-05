@@ -7,15 +7,16 @@
     <div class="sidebar-menu__group">
       <div class="sidebar-menu__items">  
         <nav class="">
-          <%= link_to dashboard_path, class: "btn sidebar-menu__button mbe-1" do %>
-            <span class="icon icon--chart-pie" aria-hidden="true"></span>
-            Dashboard
-          <% end %>
           <%= link_to voices_path, 
                       class: "btn sidebar-menu__button mbe-1", 
                       aria: (current_page?(voices_path) ? { current: "page" } : {}) do %>
             <span class="icon icon--voices" aria-hidden="true"></span>
             Voices
+          <% end %>
+
+          <%= link_to feedbacks_path, class: "btn sidebar-menu__button mbe-1" do %>
+            <span class="icon icon--message-square-text" aria-hidden="true"></span>
+            Feedbacks
           <% end %>
         </nav>
       </div>
@@ -25,9 +26,9 @@
       <div class="sidebar-menu__items">  
         <nav>
 
-          <%= link_to text_to_speech_path, 
+          <%= link_to text_to_speeches_path, 
                       class: "btn sidebar-menu__button mbe-1", 
-                      aria: (current_page?(text_to_speech_path) ? { current: "page" } : {}) do %>
+                      aria: (current_page?(text_to_speeches_path) ? { current: "page" } : {}) do %>
             <span class="icon icon--audio-lines" aria-hidden="true"></span>
             Text to Speech
           <% end %>
@@ -53,11 +54,6 @@
 
   <%# Theme switcher popover %>
   <div class="mbs-auto flex flex-col">
-    <%= link_to feedbacks_path, class: "btn sidebar-menu__button mbe-1", aria: (current_page?(feedbacks_path) ? { current: "page" } : {}) do %>
-      <span class="icon icon--message-square-text" aria-hidden="true"></span>
-      Feedbacks
-    <% end %>
-    
     <div contents 
          data-controller="popover" 
          data-popover-placement-value="right-center" 

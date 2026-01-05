@@ -1,0 +1,72 @@
+<div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-4@lg gap-4">
+  <% voices.each do |voice| %>
+    
+    <%# THE CARD CONTAINER %>
+    <div class="bg-surface p-4 rounded-lg border shadow-sm"
+         style="cursor: pointer; transition: border-color 0.2s;"
+         data-action="click->voice-selector#select"
+         data-voice-selector-id-param="<%= voice.id %>"
+         data-voice-selector-name-param="<%= voice.name %>">
+
+      <!-- Top Row: Name & Description Popover -->
+      <div class="flex justify-between items-start mbe-3">
+        
+        <!-- 'min-i-0' ensures truncation works inside flex items -->
+        <div class="min-i-0" data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide">
+          <h4 class="font-semibold text-lg overflow-ellipsis" data-popover-target="trigger">
+            <%= voice.name %>
+          </h4>
+          
+          <!-- Popover Content -->
+          <div popover="hint" class="popover shadow-lg border" style="max-width: 18rem; z-index: 50;" data-popover-target="content" role="dialog">
+            <div class="flex flex-col p-4 bg-surface rounded-lg">
+              <h4 class="font-semibold mbe-1"><%= voice.name %></h4>
+              <p class="text-sm text-subtle"><%= voice.description %></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Row: Swatch & Play Button -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Swatch Container -->
+        <!-- 'relative' allows us to position the play button over it -->
+        <div class="relative flex-item-no-shrink">
+          <span class="voice-swatch block rounded-full" 
+                style="--icon-size: 2.5rem; <%= voice_gradient_style(voice) %>" 
+                aria-hidden="true"></span>
+          
+          <!-- Play Button (Overlaid on Swatch) -->
+          <!-- Inline style used because .absolute/.inset-0 are missing from utilities.css -->
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+            <% if voice.s3_key.present? %>
+              <button type="button" class="btn btn--icon rounded-full shadow-sm flex items-center justify-center"
+                      style="width: 2rem; height: 2rem;"
+                      data-action="click->voice-selector#playPreview click->audio-fetcher#fetch"
+                      data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
+                      data-audio-fetcher-title-param="<%= voice.name %>"
+                      data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                      data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                      data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                      data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>">
+                <div data-play-icon-url>
+                  <svg class="text-highlight" style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                </div>
+              </button>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Metadata -->
+        <div class="flex flex-col text-xs text-subtle">
+           <span class="font-medium text-primary"><%= voice.languages.first&.name || "Unknown" %></span>
+           <span><%= voice.gender %></span>
+        </div>
+
+      </div>
+      
+    </div>
+  <% end %>
+</div>

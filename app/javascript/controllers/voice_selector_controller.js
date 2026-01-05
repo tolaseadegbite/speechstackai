@@ -1,12 +1,29 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="voice-selector"
 export default class extends Controller {
-  static targets = ["input"]
+  static targets = ["input", "label", "modal"]
 
-  // This action is called when any radio button card is selected.
+  // Open the native <dialog>
+  openModal() {
+    this.modalTarget.showModal()
+  }
+
+  // Close the native <dialog>
+  closeModal() {
+    this.modalTarget.close()
+  }
+
+  // Called when a user clicks a radio button in the library
   select(event) {
-    // It updates the single hidden input field, which is the "source of truth" for the form.
-    this.inputTarget.value = event.currentTarget.value
+    // 1. Update the hidden input (Source of Truth)
+    this.inputTarget.value = event.params.id
+    
+    // 2. Update the visible button label
+    if (this.hasLabelTarget) {
+      this.labelTarget.textContent = event.params.name
+    }
+
+    // 3. Close modal automatically for better UX
+    this.closeModal()
   }
 }
