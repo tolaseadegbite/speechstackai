@@ -2,6 +2,9 @@
 <% provide(:title, title) %>
 <% content_for :page_header, title %>
 
+<!-- 1. Realtime Listener (Crucial for updates) -->
+<%= turbo_stream_from current_user, "history" %>
+
 <div class="container mi-auto p-4" style="max-inline-size: 65rem;">
   
   <!-- Page Header -->
@@ -16,14 +19,14 @@
     <!-- THE FORM -->
     <%= form_with model: @clip, url: text_to_speeches_path, id: "tts-form", class: "creation-form mbe-10" do |f| %>
       
-      <!-- 1. The Editor Card -->
+      <!-- Editor Card -->
       <div 
         class="rounded-2xl border" 
         onfocusin="this.style.boxShadow='0 0 0 2px green'" 
         onfocusout="this.style.boxShadow='none'"
         style="border-radius: 1rem; border: 1px solid --color-text-positive; transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1); outline: none;">
         
-        <!-- A. Large Text Area -->
+        <!-- Large Text Area -->
         <div class="relative bg-shade bg-transparent">
           <%= f.text_area :text, 
             class: "input border-0 p-6",
@@ -38,48 +41,48 @@
             } %>
         </div>
 
-        <!-- B. The Toolbar (Bottom Bar) -->
+        <!-- Toolbar (Bottom Bar) -->
         <div class="flex items-center justify-between border-bs p-3 bg-subtle rounded-be-lg">
-          <div class="flex flex-col gap-2">
-          <!-- Character Counter -->
-          <div class="text-xs pi-2">
-              <span data-character-counter-target="count">0</span> / 5,000
-          </div>
           
-          <!-- LEFT: Voice Selector Trigger -->
-          <div>
-            <%= f.hidden_field :voice_id, data: { voice_selector_target: "input" } %>
+          <div class="flex flex-col gap-2">
+            <!-- Character Counter -->
+            <div class="text-xs pi-2">
+                <span data-character-counter-target="count">0</span> / 5,000
+            </div>
             
-            <%# 1. Define the Trigger Button %>
-            <% trigger = button_tag type: "button", class: "btn bg-shade rounded-2xl flex items-center gap-2", data: { action: "dialog#showModal" } do %>
-              <span class="icon icon--user" aria-hidden="true"></span>
-              <span data-voice-selector-target="label">
-                  <%= @voices.first&.name || "Select Voice" %>
-              </span>
-              <span class="icon icon--chevron-down text-xs" aria-hidden="true"></span>
-            <% end %>
-
-            <%# 2. Use your existing Helper %>
-            <%# Note: You might need to adjust 'size' based on your helper's CSS options %>
-            <%= modal_dialog trigger, title: "Voice Library", size: "50rem", label: "Select a Voice" do %>
+            <!-- LEFT: Voice Selector -->
+            <div>
+              <%= f.hidden_field :voice_id, data: { voice_selector_target: "input" } %>
               
-              <!-- Modal Content: The Grid -->
-              <div class="overflow-y-auto p-1" style="max-height: 70vh;">
-                <%= render "audio_generations/text_to_speeches/voice_selection_grid", voices: @voices %>
-              </div>
+              <%# 1. Trigger Button %>
+              <% trigger = button_tag type: "button", class: "btn bg-shade rounded-2xl flex items-center gap-2", data: { action: "dialog#showModal" } do %>
+                <span class="icon icon--user" aria-hidden="true"></span>
+                <span data-voice-selector-target="label">
+                    <%= @voices.first&.name || "Select Voice" %>
+                </span>
+                <span class="icon icon--chevron-down text-xs" aria-hidden="true"></span>
+              <% end %>
 
-            <% end %>
+              <%# 2. Voice Library Modal (Using Helper) %>
+              <%= modal_dialog trigger, title: "Voice Library", size: "65rem", label: "Select a Voice" do %>
+                <div class="overflow-y-auto p-1" style="max-height: 70vh;">
+                  <%= render "audio_generations/text_to_speeches/voice_selection_grid", voices: @voices %>
+                </div>
+              <% end %>
+            </div>
           </div>
-        </div>
 
-          <!-- RIGHT: Submit Button & Credits -->
+          <!-- RIGHT: Submit & Credits -->
           <div class="flex flex-col items-end gap-2">
             <span class="text-xs text-subtle font-semibold hidden sm:inline-block">
               <%= current_user.credits %> credits remaining
             </span>
 
             <div class="flex gap-2 items-center">
-              <button type="button" class="btn btn--main block" data-action="click->sample-text#resetForm" data-sample-text-target="resetButton" hidden> <span class="icon icon--rotate-cw" aria-hidden="true"></span> </button>
+              <%# Reset Button (Hidden by default via controller) %>
+              <button type="button" class="btn btn--main block" data-action="click->sample-text#resetForm" data-sample-text-target="resetButton" hidden> 
+                <span class="icon icon--rotate-cw" aria-hidden="true"></span> 
+              </button>
 
               <%= f.button class: "btn btn--positive flex items-center gap-2" do %>
                 <span>Generate</span>
@@ -90,26 +93,8 @@
         </div>
       </div>
 
-      <!-- 2. Sample Texts -->
+      <!-- Sample Texts -->
       <%= render "generated_audio_clips/partials/text_to_speech/sample_texts" %>
-
-      <!-- 3. VOICE SELECTION MODAL (New) -->
-      <dialog data-voice-selector-target="modal" class="backdrop:bg-gray-900/50 rounded-2xl shadow-2xl p-0 w-full max-w-6xl m-auto open:animate-fade-in-up">
-        <div class="flex flex-col max-h-[85vh]">
-          <!-- Modal Header -->
-          <div class="p-4 border-b flex justify-between items-center bg-surface sticky top-0 z-10">
-            <h3 class="font-bold text-xl">Voice Library</h3>
-            <button type="button" class="btn btn--icon btn--subtle" data-action="click->voice-selector#closeModal">
-              <span class="icon icon--close"></span>
-            </button>
-          </div>
-
-          <!-- Modal Grid Content -->
-          <div class="overflow-y-auto p-6 bg-subtle/10">
-            <%= render "audio_generations/text_to_speeches/voice_selection_grid", voices: @voices %>
-          </div>
-        </div>
-      </dialog>
 
     <% end %>
   </div>
@@ -119,7 +104,11 @@
     <div class="">
       <h2 class="pbe-4 border-be text-xl font-semibold">Recent Generations</h2>
     </div>
-    <%= render "generated_audio_clips/history_list", grouped_clips: @grouped_clips %>
+    
+    <!-- This ID matches your Model Broadcast target -->
+    <div id="history_list">
+      <%= render "generated_audio_clips/history_list", grouped_clips: @grouped_clips %>
+    </div>
 
     <%= render "shared/pagination", pagy: @pagy %>
   </div>

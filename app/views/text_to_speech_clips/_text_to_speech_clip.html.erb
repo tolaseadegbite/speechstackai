@@ -1,13 +1,10 @@
-<%# Set a default context if one wasn't passed %>
-<% context ||= :history %>
-
 <%= tag.div class: "flex justify-between items-center voice-list-item text-start p-2 border-be",
-            id: dom_id(text_to_speech_clip, context) do %>
+            id: dom_id(text_to_speech_clip) do %>
 
   <% case text_to_speech_clip.status %>
   <% when "pending", "processing" %>
     <div class="flex flex-col gap-half text-sm">
-      <h4 class="overflow-ellipsis font-semibold text-subtle">
+      <h4 class="overflow-ellipsis text-subtle">
         <%= text_to_speech_clip.text.truncate(40) %> 
         (<%= text_to_speech_clip.status.humanize %>...)
       </h4>
@@ -26,7 +23,7 @@
 
   <% when "failed", "no_credits" %>
     <div class="flex flex-col gap-half text-sm flex-grow min-w-0">
-      <h4 class="overflow-ellipsis font-semibold text-red-500"><%= text_to_speech_clip.text.truncate(40) %></h4>
+      <h4 class="overflow-ellipsis text-red-500"><%= text_to_speech_clip.text.truncate(40) %></h4>
       <div class="flex items-center gap-2 text-sm text-subtle">
         <span class="voice-swatch shrink-0" 
               style="--icon-size: 1.5rem; <%= voice_gradient_style(text_to_speech_clip.voice) %>" 
@@ -47,7 +44,7 @@
         <div class="flex items-center justify-end gap">
           <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
           <%= link_to "Continue", 
-                generated_audio_clip_path(text_to_speech_clip, context: context), 
+                generated_audio_clip_path(text_to_speech_clip), 
                 data: { turbo_method: :delete }, 
                 class: "btn btn--negative" %>
         </div>
@@ -58,7 +55,7 @@
     <div class="flex flex-col gap-half text-sm">
       <div contents data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide" data-popover-placement-value="bottom-right">
         <a href="" class="" data-popover-target="trigger">
-          <h4 class="overflow-ellipsis font-semibold"><%= text_to_speech_clip.text.truncate(40) %></h4>
+          <h4 class="overflow-ellipsis"><%= text_to_speech_clip.text.truncate(40) %></h4>
         </a>
         <div popover="hint" class="popover shadow-md max-b-screen-32" style="max-width: 20rem;" data-popover-target="content" role="dialog">
           <div class="flex flex-col p-4"><p class="text-sm text-subtle"><%= text_to_speech_clip.text %></p></div>
@@ -92,11 +89,12 @@
 
       <div contents data-controller="popover" data-popover-placement-value="bottom-end">
 
-        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= dom_id(text_to_speech_clip, "#{context}_popover") %>" aria-haspopup="true">
+        <%# Using :menu to create a unique ID for the popover (e.g. menu_text_to_speech_clip_1) %>
+        <button type="button" class="btn btn--icon btn--subtle" data-popover-target="trigger" popovertarget="<%= dom_id(text_to_speech_clip, :menu) %>" aria-haspopup="true">
           <span class="icon icon--more-horizontal" aria-hidden="true"></span>
         </button>
 
-        <div popover id="<%= dom_id(text_to_speech_clip, "#{context}_popover") %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
+        <div popover id="<%= dom_id(text_to_speech_clip, :menu) %>" class="popover" style="--popover-size: 8rem;" data-popover-target="content" role="menu" aria-label="Menu">
           <div class="menu" data-controller="menu" data-action="keydown->menu#navigate">
             <%= link_to audio_url_generated_audio_clip_path(text_to_speech_clip), 
                         data: { menu_target: "item", turbo: "false" }, 
@@ -125,7 +123,7 @@
               <div class="flex items-center justify-end gap">
                 <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
                 <%= link_to "Continue", 
-                generated_audio_clip_path(text_to_speech_clip, context: context), 
+                generated_audio_clip_path(text_to_speech_clip), 
                 data: { turbo_method: :delete }, 
                 class: "btn btn--negative" %>
               </div>
