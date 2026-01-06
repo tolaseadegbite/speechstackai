@@ -1,17 +1,28 @@
 <div class="grid grid-cols-1 grid-cols-2@sm grid-cols-2@md grid-cols-4@lg gap-4">
   <% voices.each do |voice| %>
     
-    <%# THE CARD CONTAINER %>
-    <div class="bg-surface p-4 rounded-lg border shadow-sm"
-         style="cursor: pointer; transition: border-color 0.2s;"
-         data-action="click->voice-selector#select"
-         data-voice-selector-id-param="<%= voice.id %>"
-         data-voice-selector-name-param="<%= voice.name %>">
+    <%# 1. VISUAL FIX: Use label + radio button to leverage 'card--selectable' CSS %>
+    <%= label_tag "voice_selection_#{voice.id}", nil, 
+        class: "bg-surface p-4 rounded-lg border shadow-sm cursor-pointer card card--selectable block h-full",
+        style: "--gradient-start: #{voice.gradient_start || '#A5B4FC'}; --gradient-end: #{voice.gradient_end || '#6366F1'}; transition: border-color 0.2s;" do %>
 
-      <!-- Top Row: Name & Description Popover -->
+      <%# 2. LOGIC FIX: The Radio Button %>
+      <%# This handles the 'checked' state visually and triggers the Stimulus action %>
+      <%= radio_button_tag "voice_selection", voice.id, false, 
+          id: "voice_selection_#{voice.id}",
+          class: "sr-only peer", 
+          data: { 
+            action: "click->voice-selector#select", 
+            voice_selector_id_param: voice.id, 
+            voice_selector_name_param: voice.name,
+            # --- NEW PARAMS ---
+            voice_selector_gradient_start_param: voice.gradient_start,
+            voice_selector_gradient_end_param: voice.gradient_end
+          } 
+      %>
+
+      <!-- Top Row: Name & Description Popover (Restored) -->
       <div class="flex justify-between items-start mbe-3">
-        
-        <!-- 'min-i-0' ensures truncation works inside flex items -->
         <div class="min-i-0" data-controller="popover" data-action="mouseenter->popover#debouncedShow mouseleave->popover#debouncedHide">
           <h4 class="font-semibold text-lg overflow-ellipsis" data-popover-target="trigger">
             <%= voice.name %>
@@ -25,25 +36,22 @@
             </div>
           </div>
         </div>
-
       </div>
 
-      <!-- Bottom Row: Swatch & Play Button -->
+      <!-- Bottom Row: Swatch & Play Button & Metadata (Restored) -->
       <div class="flex items-center gap-3">
         
         <!-- Swatch Container -->
-        <!-- 'relative' allows us to position the play button over it -->
         <div class="relative flex-item-no-shrink">
           <span class="voice-swatch block rounded-full" 
                 style="--icon-size: 2.5rem; <%= voice_gradient_style(voice) %>" 
                 aria-hidden="true"></span>
           
           <!-- Play Button (Overlaid on Swatch) -->
-          <!-- Inline style used because .absolute/.inset-0 are missing from utilities.css -->
           <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
             <% if voice.s3_key.present? %>
               <button type="button" class="btn btn--icon rounded-full shadow-sm flex items-center justify-center"
-                      style="width: 2rem; height: 2rem;"
+                      style="width: 2rem; height: 2rem; background-color: rgba(255,255,255,0.85); color: black;"
                       data-action="click->voice-selector#playPreview click->audio-fetcher#fetch"
                       data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
                       data-audio-fetcher-title-param="<%= voice.name %>"
@@ -52,14 +60,14 @@
                       data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
                       data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>">
                 <div data-play-icon-url>
-                  <svg class="text-highlight" style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                  <svg style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
                 </div>
               </button>
             <% end %>
           </div>
         </div>
 
-        <!-- Metadata -->
+        <!-- Metadata (Restored Language & Gender) -->
         <div class="flex flex-col text-xs text-subtle">
            <span class="font-medium text-primary"><%= voice.languages.first&.name || "Unknown" %></span>
            <span><%= voice.gender %></span>
@@ -67,6 +75,6 @@
 
       </div>
       
-    </div>
+    <% end %>
   <% end %>
 </div>

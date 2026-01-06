@@ -8,6 +8,7 @@
         { label: "Ŋlɔmi (Ewe)", icon: "message-square-text", text: "“Àmɛ ka woŋlɔ agbalẽ gbɔŋlɔa?” Kofíe bia. “Èyí míewɔna le agbalẽ me gbɔŋlɔŋlɔnya me.”" },
 
         { label: "Likápo (Lingala)", icon: "newspaper", text: "Bokóli malámu. Masolo ya mikóló ya lelo: Bakonzi ya mokili mobimba bayókaná na ntángo ya mbóngwana ya malili, mpe basílísí kobóngola ndéngé nini bakokí kokitisa bozálisí ya gaz ya carbon na mikolo nsambo ya mikolo míngi." },
+        
         { label: "Adwísinim (Asante-Twi)", icon: "book-open", text: "Da koro, Adwoa rekɔ gua so no, ɔhwɛɛ sika kotoku bi a ɛda fam. Ɔhwɛɛ ne ho, nanso wammíhu obiara, enti ɔfaa no." },
 
         { label: "Nkaghyira (Akuapem-Twi)", icon: "voicemail", text: "Woato Yaa Asantewaa nneɛma a ɛbɛma woanya anigye. Mennim sɛ metumi aboa wo, nanso mesrɛ wo, fa wo din, wo nɔma, ne nsɛm tiawa. Mɛfrɛ wo bio mpofirim." },
@@ -17,7 +18,12 @@
     %>
 
     <% sample_text_list.each do |sample| %>
-      <%= button_tag type: "button", class: "btn shrink-0 flex items-center gap-2 text-xs", data: { action: "mouseover->sample-text#showPlaceholder mouseleave->sample-text#hidePlaceholder click->sample-text#insert", sample_text_text_param: sample[:text] } do %>
+      <%= button_tag type: "button", 
+          class: "btn shrink-0 flex items-center gap-2 text-xs", 
+          data: { 
+            action: "mouseover->sample-text#showPlaceholder mouseleave->sample-text#hidePlaceholder click->sample-text#insert", 
+            sample_text_text_param: sample[:text] 
+          } do %>
         <span class="icon icon--<%= sample[:icon] %> text-subtle" style="--icon-size: 0.9rem" aria-hidden="true"></span>
         <span class="font-medium"><%= sample[:label] %></span>
       <% end %>

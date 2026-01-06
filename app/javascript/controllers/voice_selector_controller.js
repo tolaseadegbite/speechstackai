@@ -1,29 +1,36 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "label", "modal"]
+  // 1. Add "swatch" to targets
+  static targets = ["input", "label", "swatch"]
 
-  // Open the native <dialog>
-  openModal() {
-    this.modalTarget.showModal()
-  }
-
-  // Close the native <dialog>
-  closeModal() {
-    this.modalTarget.close()
-  }
-
-  // Called when a user clicks a radio button in the library
   select(event) {
-    // 1. Update the hidden input (Source of Truth)
-    this.inputTarget.value = event.params.id
-    
-    // 2. Update the visible button label
-    if (this.hasLabelTarget) {
-      this.labelTarget.textContent = event.params.name
+    const id = event.params.id
+    const name = event.params.name
+    const gradientStart = event.params.gradientStart
+    const gradientEnd = event.params.gradientEnd
+
+    // 1. Update Hidden Input
+    if (this.hasInputTarget) {
+      this.inputTarget.value = id
     }
 
-    // 3. Close modal automatically for better UX
-    this.closeModal()
+    // 2. Update Label
+    if (this.hasLabelTarget) {
+      this.labelTarget.textContent = name
+    }
+
+    // 3. Update Swatch Gradient
+    if (this.hasSwatchTarget && gradientStart && gradientEnd) {
+      this.swatchTarget.style.setProperty("--gradient-start", gradientStart)
+      this.swatchTarget.style.setProperty("--gradient-end", gradientEnd)
+    }
+
+    // 4. Close Modal
+    window.dispatchEvent(new CustomEvent("dialog:close"))
+  }
+
+  playPreview(event) {
+    event.stopPropagation()
   }
 }

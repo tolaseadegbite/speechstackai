@@ -1,0 +1,24 @@
+<%# 1. Define IDs based on the date %>
+<% date_group_id = "date-group-#{date.to_date}" %>
+<% content_id = "#{date_group_id}_content" %>
+
+<div id="<%= date_group_id %>">
+  
+  <!-- The Date Header -->
+  <div class="flex justify-end">
+    <h3 class="pi-3 pb-1 border rounded-2xl mb-4 text-xs bg-shade">
+      <%= date.strftime("%B %d, %Y") %>
+    </h3>
+  </div>
+  
+  <!-- 
+     The Content Container. 
+     We append clips HERE so they appear below the header 
+  -->
+  <div id="<%= content_id %>">
+    <% clips.each do |clip| %>
+       <%= render partial: clip.to_partial_path, object: clip %> 
+    <% end %>
+  </div>
+
+</div>
