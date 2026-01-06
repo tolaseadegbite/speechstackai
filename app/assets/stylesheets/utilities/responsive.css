@@ -26,6 +26,14 @@
     padding: 4dvh 3dvh 0;
   }
 
+  .tts-heading {
+    font-size: var(--text-4xl) !important;
+  }
+
+  .tts-header {
+    margin-top: 0 !important;
+  }
+
   /* h1 {
     font-size: 2rem !important;
   }

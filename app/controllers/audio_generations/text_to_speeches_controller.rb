@@ -21,7 +21,7 @@ module AudioGenerations
 
       if @clip.save
         TextToSpeechJob.perform_later(@clip)
-        flash.now[:notice] = "Generating speech... scroll down for real time updates."
+        flash.now[:notice] = "Generating speech... scroll down for updates."
 
         # We need to reload the voices for the re-render if using Turbo
         @voices = Voice.includes(:languages).order(:name)
