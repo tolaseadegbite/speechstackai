@@ -14,7 +14,7 @@
   </div>
 
   <!-- Main Creation Area -->
-  <div data-controller="character-counter voice-selector sample-text">
+  <div data-controller="character-counter voice-selector sample-text pdf-uploader">
     
     <!-- THE FORM -->
     <%= form_with model: @clip, url: text_to_speeches_path, id: "tts-form", class: "creation-form mbe-10" do |f| %>
@@ -27,16 +27,17 @@
         style="border-radius: 1rem; border: 1px solid --color-text-positive; transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1); outline: none;">
         
         <!-- A. Large Text Area Container -->
-        <div class="relative bg-shade bg-transparent">
+        <div class="relative bg-transparent">
           
           <%# 1. TEXT AREA: Added 'pie-10' (padding-inline-end) to prevent text overlap with the button %>
           <%= f.text_area :text, 
-            class: "input text-lg border-0 p-6 pie-10",
+            class: "input border-0 p-6 pie-10",
             style: "outline: none; box-shadow: none;",
-            rows: 8, 
+            rows: 10, 
             placeholder: "Start typing here or paste any text you want to turn into natural speech...",
             maxlength: 5000,
             data: { 
+                pdf_uploader_target: "output",
                 character_counter_target: "input",
                 sample_text_target: "input", 
                 action: "input->character-counter#update input->sample-text#handleInput"
@@ -74,12 +75,12 @@
                 
                 <%# --- CHANGE: Added data-voice-selector-target="swatch" --- %>
                 <div class="rounded-full" 
-                    data-voice-selector-target="swatch"
-                    style="inline-size: 1.25rem; block-size: 1.25rem; background: linear-gradient(180deg, var(--gradient-start, #e5e7eb) 0%, var(--gradient-end, #9ca3af) 100%);">
+                  data-voice-selector-target="swatch"
+                  style="inline-size: 1.25rem; block-size: 1.25rem; background: linear-gradient(180deg, var(--gradient-start, #e5e7eb) 0%, var(--gradient-end, #9ca3af) 100%);">
                 </div>
 
                 <span data-voice-selector-target="label">
-                    Select voice
+                  Select voice
                 </span>
                 <span class="icon icon--chevron-down text-xs" aria-hidden="true"></span>
               <% end %>
@@ -100,10 +101,29 @@
             </span>
 
             <div class="flex gap-2 items-center">
-              <%# REMOVED: Reset button was here %>
+
+              <!-- 1. The Hidden File Input -->
+              <input type="file" 
+                accept="application/pdf"
+                data-pdf-uploader-target="input" 
+                data-action="change->pdf-uploader#upload" hidden>
+
+              <!-- In your view partial -->
+              <button type="button" 
+                      class="btn bg-shade rounded-2xl flex items-center gap-2 text-xs"
+                      title="Import text from PDF"
+                      data-action="click->pdf-uploader#trigger">
+                
+                <span data-pdf-uploader-target="spinner" class="hide">
+                  <span class="icon icon--loading" aria-hidden="true">↻</span>
+                </span>
+                
+                PDF
+                <span class="icon icon--upload" aria-hidden="true"></span> 
+              </button>
 
               <%= f.button class: "btn btn--positive rounded-2xl flex items-center gap-2" do %>
-                <span>Generate</span>
+                <!--<span>Generate</span>-->
                 <span class="icon icon--arrow-right" aria-hidden="true"></span>
               <% end %>
             </div>

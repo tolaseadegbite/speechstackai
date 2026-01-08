@@ -50,6 +50,7 @@ img.icon {
 .icon--calendar { --svg: url("calendar.svg"); }
 .icon--car { --svg: url("car.svg"); }
 .icon--move-right { --svg: url("move-right.svg"); }
+.icon--upload { --svg: url("upload.svg"); }
 .icon--arrow-up { --svg: url("arrow-up.svg"); }
 .icon--arrow-down { --svg: url("arrow-down.svg"); }
 .icon--arrow-right { --svg: url("arrow-right.svg"); }

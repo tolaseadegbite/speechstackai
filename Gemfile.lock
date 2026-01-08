@@ -7,6 +7,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    Ascii85 (2.0.1)
     actioncable (8.0.2)
       actionpack (= 8.0.2)
       activesupport (= 8.0.2)
@@ -80,6 +81,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    afm (1.0.0)
     android_key_attestation (0.3.0)
     ast (2.4.3)
     authentication-zero (4.0.3)
@@ -151,6 +153,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    hashery (2.1.2)
     hashie (5.0.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
@@ -261,6 +264,12 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    pdf-reader (2.15.1)
+      Ascii85 (>= 1.0, < 3.0, != 2.0.0)
+      afm (>= 0.2.1, < 2)
+      hashery (~> 2.0)
+      ruby-rc4
+      ttfunk
     pg (1.5.9)
     pp (0.6.2)
       prettyprint
@@ -368,6 +377,7 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
+    ruby-rc4 (0.1.5)
     rubyzip (2.4.1)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
@@ -420,6 +430,8 @@ GEM
       openssl (> 2.0)
       openssl-signature_algorithm (~> 1.0)
     tsort (0.2.0)
+    ttfunk (1.8.0)
+      bigdecimal (~> 3.1)
     turbo-rails (2.0.16)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
@@ -480,6 +492,7 @@ DEPENDENCIES
   omniauth
   omniauth-rails_csrf_protection
   pagy (~> 9.4)
+  pdf-reader (~> 2.15)
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
