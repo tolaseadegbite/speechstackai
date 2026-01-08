@@ -33,7 +33,7 @@ export default class extends Controller {
     try {
       const result = await Tesseract.recognize(file, 'eng')
       
-      // --- FIX: Clean the text before inserting ---
+      // Clean the text before inserting
       const rawText = result.data.text
       const cleanText = this.cleanOCRText(rawText)
       
@@ -69,35 +69,43 @@ export default class extends Controller {
   }
 
   // --- BRIDGE: Turbo Stream Listener ---
+  // Triggered automatically when the partial is injected by Turbo
   payloadTargetConnected(element) {
     const text = element.dataset.text
+    // Check if the backend flagged this as an error (via data-error="true")
+    const isError = element.dataset.error === "true"
     
-    if (text !== undefined) {
+    // 1. Always stop the spinner when ANY payload arrives
+    this.hideLoading()
+    
+    // 2. Only logic if it is NOT an error
+    // (If it IS an error, the Flash message handles the UI, we just stop spinning)
+    if (!isError && text !== undefined) {
       if (text.trim().length > 0) {
         this.insertText(text)
       } else {
-        alert("No text found. This document might be a scanned image, which is not supported.")
+        // Fallback alert if text is empty but no specific error was raised
+        // e.g. A PDF that is technically valid but contains only scanned images
+        alert("No text found. This document might be a scanned image or empty.")
       }
-      
-      this.hideLoading()
-      element.remove()
     }
+    
+    // 3. Cleanup: Remove the element so it doesn't clutter the DOM
+    element.remove()
   }
 
   // --- HELPERS ---
 
-  // New Helper: Fixes "unnecessary line breaks" from Tesseract
+  // Helper: Fixes "unnecessary line breaks" from Tesseract
   cleanOCRText(text) {
     if (!text) return ""
 
-    // 1. Split into paragraphs based on double newlines (standard OCR behavior for blocks)
-    //    Tesseract usually puts \n\n between distinct blocks of text.
+    // 1. Split into paragraphs based on double newlines
     const paragraphs = text.split(/\n\s*\n/)
 
     return paragraphs
       .map(para => {
         // 2. Inside each paragraph, replace single newlines with a space
-        //    This fixes the "visual line break" issue.
         return para
           .replace(/[\r\n]+/g, " ") // Turn newlines into spaces
           .replace(/\s+/g, " ")     // Squeeze multiple spaces into one

@@ -1,10 +1,6 @@
-<%# 
-  This hidden div is injected by Turbo.
-  We add 'data-document-uploader-target="payload"' so the Stimulus controller
-  automatically detects it via the 'payloadTargetConnected' method.
-%>
 <div id="extraction_result_payload" 
      data-document-uploader-target="payload" 
      data-text="<%= text %>"
+     data-error="<%= local_assigns[:error] == true %>"
      hidden>
 </div>
