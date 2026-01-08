@@ -47,4 +47,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "pdf-reader", "~> 2.15"
+gem "pdf-reader"
+gem "docx"
+# gem "openssl"
+
+gem "openssl", "~> 4.0"

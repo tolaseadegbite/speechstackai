@@ -2,8 +2,12 @@
 <% provide(:title, title) %>
 <% content_for :page_header, title %>
 
-<!-- 1. Realtime Listener -->
+<%# 1. Define stream_id at the top %>
+<% stream_id = SecureRandom.hex(10) %>
+
+<!-- 2. Realtime Listeners -->
 <%= turbo_stream_from current_user, "history" %>
+<%= turbo_stream_from "document_extractions_#{stream_id}" %>
 
 <div class="container mi-auto p-4" style="max-inline-size: 65rem;">
   
@@ -14,7 +18,8 @@
   </div>
 
   <!-- Main Creation Area -->
-  <div data-controller="character-counter voice-selector sample-text pdf-uploader">
+  <div data-controller="character-counter voice-selector sample-text document-uploader" 
+       data-stream-id="<%= stream_id %>">
     
     <!-- THE FORM -->
     <%= form_with model: @clip, url: text_to_speeches_path, id: "tts-form", class: "creation-form mbe-10" do |f| %>
@@ -29,7 +34,7 @@
         <!-- A. Large Text Area Container -->
         <div class="relative bg-transparent">
           
-          <%# 1. TEXT AREA: Added 'pie-10' (padding-inline-end) to prevent text overlap with the button %>
+          <%# 1. TEXT AREA %>
           <%= f.text_area :text, 
             class: "input border-0 p-6 pie-10",
             style: "outline: none; box-shadow: none;",
@@ -37,14 +42,20 @@
             placeholder: "Start typing here or paste any text you want to turn into natural speech...",
             maxlength: 5000,
             data: { 
-                pdf_uploader_target: "output",
+                document_uploader_target: "output",
                 character_counter_target: "input",
                 sample_text_target: "input", 
                 action: "input->character-counter#update input->sample-text#handleInput"
             } %>
 
-          <%# 2. RESET BUTTON: Moved here. Positioned absolutely to top-right. %>
-          <%# Using inline style because 'absolute', 'top-0', 'right-0' are not in your utilities.css %>
+            <%# 
+               Async Result Container 
+               Turbo Stream will inject the payload inside here.
+               The Stimulus controller detects the new child via 'payloadTargetConnected'.
+            %>
+            <div id="extraction_hidden_result"></div>
+
+          <%# 2. RESET BUTTON %>
           <button type="button" 
                   class="btn btn--icon btn--primary rounded-full mis-2"
                   style="position: absolute; top: 1rem; right: 1rem;"
@@ -58,7 +69,7 @@
         </div>
 
         <!-- B. The Toolbar (Bottom Bar) -->
-        <div class="flex items-center justify-between border-bs p-3 bg-subtle rounded-be-lg">
+        <div class="flex items-center gap-1 justify-between border-bs p-3 bg-subtle rounded-be-lg">
           
           <div class="flex flex-col gap-2">
             <!-- Character Counter -->
@@ -73,7 +84,6 @@
               <%# Trigger Button %>
               <% trigger = button_tag type: "button", class: "btn bg-shade rounded-2xl flex items-center gap-2", data: { action: "dialog#showModal" } do %>
                 
-                <%# --- CHANGE: Added data-voice-selector-target="swatch" --- %>
                 <div class="rounded-full" 
                   data-voice-selector-target="swatch"
                   style="inline-size: 1.25rem; block-size: 1.25rem; background: linear-gradient(180deg, var(--gradient-start, #e5e7eb) 0%, var(--gradient-end, #9ca3af) 100%);">
@@ -100,25 +110,26 @@
               <%= current_user.credits %> credits remaining
             </span>
 
-            <div class="flex gap-2 items-center">
+            <div class="flex gap-1 items-center">
 
               <!-- 1. The Hidden File Input -->
               <input type="file" 
-                accept="application/pdf"
-                data-pdf-uploader-target="input" 
-                data-action="change->pdf-uploader#upload" hidden>
+                accept="application/pdf, .docx, image/png, image/jpeg, image/jpg" 
+                class="hide" 
+                data-document-uploader-target="input" 
+                data-action="change->document-uploader#upload">
 
-              <!-- In your view partial -->
+              <!-- 2. Import Trigger Button -->
               <button type="button" 
                       class="btn bg-shade rounded-2xl flex items-center gap-2 text-xs"
-                      title="Import text from PDF"
-                      data-action="click->pdf-uploader#trigger">
+                      title="Import text from Document or Image"
+                      data-action="click->document-uploader#trigger">
                 
-                <span data-pdf-uploader-target="spinner" class="hide">
+                <span data-document-uploader-target="spinner" class="hide">
                   <span class="icon icon--loading" aria-hidden="true">↻</span>
                 </span>
                 
-                PDF
+                PDF / DOCX / TXT
                 <span class="icon icon--upload" aria-hidden="true"></span> 
               </button>
 

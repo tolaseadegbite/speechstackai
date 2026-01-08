@@ -31,7 +31,8 @@ Rails.application.routes.draw do
     get :audio_url, on: :member
   end
 
-  resources :pdf_extractions, only: [ :create ]
+  # resources :pdf_extractions, only: [ :create ]
+  resources :document_extractions, only: [:create]
 
   # Specific Features (Using the new Controller Structure)
   # Note: I used 'scope' to avoid repeating 'module: :audio_generations' 3 times

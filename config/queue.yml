@@ -2,18 +2,22 @@ queues:
   audio_generation:
     concurrency_limit: 5
     timeout: 360
+  
+  # NEW: Dedicated queue for text extraction
+  text_extraction:
+    concurrency_limit: 5
+    timeout: 60
 
   default:
     concurrency_limit: 10
 
 workers:
-  # Worker Pool #1: Dedicated to Song Generation
   - queues: audio_generation
     threads: 2
     polling_interval: 5
 
-  # Worker Pool #2: General Purpose "Catch-All" Workers
-  - queues: default
+  # Update: Allow catch-all workers to handle text_extraction too
+  - queues: [default, text_extraction]
     threads: 3
     processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
     polling_interval: 0.1

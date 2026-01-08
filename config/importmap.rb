@@ -6,4 +6,5 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin "@github/webauthn-json", to: "@github--webauthn-json.js", integrity: "sha384-lKZgpJHU3pP+iVOsdp+SyHOB2Hlb8cXiyqZZpQRDXkkK2CKtkNO8ZQeSnUZE1KUp" # @2.1.1
 pin "@rails/request.js", to: "@rails--request.js.js", integrity: "sha384-z2lUPjZO6VEVMOJPxOpuSNtmIiFZ3ve951XEs/LRW8w/2PqkFoYIatsvFnW1xCA5" # @0.0.12
-pin "lodash", to: "lodash.js", integrity: "sha384-NA8+CPLa8r4Y5V0ftYvX3rsTtKlJAhsuLcvhvsFvR+mRnliJruCdR57JoiYnKg44" # @4.17.21
+pin "lodash", to: "lodash.js", integrity: "sha384-NA8+CPLa8r4Y5V0ftYvX3rsTtKlJAhsuLcvhvsFvR+mRnliJruCdR57JoiYnKg44"
+pin "tesseract.js", to: "https://cdn.jsdelivr.net/npm/tesseract.js@5.0.3/dist/tesseract.esm.min.js"
