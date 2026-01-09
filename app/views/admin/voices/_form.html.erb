@@ -1,0 +1,62 @@
+<%= form_with(model: [:admin, voice], class: "bg-surface p-6 border rounded-lg", style: "max-inline-size: 40rem;") do |f| %>
+  <% if voice.errors.any? %>
+    <div class="bg-selected text-negative p-4 rounded mb-6 text-sm">
+      <%= voice.errors.full_messages.to_sentence %>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 grid-cols-2@md gap-4 mbe-4">
+    <div>
+      <%= f.label :name, class: "font-medium text-sm block mbe-1" %>
+      <%= f.text_field :name, class: "input i-full" %>
+    </div>
+    <div>
+      <%= f.label :gender, class: "font-medium text-sm block mbe-1" %>
+      <%= f.select :gender, ["Male", "Female"], {}, class: "input i-full" %>
+    </div>
+  </div>
+
+  <div class="mbe-4">
+    <%= f.label :description, class: "font-medium text-sm block mbe-1" %>
+    <%= f.text_area :description, class: "input i-full", rows: 3 %>
+  </div>
+
+  <div class="mbe-4">
+    <%= f.label :s3_key, "S3 Key (Preview Audio)", class: "font-medium text-sm block mbe-1" %>
+    <%= f.text_field :s3_key, class: "input i-full font-mono text-sm" %>
+  </div>
+
+  <div class="grid grid-cols-1 grid-cols-2@md gap-4 mbe-4">
+    <div>
+      <%= f.label :gradient_start, class: "font-medium text-sm block mbe-1" %>
+      <div class="flex items-center gap-2">
+        <%= f.color_field :gradient_start, class: "border-0 p-0", style: "inline-size: 2.5rem; block-size: 2.5rem;" %>
+        <%= f.text_field :gradient_start, class: "input flex-1" %>
+      </div>
+    </div>
+    <div>
+      <%= f.label :gradient_end, class: "font-medium text-sm block mbe-1" %>
+      <div class="flex items-center gap-2">
+        <%= f.color_field :gradient_end, class: "border-0 p-0", style: "inline-size: 2.5rem; block-size: 2.5rem;" %>
+        <%= f.text_field :gradient_end, class: "input flex-1" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mbe-6">
+    <label class="font-medium text-sm block mbe-2">Languages</label>
+    <div class="flex flex-wrap gap-3">
+      <%= f.collection_check_boxes :language_ids, Language.all, :id, :name do |b| %>
+        <label class="flex items-center gap-2 cursor-pointer bg-shade pi-3 pb-1 rounded border hover:border-main">
+          <%= b.check_box %>
+          <span class="text-sm"><%= b.text %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3 pbs-4 border-t">
+    <%= link_to "Cancel", admin_voices_path, class: "btn" %>
+    <%= f.submit class: "btn btn--primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin | SpeechStackAI</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "css-zero/reset", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "css-zero/variables", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "css-zero/utilities", "data-turbo-track": "reload" %>
+    
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-main">
+    <div id="flash_messages">
+      <%= render "layouts/shared/flash" %>
+    </div>
+
+    <!-- MAIN LAYOUT WRAPPER matches your dashboard.html.erb -->
+    <div class="sidebar-layout">
+      
+      <!-- SIDEBAR -->
+      <aside id="sidebar">
+        <%= render "admin/shared/sidebar_menu" %>
+      </aside>
+
+      <!-- MAIN CONTENT AREA -->
+      <main id="main" style="padding: 0; gap: 0">
+        
+        <!-- HEADER (Optional: Keeps spacing consistent with user dashboard) -->
+        <div class="header-layout border-b border-subtle p-4 flex items-center justify-between bg-surface sticky top-0 z-10">
+          <h2 class="font-bold text-lg"><%= yield(:page_header) || "Admin" %></h2>
+          
+          <!-- Mobile Menu Trigger (Reuse your existing mobile menu partial logic here if needed) -->
+          <div class="hide@md">
+             <!-- You can add your mobile toggle button here if you want it responsive -->
+          </div>
+        </div>
+
+        <div class="p-6 md:p-8 m-auto i-full" style="max-inline-size: 80rem;">
+          <%= yield %>
+        </div>
+
+      </main>
+    </div>
+    
+  </body>
+</html>

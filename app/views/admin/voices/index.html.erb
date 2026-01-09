@@ -1,0 +1,40 @@
+<div class="flex justify-between items-center mbe-6">
+  <h2 class="text-2xl font-bold">Voices Library</h2>
+  <%= link_to "Add New Voice", new_admin_voice_path, class: "btn btn--primary" %>
+</div>
+
+<div class="bg-surface border rounded-lg overflow-hidden">
+  <table class="i-full text-start" style="border-collapse: collapse;">
+    <thead class="bg-shade text-subtle text-xs uppercase border-b">
+      <tr>
+        <th class="p-4 text-start font-medium">Name</th>
+        <th class="p-4 text-start font-medium">Gender</th>
+        <th class="p-4 text-start font-medium">Languages</th>
+        <th class="p-4 text-start font-medium">Preview</th>
+        <th class="p-4 text-end font-medium">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @voices.each do |voice| %>
+        <tr class="border-b last:border-0 hover:bg-shade">
+          <td class="p-4 font-medium">
+            <div class="flex items-center gap-2">
+              <span class="voice-swatch block rounded-full" style="--icon-size: 1.5rem; <%= voice_gradient_style(voice) %>"></span>
+              <%= voice.name %>
+            </div>
+          </td>
+          <td class="p-4"><%= voice.gender %></td>
+          <td class="p-4 text-sm text-subtle">
+            <%= voice.languages.map(&:name).join(", ") %>
+          </td>
+          <td class="p-4 font-mono text-xs text-subtle overflow-ellipsis overflow-hidden whitespace-nowrap" style="max-inline-size: 10rem;">
+            <%= voice.s3_key %>
+          </td>
+          <td class="p-4 text-end">
+            <%= link_to "Edit", edit_admin_voice_path(voice), class: "btn btn--subtle" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

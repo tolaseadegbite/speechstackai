@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   end
 
   # resources :pdf_extractions, only: [ :create ]
-  resources :document_extractions, only: [:create]
+  resources :document_extractions, only: [ :create ]
 
   # Specific Features (Using the new Controller Structure)
   # Note: I used 'scope' to avoid repeating 'module: :audio_generations' 3 times
@@ -97,5 +97,15 @@ Rails.application.routes.draw do
       resource  :totp,           only: [ :new, :create, :update ]
       resources :recovery_codes, only: [ :index, :create ]
     end
+  end
+
+  # ADMIN NAMESPACE
+  # Accessible only to users with admin: true
+  namespace :admin do
+    root "dashboard#index"
+
+    resources :users, only: [ :index, :edit, :update ]
+    resources :voices
+    resources :generated_audio_clips, only: [ :index, :destroy ]
   end
 end

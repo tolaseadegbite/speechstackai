@@ -1,0 +1,41 @@
+<h2 class="text-2xl font-bold mbe-6">Audio Content Moderation</h2>
+
+<div class="bg-surface border rounded-lg overflow-hidden">
+  <table class="i-full text-start" style="border-collapse: collapse;">
+    <thead class="bg-shade text-subtle text-xs uppercase border-b">
+      <tr>
+        <th class="p-4 text-start font-medium">Content</th>
+        <th class="p-4 text-start font-medium">User</th>
+        <th class="p-4 text-start font-medium">Type</th>
+        <th class="p-4 text-start font-medium">Status</th>
+        <th class="p-4 text-end font-medium">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @clips.each do |clip| %>
+        <tr class="border-b last:border-0 hover:bg-shade">
+          <td class="p-4">
+            <p class="text-sm overflow-hidden overflow-ellipsis" style="max-inline-size: 20rem; white-space: nowrap;">
+              <%= clip.text %>
+            </p>
+            <% if clip.s3_key.present? %>
+              <div class="mbs-1 text-xs text-link">
+                <%= link_to "Listen", audio_url_generated_audio_clip_path(clip), target: "_blank" %>
+              </div>
+            <% end %>
+          </td>
+          <td class="p-4 text-sm"><%= clip.user.email %></td>
+          <td class="p-4 text-sm text-subtle"><%= clip.class.name %></td>
+          <td class="p-4">
+            <span class="badge badge--<%= clip.failed? ? 'negative' : 'neutral' %>">
+              <%= clip.status %>
+            </span>
+          </td>
+          <td class="p-4 text-end">
+            <%= button_to "Delete", admin_generated_audio_clip_path(clip), method: :delete, class: "btn btn--sm btn--negative", form: {style: "display:inline-block;"} %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

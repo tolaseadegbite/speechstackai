@@ -1,0 +1,61 @@
+<div class="sidebar-menu">
+  <%# LOGO %>
+  <%= link_to root_path, class: "flex items-center gap mbs-4 mis-1" do %>
+    <%= image_tag("logo.png", size: 30) %>
+    <span class="font-bold text-lg mis-2">Admin Panel</span>
+  <% end %>
+
+  <div class="sidebar-menu__content mbs-4">
+    
+    <%# GROUP 1: OVERVIEW %>
+    <div class="sidebar-menu__group">
+      <div class="sidebar-menu__items">  
+        <nav>
+          <%= link_to admin_root_path, 
+                      class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'dashboard'}",
+                      aria: (controller_name == 'dashboard' ? { current: "page" } : {}) do %>
+            <span class="icon icon--activity" aria-hidden="true"></span>
+            Dashboard
+          <% end %>
+        </nav>
+      </div>
+    </div>
+
+    <%# GROUP 2: MANAGEMENT %>
+    <div class="sidebar-menu__group">
+      <div class="sidebar-menu__group-label">MANAGEMENT</div>
+      <div class="sidebar-menu__items">  
+        <nav>
+          <%= link_to admin_voices_path, 
+                      class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'voices'}",
+                      aria: (controller_name == 'voices' ? { current: "page" } : {}) do %>
+            <span class="icon icon--mic" aria-hidden="true"></span>
+            Voices
+          <% end %>
+
+          <%= link_to admin_users_path, 
+                      class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'users'}",
+                      aria: (controller_name == 'users' ? { current: "page" } : {}) do %>
+            <span class="icon icon--users" aria-hidden="true"></span>
+            Users
+          <% end %>
+
+          <%= link_to admin_generated_audio_clips_path, 
+                      class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'generated_audio_clips'}",
+                      aria: (controller_name == 'generated_audio_clips' ? { current: "page" } : {}) do %>
+            <span class="icon icon--music" aria-hidden="true"></span>
+            Audio Clips
+          <% end %>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <%# FOOTER: Back to App %>
+  <div class="mbs-auto flex flex-col p-4 border-t border-subtle">
+    <%= link_to root_path, class: "btn sidebar-menu__button" do %>
+      <span class="icon icon--arrow-left" aria-hidden="true"></span>
+      Back to App
+    <% end %>
+  </div>
+</div>

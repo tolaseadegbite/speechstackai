@@ -1,0 +1,23 @@
+<h2 class="text-2xl font-bold mbe-6">Manage User: <%= @user.name %></h2>
+
+<%= form_with(model: [:admin, @user], class: "bg-surface p-6 border rounded-lg", style: "max-inline-size: 30rem;") do |f| %>
+  
+  <div class="mbe-4">
+    <%= f.label :credits, class: "font-medium text-sm block mbe-1" %>
+    <%= f.number_field :credits, class: "input i-full" %>
+    <p class="text-xs text-subtle mbs-1">Manually adjust credits for refunds or bonuses.</p>
+  </div>
+
+  <div class="mbe-6">
+    <label class="flex items-center gap-2 cursor-pointer">
+      <%= f.check_box :admin %>
+      <span class="text-sm font-medium">Grant Admin Privileges</span>
+    </label>
+    <p class="text-xs text-negative mbs-1 pis-4">Warning: This gives full access to the system.</p>
+  </div>
+
+  <div class="flex justify-end gap-3 border-t pbs-4">
+    <%= link_to "Cancel", admin_users_path, class: "btn" %>
+    <%= f.submit "Update User", class: "btn btn--primary" %>
+  </div>
+<% end %>
