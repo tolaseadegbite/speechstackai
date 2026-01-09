@@ -35,11 +35,21 @@ class User < ApplicationRecord
   validates :password, not_pwned: { message: "might easily be guessed" }
 
   validates :credits, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :name,
-    presence: true,
-    uniqueness: { case_sensitive: false },
-    length: { minimum: 3, maximum: 50 },
-    format: { with: /\A[a-zA-Z0-9\s]+\z/, message: "only allows letters, numbers, and spaces" }
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  # validates :name,
+  #   presence: true,
+  #   uniqueness: { case_sensitive: false },
+  #   length: { minimum: 3, maximum: 50 },
+  #   format: { with: /\A[a-zA-Z0-9\s]+\z/, message: "only allows letters, numbers, and spaces" }
+
+  def name
+    "#{first_name} #{last_name}".strip
+  end
+
+  def initials
+    "#{first_name.first}#{last_name.first}".upcase
+  end
 
   normalizes :email, with: -> { _1.strip.downcase }
 

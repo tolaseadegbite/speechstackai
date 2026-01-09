@@ -28,8 +28,13 @@
 
     <div class="mbe-5">
       <div class="mbe-5">
-        <%= form.label :name, style: "display: block", class: "font-semibold mbe-1" %>
-        <%= form.text_field :name, value: @user.name, placeholder: "Enter your name", required: true, autofocus: true, class: "input" %>
+        <%= form.label :first_name, style: "display: block", class: "font-semibold mbe-1" %>
+        <%= form.text_field :first_name, value: @user.first_name, placeholder: "First name", required: true, autofocus: true, class: "input" %>
+      </div>
+
+      <div class="mbe-5">
+        <%= form.label :last_name, style: "display: block", class: "font-semibold mbe-1" %>
+        <%= form.text_field :last_name, value: @user.last_name, placeholder: "First name", required: true, autofocus: true, class: "input" %>
       </div>
       
       <%= form.label :email, style: "display: block", class: "font-semibold mbe-1" %>

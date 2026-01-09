@@ -46,8 +46,10 @@
       <% end %>
     </div>
 
-    <% trigger = button_tag type: "button", class: "btn p-0 rounded-full border-2 border-green-500 hide@md", data: { action: "dialog#showModal" } do %>
-      <%= image_tag "robot.png", size: 32, class: "rounded-full", alt: "User Avatar" %>
+    <% trigger = button_tag type: "button", class: "btn p-0 rounded-full hide@md", data: { action: "dialog#showModal" } do %>
+      <div class="bg-black rounded-full flex items-center justify-center text-lg font-semibold text-reversed" style="block-size: 2.5rem; inline-size: 2.5rem;">
+        <%= current_user.initials %>
+      </div>
     <% end %>
 
     <%= modal_dialog trigger, title: "Menu", size: '12rem' do %>
