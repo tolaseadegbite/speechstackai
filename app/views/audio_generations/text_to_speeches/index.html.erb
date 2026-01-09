@@ -110,7 +110,7 @@
               <%= current_user.credits %> credits remaining
             </span>
 
-            <div class="flex gap-1 items-center">
+            <div class="flex gap-2 items-center">
 
               <!-- 1. The Hidden File Input -->
               <input type="file" 
@@ -122,15 +122,13 @@
               <!-- 2. Import Trigger Button -->
               <button type="button" 
                       class="btn bg-shade rounded-2xl flex items-center gap-2 text-xs"
-                      title="Import text from Document or Image"
+                      title="Import text from docx, pdf, txt, image"
                       data-action="click->document-uploader#trigger">
                 
                 <span data-document-uploader-target="spinner" class="hide">
                   <span class="icon icon--loading" aria-hidden="true">↻</span>
                 </span>
-                
-                PDF / DOCX / TXT / IMG
-                <span class="icon icon--upload" aria-hidden="true"></span> 
+                <span class="icon icon--file-up" aria-hidden="true"></span> 
               </button>
 
               <%= f.button class: "btn btn--positive rounded-2xl flex items-center gap-2" do %>
