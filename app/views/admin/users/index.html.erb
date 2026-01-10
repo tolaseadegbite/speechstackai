@@ -1,37 +1,111 @@
-<h2 class="text-2xl font-bold mbe-6">Users</h2>
+<% content_for :title, "Users" %>
 
-<div class="bg-surface border rounded-lg overflow-hidden">
-  <table class="i-full text-start" style="border-collapse: collapse;">
-    <thead class="bg-shade text-subtle text-xs uppercase border-b">
-      <tr>
-        <th class="p-4 text-start font-medium">User</th>
-        <th class="p-4 text-start font-medium">Credits</th>
-        <th class="p-4 text-start font-medium">Role</th>
-        <th class="p-4 text-start font-medium">Joined</th>
-        <th class="p-4 text-end font-medium">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @users.each do |user| %>
-        <tr class="border-b last:border-0 hover:bg-shade">
-          <td class="p-4">
-            <p class="font-medium"><%= user.name %></p>
-            <p class="text-sm text-subtle"><%= user.email %></p>
-          </td>
-          <td class="p-4 font-mono"><%= user.credits %></td>
-          <td class="p-4">
-            <% if user.admin? %>
-              <span class="badge badge--neutral">Admin</span>
-            <% else %>
-              <span class="text-subtle text-sm">User</span>
+<% content_for :page_header do %>
+  <h4 class="font-semibold">Users (<%= @users.count %>)</h4>
+<% end %>
+
+<div class="p-4 i-full">
+
+  <%= turbo_frame_tag :users_table do %>
+
+    <%# --- DESKTOP VIEW: Table (Visible on medium screens and up) --- %>
+    <div class="show@md relative i-full overflow-x-auto border rounded-md">
+      <table class="table i-full text-start">
+        <thead class="bg-shade font-semibold">
+          <tr>
+            <th class="p-4 text-start">User</th>
+            <th class="p-4 text-start">Credits</th>
+            <th class="p-4 text-start">Role</th>
+            <th class="p-4 text-start">Joined</th>
+            <th class="p-4 text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="users-table">
+          <% if @users.empty? %>
+            <tr><td colspan="5" class="text-center p-8 text-subtle">No users found.</td></tr>
+          <% else %>
+            <% @users.each do |user| %>
+              <tr id="<%= dom_id(user, :table_row) %>" class="border-b" style="<%= 'border-bottom: 0;' if user == @users.last %>">
+                <td class="p-4">
+                  <div class="font-medium"><%= link_to user.name, admin_user_path(user), class: "text-green-500", data: { turbo_frame: "_top" } %></div>
+                  <div class="text-sm text-subtle"><%= user.email %></div>
+                </td>
+                
+                <td class="p-4 font-mono">
+                  <%= user.credits %>
+                </td>
+                
+                <td class="p-4">
+                  <% if user.admin? %>
+                    <span class="bg-black text-reversed font-medium pi-2 pb-1 rounded-md text-xs uppercase">Admin</span>
+                  <% else %>
+                    <span class="bg-shade text-subtle font-medium pi-2 pb-1 rounded-md text-xs uppercase">User</span>
+                  <% end %>
+                </td>
+                
+                <td class="p-4 text-sm text-subtle">
+                  <%= user.created_at.to_date %>
+                </td>
+                
+                <td class="p-4 text-end">
+                  <%= link_to "Manage", edit_admin_user_path(user), 
+                              class: "text-link font-medium no-underline", 
+                              data: { turbo_frame: "modal" } %>
+                </td>
+              </tr>
             <% end %>
-          </td>
-          <td class="p-4 text-sm text-subtle"><%= user.created_at.to_date %></td>
-          <td class="p-4 text-end">
-            <%= link_to "Manage", edit_admin_user_path(user), class: "btn btn--subtle btn--sm" %>
-          </td>
-        </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%# --- MOBILE VIEW: Cards (Hidden on medium screens and up) --- %>
+    <div id="users-cards" class="hide@md flex flex-col gap-4">
+      <% if @users.empty? %>
+        <p class="text-subtle text-center p-8">No users found.</p>
+      <% else %>
+        <% @users.each do |user| %>
+          <div id="<%= dom_id user, :card %>" class="bg-surface p-4 border rounded-md shadow-sm flex flex-col gap-3">
+            
+            <%# --- Header: Name & Role --- %>
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="font-semibold text-lg leading-tight"><%= link_to user.name, admin_user_path(user), class: "text-green-500", data:{ turbo_frame: "_top" } %></div>
+                <div class="text-sm text-subtle"><%= user.email %></div>
+              </div>
+              
+              <div>
+                <% if user.admin? %>
+                  <span class="bg-black text-reversed font-medium pi-2 pb-1 rounded-md text-xs uppercase">Admin</span>
+                <% else %>
+                  <span class="bg-shade text-subtle font-medium pi-2 pb-1 rounded-md text-xs uppercase">User</span>
+                <% end %>
+              </div>
+            </div>
+
+            <%# --- Stats Grid --- %>
+            <div class="grid grid-cols-2 gap-2 text-sm bg-shade p-3 rounded-md border">
+              <div>
+                <span class="text-xs text-subtle uppercase font-bold block">Credits</span>
+                <span class="font-mono"><%= user.credits %></span>
+              </div>
+              <div class="text-end">
+                <span class="text-xs text-subtle uppercase font-bold block">Joined</span>
+                <span><%= user.created_at.to_date %></span>
+              </div>
+            </div>
+
+            <%# --- Actions --- %>
+            <div class="flex items-center justify-end text-xs gap-4 border-t pt-2">
+              <%= link_to "Manage User", edit_admin_user_path(user), 
+                          class: "text-green-500 font-semibold p-2", 
+                          data: { turbo_frame: "modal" } %>
+            </div>
+
+          </div>
+        <% end %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+
+  <% end %>
 </div>

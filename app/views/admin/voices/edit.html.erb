@@ -1,2 +1,9 @@
-<h2 class="text-2xl font-bold mbe-6">Edit Voice</h2>
-<%= render "form", voice: @voice %>
+<% content_for :title, "Editing voice" %>
+<% content_for :page_header, "Edit voice" %>
+
+<%= render "layouts/shared/modal" do %>
+  <div data-action="turbo:submit-end->modal#submitEnd">
+    <h2 class="font-semibold text-lg mbe-4">Editing <%= @voice.name %></h2>
+    <%= render "form", voice: @voice %>
+  </div>
+<% end %>

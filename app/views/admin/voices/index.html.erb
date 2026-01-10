@@ -1,40 +1,202 @@
-<div class="flex justify-between items-center mbe-6">
-  <h2 class="text-2xl font-bold">Voices Library</h2>
-  <%= link_to "Add New Voice", new_admin_voice_path, class: "btn btn--primary" %>
+<% content_for :title, "Voices Library" %>
+
+<% content_for :page_header do %>
+  <h4 class="font-semibold">Voices Library (<%= @voices.count %>)</h4>
+<% end %>
+
+<% content_for :header_action_buttons do %>
+  <%= link_to "Add New Voice", new_admin_voice_path, 
+              class: "btn btn--positive font-semibold rounded-md pi-4 pb-2 show@md", 
+              data: { turbo_frame: "modal" } %>
+<% end %>
+
+<!-- Mobile Floating Action Button -->
+<div class="absolute hide@md" style="bottom: 5rem; right: 1rem; z-index: 9999">
+  <%= link_to new_admin_voice_path, class: "btn bg-black text-reversed font-semibold rounded-full p-4 shadow-lg", data: { turbo_frame: "modal" } do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+  <% end %>
 </div>
 
-<div class="bg-surface border rounded-lg overflow-hidden">
-  <table class="i-full text-start" style="border-collapse: collapse;">
-    <thead class="bg-shade text-subtle text-xs uppercase border-b">
-      <tr>
-        <th class="p-4 text-start font-medium">Name</th>
-        <th class="p-4 text-start font-medium">Gender</th>
-        <th class="p-4 text-start font-medium">Languages</th>
-        <th class="p-4 text-start font-medium">Preview</th>
-        <th class="p-4 text-end font-medium">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @voices.each do |voice| %>
-        <tr class="border-b last:border-0 hover:bg-shade">
-          <td class="p-4 font-medium">
-            <div class="flex items-center gap-2">
-              <span class="voice-swatch block rounded-full" style="--icon-size: 1.5rem; <%= voice_gradient_style(voice) %>"></span>
-              <%= voice.name %>
+<div class="p-4 i-full">
+  
+  <%= turbo_frame_tag :voices_table do %>
+    
+    <%# --- DESKTOP VIEW: Table (Visible on medium screens and up) --- %>
+    <div class="show@md relative i-full overflow-x-auto border rounded-md">
+      <table class="table i-full text-start">
+        <thead class="bg-shade font-semibold">
+          <tr>
+            <th class="p-4 text-start">Name</th>
+            <th class="p-3 text-start">Gender</th>
+            <th class="p-3 text-start">Languages</th>
+            <th class="p-3 text-start">S3 Key / Preview</th>
+            <th class="p-3 text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="voices-table">
+          <% if @voices.empty? %>
+            <tr><td colspan="5" class="text-center p-8 text-subtle">No voices found.</td></tr>
+          <% else %>
+            <% @voices.each do |voice| %>
+              <tr id="<%= dom_id(voice, :table_row) %>" class="border-b" style="<%= 'border-bottom: 0;' if voice == @voices.last %>">
+                <td class="p-3">
+                  <div class="flex items-center gap-4">
+
+                    <div class="relative flex-item-no-shrink">
+                      <span class="voice-swatch block rounded-full" 
+                            style="--icon-size: 1.8rem; <%= voice_gradient_style(voice) %>" 
+                            aria-hidden="true"></span>
+                      
+                      <!-- Play Button (Overlaid on Swatch) -->
+                      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+                        <% if voice.s3_key.present? %>
+                          <button type="button" class="btn btn--icon rounded-full shadow-sm flex items-center justify-center"
+                                  style="width: 1.6rem; height: 1.6rem;"
+                                  data-action="click->voice-selector#playPreview click->audio-fetcher#fetch"
+                                  data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
+                                  data-audio-fetcher-title-param="<%= voice.name %>"
+                                  data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                                  data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                                  data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                                  data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>">
+                            <div data-play-icon-url>
+                              <svg style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                            </div>
+                          </button>
+                        <% end %>
+                      </div>
+                    </div>
+
+                    <!-- Swatch (inline style used for gradient as per original) -->
+                    <span class="rounded-full flex-item-no-shrink" style="block-size: 1.5rem; inline-size: 1.5rem; <%= voice_gradient_style(voice) %>"></span>
+                    <div>
+                      <div class="font-semibold"><%= link_to voice.name, admin_voice_path(voice), class: "text-green-500", data: { turbo_frame: "_top" } %></div>
+                      <% if voice.description.present? %>
+                        <div class="text-xs text-subtle overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 15rem;">
+                          <%= voice.description %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </td>
+                
+                <td class="p-3">
+                  <span class="text-sm font-medium bg-shade text-subtle pi-2 pb-1 rounded-md capitalize">
+                    <%= voice.gender %>
+                  </span>
+                </td>
+                
+                <td class="p-3 text-sm text-subtle">
+                  <% if voice.languages.any? %>
+                    <%= voice.languages.map(&:name).join(", ") %>
+                  <% else %>
+                    <span class="italic">No languages</span>
+                  <% end %>
+                </td>
+                
+                <td class="p-3 font-mono text-xs text-subtle">
+                  <% if voice.s3_key.present? %>
+                    <div class="overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 10rem;">
+                      <%= voice.s3_key %>
+                    </div>
+                  <% else %>
+                    <span class="opacity-50">Pending Upload</span>
+                  <% end %>
+                </td>
+                
+                <td class="flex items-center justify-end gap-4 p-3">
+                  <%= link_to "Edit", edit_admin_voice_path(voice), 
+                              class: "text-gray-300 hover:text-gray-600", 
+                              data: { turbo_frame: "modal" } %>
+
+                  <% delete_trigger = button_tag "Delete", type: "button", class: "btn bg-white border border-red-200 text-red-600 font-semibold hover:bg-red-50", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+                  <%= modal_dialog delete_trigger, size: "450px", title: "Delete '#{voice.name}'?" do %>
+                    <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+                    <div class="flex items-center justify-end gap">
+                      <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                      <%= button_to "Continue", voice, method: :delete, class: "btn btn--negative" %>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%# --- MOBILE VIEW: Cards (Hidden on medium screens and up) --- %>
+    <div id="voices-cards" class="hide@md flex flex-col gap-4">
+      <% if @voices.empty? %>
+        <p class="text-subtle text-center p-8">No voices found.</p>
+      <% else %>
+        <% @voices.each do |voice| %>
+          <div id="<%= dom_id voice, :card %>" class="bg-surface p-4 border rounded-md shadow-sm flex flex-col gap-3">
+            
+            <%# --- Header: Swatch, Name, Gender --- %>
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="relative flex-item-no-shrink">
+                  <span class="voice-swatch block rounded-full" 
+                        style="--icon-size: 2.5rem; <%= voice_gradient_style(voice) %>" 
+                        aria-hidden="true"></span>
+                  
+                  <!-- Play Button (Overlaid on Swatch) -->
+                  <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+                    <% if voice.s3_key.present? %>
+                      <button type="button" class="btn btn--icon rounded-full shadow-sm flex items-center justify-center"
+                              style="width: 2.3rem; height: 2.3rem;"
+                              data-action="click->voice-selector#playPreview click->audio-fetcher#fetch"
+                              data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
+                              data-audio-fetcher-title-param="<%= voice.name %>"
+                              data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                              data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                              data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                              data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>">
+                        <div data-play-icon-url>
+                          <svg style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                        </div>
+                      </button>
+                    <% end %>
+                  </div>
+                </div>
+                <span class="rounded-full flex-item-no-shrink" style="block-size: 2.5rem; inline-size: 2.5rem; <%= voice_gradient_style(voice) %>"></span>
+                <div>
+                  <div class="font-semibold text-lg leading-tight"><%= link_to voice.name, admin_voice_path(voice), class: "text-green-500", data: { turbo_frame: "_top" } %></div>
+                  <div class="text-xs text-subtle overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 12rem;">
+                    <%= voice.description %>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <span class="bg-shade text-subtle font-medium pi-2 pb-1 rounded-md text-sm capitalize">
+                  <%= voice.gender %>
+                </span>
+              </div>
             </div>
-          </td>
-          <td class="p-4"><%= voice.gender %></td>
-          <td class="p-4 text-sm text-subtle">
-            <%= voice.languages.map(&:name).join(", ") %>
-          </td>
-          <td class="p-4 font-mono text-xs text-subtle overflow-ellipsis overflow-hidden whitespace-nowrap" style="max-inline-size: 10rem;">
-            <%= voice.s3_key %>
-          </td>
-          <td class="p-4 text-end">
-            <%= link_to "Edit", edit_admin_voice_path(voice), class: "btn btn--subtle" %>
-          </td>
-        </tr>
+
+            <%# --- Details: Languages --- %>
+            <div class="p-2 bg-shade rounded-md border text-sm text-subtle">
+              <span class="font-semibold text-primary text-xs uppercase block mbe-1">Languages</span>
+              <% if voice.languages.any? %>
+                <%= voice.languages.map(&:name).join(", ") %>
+              <% else %>
+                <span class="italic">None specified</span>
+              <% end %>
+            </div>
+
+            <%# --- Action Footer --- %>
+            <div class="flex items-center justify-end text-xs gap-4 border-t pt-2">
+              <%= link_to "Edit Voice", edit_admin_voice_path(voice), 
+                          class: "text-primary font-semibold p-2", 
+                          data: { turbo_frame: "modal" } %>
+            </div>
+
+          </div>
+        <% end %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+
+  <% end %>
 </div>

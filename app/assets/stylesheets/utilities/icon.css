@@ -55,6 +55,7 @@ img.icon {
 .icon--arrow-up { --svg: url("arrow-up.svg"); }
 .icon--arrow-down { --svg: url("arrow-down.svg"); }
 .icon--arrow-right { --svg: url("arrow-right.svg"); }
+.icon--arrow-left { --svg: url("arrow-left.svg"); }
 .icon--chevrons-right { --svg: url("chevrons-right.svg"); }
 .icon--check { --svg: url("check.svg"); }
 .icon--volume-2 { --svg: url("volume-2.svg"); }
@@ -123,3 +124,5 @@ img.icon {
 .icon--circle-off { --svg: url("circle-off.svg"); }
 .icon--chevrons-right { --svg: url("chevrons-right.svg"); }
 .icon--chevrons-left { --svg: url("chevrons-left.svg"); }
+.icon--shield-user { --svg: url("shield-user.svg"); }
+.icon--log-out { --svg: url("log-out.svg"); }

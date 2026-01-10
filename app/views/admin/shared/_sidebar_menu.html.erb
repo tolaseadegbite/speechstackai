@@ -14,7 +14,7 @@
           <%= link_to admin_root_path, 
                       class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'dashboard'}",
                       aria: (controller_name == 'dashboard' ? { current: "page" } : {}) do %>
-            <span class="icon icon--activity" aria-hidden="true"></span>
+            <span class="icon icon--chart-pie" aria-hidden="true"></span>
             Dashboard
           <% end %>
         </nav>
@@ -26,10 +26,17 @@
       <div class="sidebar-menu__group-label">MANAGEMENT</div>
       <div class="sidebar-menu__items">  
         <nav>
+          <%= link_to admin_generated_audio_clips_path, 
+                      class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'generated_audio_clips'}",
+                      aria: (controller_name == 'generated_audio_clips' ? { current: "page" } : {}) do %>
+            <span class="icon icon--audio-lines" aria-hidden="true"></span>
+            Audio Clips
+          <% end %>
+          
           <%= link_to admin_voices_path, 
                       class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'voices'}",
                       aria: (controller_name == 'voices' ? { current: "page" } : {}) do %>
-            <span class="icon icon--mic" aria-hidden="true"></span>
+            <span class="icon icon--voices" aria-hidden="true"></span>
             Voices
           <% end %>
 
@@ -38,13 +45,6 @@
                       aria: (controller_name == 'users' ? { current: "page" } : {}) do %>
             <span class="icon icon--users" aria-hidden="true"></span>
             Users
-          <% end %>
-
-          <%= link_to admin_generated_audio_clips_path, 
-                      class: "btn sidebar-menu__button mbe-1 #{'active' if controller_name == 'generated_audio_clips'}",
-                      aria: (controller_name == 'generated_audio_clips' ? { current: "page" } : {}) do %>
-            <span class="icon icon--music" aria-hidden="true"></span>
-            Audio Clips
           <% end %>
         </nav>
       </div>

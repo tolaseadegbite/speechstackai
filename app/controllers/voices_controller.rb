@@ -3,12 +3,12 @@ class VoicesController < DashboardsController
 
   before_action :set_voice, only: %i[ show edit update destroy audio_url ]
   before_action :set_languages, only: %i[ index show new create edit update ]
-  
+
   before_action :authorize_admin!, only: %i[ new create edit update destroy ]
 
   def index
     @voices = Voice.includes(:languages, :user).order(id: :desc)
-    @voice = Voice.new 
+    @voice = Voice.new
   end
 
   def show
@@ -53,7 +53,7 @@ class VoicesController < DashboardsController
     end
   end
 
-  def destroy 
+  def destroy
     @voice.destroy!
     respond_to do |format|
       format.turbo_stream
@@ -84,7 +84,7 @@ class VoicesController < DashboardsController
   def voice_params
     params.expect(voice: [ :name, :gender, :visibility, :description, :s3_key, language_ids: [] ])
   end
-  
+
   def authorize_admin!
     unless current_user.admin?
       redirect_to voices_url, alert: "You are not authorized to perform this action."

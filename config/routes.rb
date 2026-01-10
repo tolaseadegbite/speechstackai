@@ -104,7 +104,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
 
-    resources :users, only: [ :index, :edit, :update ]
+    resources :users, only: [ :index, :show, :edit, :update ]
     resources :voices
     resources :generated_audio_clips, only: [ :index, :destroy ]
   end

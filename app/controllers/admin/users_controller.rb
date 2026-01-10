@@ -1,12 +1,14 @@
 module Admin
   class UsersController < BaseController
-    before_action :set_user, only: [ :edit, :update ]
+    before_action :set_user, only: [ :show, :edit, :update ]
 
     def index
       # Using simple Active Record for now.
       # If you have Pagy included globally, you can wrap this.
       @users = User.order(created_at: :desc)
     end
+
+    def edit; end
 
     def edit; end
 

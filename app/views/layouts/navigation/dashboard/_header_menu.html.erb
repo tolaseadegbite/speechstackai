@@ -47,7 +47,7 @@
     </div>
 
     <% trigger = button_tag type: "button", class: "btn p-0 rounded-full hide@md", data: { action: "dialog#showModal" } do %>
-      <div class="bg-black rounded-full flex items-center justify-center text-lg font-semibold text-reversed" style="block-size: 2.5rem; inline-size: 2.5rem;">
+      <div class="bg-black rounded-full flex items-center justify-center text-lg font-semibold text-reversed" style="block-size: 2rem; inline-size: 2rem;">
         <%= current_user.initials %>
       </div>
     <% end %>
@@ -71,11 +71,18 @@
         </span>
 
         <%# <hr class="menu__separator b-2" role="separator"/> %>
-        <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-        <%#= link_to "API Keys", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-        <%#= link_to "Webhooks", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-        <%#= link_to "Subscription", "", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-        <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
+        <%= link_to admin_root_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" do %>
+          <span class="icon icon--shield-user" aria-hidden="true"></span>
+          Administration
+        <% end %>
+        <%= link_to settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" do %>
+          <span class="icon icon--settings" aria-hidden="true"></span>
+          Settings
+        <% end %>
+        <%= button_to Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" do %>
+          <span class="icon icon--log-out" aria-hidden="true"></span>
+          Log out
+        <% end %>
       </div>
     <% end %>
   </div>

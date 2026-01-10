@@ -1,9 +1,12 @@
 module Admin
   class VoicesController < BaseController
-    before_action :set_voice, only: [ :edit, :update, :destroy ]
+    before_action :set_voice, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @voices = Voice.includes(:languages).order(created_at: :desc)
+    end
+
+    def show
     end
 
     def new
@@ -11,7 +14,7 @@ module Admin
     end
 
     def create
-      @voice = Voice.new(voice_params)
+      @voice = current_user.voices.new(voice_params)
       if @voice.save
         redirect_to admin_voices_path, notice: "Voice added."
       else

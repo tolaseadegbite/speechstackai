@@ -135,15 +135,18 @@
         <hr class="menu__separator" role="separator"/>
 
         <div class="menu" data-controller="menu" data-action="keydown->menu#navigate" role="menu">
-          <%= link_to "Settings", settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%#= link_to "API Keys", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%#= link_to "Webhooks", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%#= link_to "Usage analytics", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%# <hr class="menu__separator" role="separator"/> %>
-          <%#= link_to "Docs and resources", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%#= link_to "Terms and privacy", "#", class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" %>
-          <%# <hr class="menu__separator" role="separator"/> %>
-          <%= button_to "Sign out", Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" %>
+          <%= link_to admin_root_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" do %>
+            <span class="icon icon--shield-user" aria-hidden="true"></span>
+            Administration
+          <% end %>
+          <%= link_to settings_path, class: "btn menu__item", data: { menu_target: "item" }, role: "menuitem" do %>
+            <span class="icon icon--settings" aria-hidden="true"></span>
+            Settings
+          <% end %>
+          <%= button_to Current.session, class: "btn menu__item i-full", method: :delete, role: "menuitem" do %>
+            <span class="icon icon--log-out" aria-hidden="true"></span>
+            Log out
+          <% end %>
         </div>
       <% end %>
     </div>

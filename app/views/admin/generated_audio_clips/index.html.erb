@@ -1,41 +1,182 @@
-<h2 class="text-2xl font-bold mbe-6">Audio Content Moderation</h2>
+<% content_for :title, "Moderation" %>
 
-<div class="bg-surface border rounded-lg overflow-hidden">
-  <table class="i-full text-start" style="border-collapse: collapse;">
-    <thead class="bg-shade text-subtle text-xs uppercase border-b">
-      <tr>
-        <th class="p-4 text-start font-medium">Content</th>
-        <th class="p-4 text-start font-medium">User</th>
-        <th class="p-4 text-start font-medium">Type</th>
-        <th class="p-4 text-start font-medium">Status</th>
-        <th class="p-4 text-end font-medium">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @clips.each do |clip| %>
-        <tr class="border-b last:border-0 hover:bg-shade">
-          <td class="p-4">
-            <p class="text-sm overflow-hidden overflow-ellipsis" style="max-inline-size: 20rem; white-space: nowrap;">
-              <%= clip.text %>
-            </p>
-            <% if clip.s3_key.present? %>
-              <div class="mbs-1 text-xs text-link">
-                <%= link_to "Listen", audio_url_generated_audio_clip_path(clip), target: "_blank" %>
-              </div>
+<% content_for :page_header do %>
+  <h4 class="font-semibold">Audio Content Moderation (<%= @clips.count %>)</h4>
+<% end %>
+
+<div class="p-4 i-full">
+  <%= turbo_frame_tag :moderation_table do %>
+    
+    <%# --- DESKTOP VIEW: Table (Visible on medium screens and up) --- %>
+    <div class="show@md relative i-full overflow-x-auto border rounded-md">
+      <table class="table i-full text-start">
+        <thead class="bg-shade font-semibold">
+          <tr>
+            <th class="p-4 text-start">Content</th>
+            <th class="p-4 text-start">Voice</th> <!-- Added Voice Column -->
+            <th class="p-4 text-start">User</th>
+            <th class="p-4 text-start">Type</th>
+            <th class="p-4 text-start">Status</th>
+            <th class="p-4 text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="clips-table">
+          <% if @clips.empty? %>
+            <tr><td colspan="6" class="text-center p-8 text-subtle">No clips found.</td></tr>
+          <% else %>
+            <% @clips.each do |clip| %>
+              <tr id="<%= dom_id(clip, :table_row) %>" class="border-b" style="<%= 'border-bottom: 0;' if clip == @clips.last %>">
+                <td class="p-4 flex items-center gap-4">
+                  <!-- Swatch Container -->
+                  <div class="relative flex-item-no-shrink" style="width: 1.8rem; height: 1.8rem;">
+                    <!-- Swatch Background -->
+                    <span class="block rounded-full w-full h-full" 
+                          style="width: 100%; height: 100%; border-radius: 50%; <%= voice_gradient_style(clip.voice || Voice.new) %>" 
+                          aria-hidden="true"></span>
+                      
+                    <!-- Play Button Overlay -->
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                      <% if clip.s3_key.present? %>
+                        <button type="button" class="bg-white shadow-sm flex items-center justify-center border-0 cursor-pointer text-primary p-0"
+                              style="width: 1.5rem; height: 1.5rem; border-radius: 50%;"
+                              data-action="click->audio-fetcher#fetch"
+                              data-audio-fetcher-url-param="<%= audio_url_generated_audio_clip_path(clip) %>"
+                              data-audio-fetcher-title-param="<%= clip.text.truncate(40) %>"
+                              data-audio-fetcher-author-param="<%= clip.voice&.name %>"
+                              data-audio-fetcher-filename-param="<%= "audio_#{clip.id}.mp3" %>"
+                              data-audio-fetcher-gradient-start-param="<%= clip.voice&.gradient_start %>"
+                              data-audio-fetcher-gradient-end-param="<%= clip.voice&.gradient_end %>"
+                              data-audio-fetcher-created-at-param="<%= clip.created_at.strftime('%-d/%-m/%Y') %>">
+
+                          <div data-play-icon-url>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                          </div>
+                        </button>
+                      <% end %>
+                    </div>
+                  </div>
+
+                  <div class="font-medium overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 20rem;">
+                    <%= clip.text %>
+                  </div>
+                </td>
+                
+                <td class="p-4 text-sm font-medium">
+                  <%= clip.voice&.name || "Unknown" %>
+                </td>
+
+                <td class="p-4 text-sm text-subtle">
+                  <%= clip.user.email %>
+                </td>
+                
+                <td class="p-4 text-sm">
+                  <%= clip.class.name %>
+                </td>
+                
+                <td class="p-4">
+                  <% if clip.failed? %>
+                    <span class="bg-red-100 text-red-800 font-medium pi-2 pb-1 rounded-md text-xs">
+                      <%= clip.status %>
+                    </span>
+                  <% else %>
+                    <span class="bg-green-100 text-green-800 font-medium pi-2 pb-1 rounded-md text-xs">
+                      <%= clip.status %>
+                    </span>
+                  <% end %>
+                </td>
+                
+                <td class="p-4 text-end">
+                  <%= button_to "Delete", admin_generated_audio_clip_path(clip), 
+                      method: :delete, 
+                      class: "text-red-500 cursor-pointer bg-transparent border-0 p-0", 
+                      form: { style: "display:inline-block;" },
+                      data: { turbo_confirm: "Are you sure?" } %>
+                </td>
+              </tr>
             <% end %>
-          </td>
-          <td class="p-4 text-sm"><%= clip.user.email %></td>
-          <td class="p-4 text-sm text-subtle"><%= clip.class.name %></td>
-          <td class="p-4">
-            <span class="badge badge--<%= clip.failed? ? 'negative' : 'neutral' %>">
-              <%= clip.status %>
-            </span>
-          </td>
-          <td class="p-4 text-end">
-            <%= button_to "Delete", admin_generated_audio_clip_path(clip), method: :delete, class: "btn btn--sm btn--negative", form: {style: "display:inline-block;"} %>
-          </td>
-        </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%# --- MOBILE VIEW: Cards (Hidden on medium screens and up) --- %>
+    <div id="clips-cards" class="hide@md flex flex-col gap-4">
+      <% if @clips.empty? %>
+        <p class="text-subtle text-center p-8">No clips found.</p>
+      <% else %>
+        <% @clips.each do |clip| %>
+          <div id="<%= dom_id clip, :card %>" class="bg-surface p-4 border rounded-md shadow-sm flex flex-col gap-3">
+            
+            <%# --- Header: Status & Type --- %>
+            <div class="flex items-start justify-between">
+              <span class="text-xs font-bold text-subtle uppercase"><%= clip.class.name %></span>
+              
+              <% if clip.failed? %>
+                <span class="bg-red-100 text-red-800 font-medium pi-2 pb-1 rounded-md text-xs">
+                  <%= clip.status %>
+                </span>
+              <% else %>
+                <span class="bg-green-100 text-green-800 font-medium pi-2 pb-1 rounded-md text-xs">
+                  <%= clip.status %>
+                </span>
+              <% end %>
+            </div>
+
+            <%# --- Content with Play Button --- %>
+            <div class="flex gap-3">
+              <!-- Mobile Swatch & Play Button -->
+              <div class="relative flex-item-no-shrink" style="width: 2.5rem; height: 2.5rem;">
+                 <span class="block rounded-full" 
+                      style="width: 100%; height: 100%; border-radius: 50%; <%= voice_gradient_style(clip.voice || Voice.new) %>" 
+                      aria-hidden="true"></span>
+                  
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                  <% if clip.s3_key.present? %>
+                    <button type="button" class="bg-white shadow-sm flex items-center justify-center border-0 cursor-pointer text-primary p-0"
+                          style="width: 2rem; height: 2rem; border-radius: 50%;"
+                          data-action="click->audio-fetcher#fetch"
+                          data-audio-fetcher-url-param="<%= audio_url_generated_audio_clip_path(clip) %>"
+                          data-audio-fetcher-title-param="<%= clip.text.truncate(40) %>"
+                          data-audio-fetcher-author-param="<%= clip.voice&.name %>"
+                          data-audio-fetcher-filename-param="<%= "audio_#{clip.id}.mp3" %>"
+                          data-audio-fetcher-gradient-start-param="<%= clip.voice&.gradient_start %>"
+                          data-audio-fetcher-gradient-end-param="<%= clip.voice&.gradient_end %>"
+                          data-audio-fetcher-created-at-param="<%= clip.created_at.strftime('%-d/%-m/%Y') %>">
+
+                      <div data-play-icon-url>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                      </div>
+                    </button>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="min-i-0">
+                <!-- Restored style="max-inline-size: 20rem;" -->
+                <div class="font-medium text-lg leading-tight mbe-1 overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 20rem;">
+                  <%= clip.text %>
+                </div>
+                <div class="text-sm text-subtle">
+                  Voice: <span class="font-medium text-primary"><%= clip.voice&.name || "Unknown" %></span>
+                </div>
+                <div class="text-sm text-subtle">
+                  User: <%= clip.user.email %>
+                </div>
+              </div>
+            </div>
+
+            <%# --- Actions --- %>
+            <div class="flex items-center justify-end text-xs gap-4 border-bs pbs-3 mt-1">
+              <%= button_to "Delete", admin_generated_audio_clip_path(clip), 
+                  method: :delete, 
+                  class: "text-red-500 font-semibold bg-transparent border-0 p-0 cursor-pointer",
+                  data: { turbo_confirm: "Are you sure?" } %>
+            </div>
+
+          </div>
+        <% end %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+
+  <% end %>
 </div>

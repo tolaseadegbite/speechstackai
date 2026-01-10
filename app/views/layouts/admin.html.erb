@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Admin | SpeechStackAI</title>
+    <title><%= full_title(yield(:title)) %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <%# <link rel="icon" href="/icon.svg" type="image/svg+xml"> %>
+    <link rel="apple-touch-icon" href="/icon.png">
 
     <%= stylesheet_link_tag "css-zero/reset", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "css-zero/variables", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "css-zero/utilities", "data-turbo-track": "reload" %>
-    
     <%= javascript_importmap_tags %>
+
+    <%= turbo_stream_from current_user, "history" %>
   </head>
 
-  <body class="bg-main">
+  <body class="bg-main" data-controller="color-scheme audio-player audio-fetcher">
+    <%# --- This layout is for SIGNED-IN users --- %>
+
     <div id="flash_messages">
       <%= render "layouts/shared/flash" %>
     </div>
 
-    <!-- MAIN LAYOUT WRAPPER matches your dashboard.html.erb -->
+    <%#= render "layouts/navigation/navbar" %>
+
     <div class="sidebar-layout">
-      
-      <!-- SIDEBAR -->
       <aside id="sidebar">
         <%= render "admin/shared/sidebar_menu" %>
       </aside>
 
-      <!-- MAIN CONTENT AREA -->
       <main id="main" style="padding: 0; gap: 0">
-        
-        <!-- HEADER (Optional: Keeps spacing consistent with user dashboard) -->
-        <div class="header-layout border-b border-subtle p-4 flex items-center justify-between bg-surface sticky top-0 z-10">
-          <h2 class="font-bold text-lg"><%= yield(:page_header) || "Admin" %></h2>
-          
-          <!-- Mobile Menu Trigger (Reuse your existing mobile menu partial logic here if needed) -->
-          <div class="hide@md">
-             <!-- You can add your mobile toggle button here if you want it responsive -->
-          </div>
-        </div>
-
-        <div class="p-6 md:p-8 m-auto i-full" style="max-inline-size: 80rem;">
-          <%= yield %>
-        </div>
+        <div class="header-layout">
+          <header class="" id="header">
+            <%= render "layouts/navigation/dashboard/mobile_menu" %>
+            <%= render "layouts/navigation/dashboard/header_menu" %>
+          </header>
+        <%= yield %>
 
       </main>
     </div>
+
+    <div data-controller="player-visibility" hidden class="fixed-player border-bs border-shade" data-player-visibility-target="playerContainer">
+      <%= render "layouts/shared/desktop_player" %>
+      <%= render "layouts/shared/mobile_player" %>
+    </div>
+
+    <%= turbo_frame_tag "modal" %>
     
   </body>
 </html>
