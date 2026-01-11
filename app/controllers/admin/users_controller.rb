@@ -8,7 +8,14 @@ module Admin
       @users = User.order(created_at: :desc)
     end
 
-    def edit; end
+    def show
+      @clips = @user.generated_audio_clips.includes(:voice).order(created_at: :desc)
+
+      # Calculate stats for the admin view
+      @current_credits = @user.credits
+      @total_clips = GeneratedAudioClip.count
+      @total_credits = User.sum(:credits)
+    end
 
     def edit; end
 

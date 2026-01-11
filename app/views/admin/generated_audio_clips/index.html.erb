@@ -65,8 +65,9 @@
                   <%= clip.voice&.name || "Unknown" %>
                 </td>
 
-                <td class="p-4 text-sm text-subtle">
-                  <%= clip.user.email %>
+                <td class="flex flex-col gap-2 p-4 text-sm text-subtle leading-tight">
+                  <p><%= link_to clip.user&.name || "N/A", admin_user_path(clip.user), class: "text-green-500", data: { turbo_frame: "_top" } %></p>
+                  <p><%= clip.user.email %></p>
                 </td>
                 
                 <td class="p-4 text-sm">
@@ -160,7 +161,7 @@
                   Voice: <span class="font-medium text-primary"><%= clip.voice&.name || "Unknown" %></span>
                 </div>
                 <div class="text-sm text-subtle">
-                  User: <%= clip.user.email %>
+                  User: <%= link_to clip.user&.name || "N/A", admin_user_path(clip.user), class: "text-green-500", data: { turbo_frame: "_top" } %> (<%= clip.user.email %>)
                 </div>
               </div>
             </div>
