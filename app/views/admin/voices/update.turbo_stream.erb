@@ -1,0 +1,15 @@
+<%# 1. Update the Table Row (Desktop) %>
+<%= turbo_stream.replace dom_id(@voice, :table_row) do %>
+  <%= render partial: "admin/voices/voice", locals: { voice: @voice } %>
+<% end %>
+
+<%# 2. Update the Card (Mobile) %>
+<%= turbo_stream.replace dom_id(@voice, :card) do %>
+  <%= render partial: "admin/voices/voice_card", locals: { voice: @voice } %>
+<% end %>
+
+<%# 3. Update Flash Messages %>
+<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
+
+<%# 4. Close the Modal (if you are editing in a modal) %>
+<turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>

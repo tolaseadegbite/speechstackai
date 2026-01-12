@@ -1,0 +1,81 @@
+<tr id="<%= dom_id(voice, :table_row) %>" class="border-b" style="<%= 'border-bottom: 0;' %>">
+    <td class="p-3">
+        <div class="flex items-center gap-4">
+
+        <div class="relative flex-item-no-shrink">
+            <span class="voice-swatch block rounded-full" 
+                style="--icon-size: 1.8rem; <%= voice_gradient_style(voice) %>" 
+                aria-hidden="true"></span>
+            
+            <!-- Play Button (Overlaid on Swatch) -->
+            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+            <% if voice.s3_key.present? %>
+                <button type="button" class="btn btn--icon rounded-full shadow-sm flex items-center justify-center"
+                        style="width: 1.6rem; height: 1.6rem;"
+                        data-action="click->voice-selector#playPreview click->audio-fetcher#fetch"
+                        data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
+                        data-audio-fetcher-title-param="<%= voice.name %>"
+                        data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                        data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                        data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                        data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>">
+                <div data-play-icon-url>
+                    <svg style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                </div>
+                </button>
+            <% end %>
+            </div>
+        </div>
+
+        <!-- Swatch (inline style used for gradient as per original) -->
+        <span class="rounded-full flex-item-no-shrink" style="block-size: 1.5rem; inline-size: 1.5rem; <%= voice_gradient_style(voice) %>"></span>
+        <div>
+            <div class="font-semibold"><%= link_to voice.name, admin_voice_path(voice), class: "text-green-500", data: { turbo_frame: "_top" } %></div>
+            <% if voice.description.present? %>
+            <div class="text-xs text-subtle overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 15rem;">
+                <%= voice.description %>
+            </div>
+            <% end %>
+        </div>
+        </div>
+    </td>
+    
+    <td class="p-3">
+        <span class="text-sm font-medium bg-shade text-subtle pi-2 pb-1 rounded-md capitalize">
+        <%= voice.gender %>
+        </span>
+    </td>
+    
+    <td class="p-3 text-sm text-subtle">
+        <% if voice.languages.any? %>
+        <%= voice.languages.map(&:name).join(", ") %>
+        <% else %>
+        <span class="italic">No languages</span>
+        <% end %>
+    </td>
+    
+    <td class="p-3 font-mono text-xs text-subtle">
+        <% if voice.s3_key.present? %>
+        <div class="overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 10rem;">
+            <%= voice.s3_key %>
+        </div>
+        <% else %>
+        <span class="opacity-50">Pending Upload</span>
+        <% end %>
+    </td>
+    
+    <td class="flex items-center justify-end gap-4 p-3">
+        <%= link_to "Edit", edit_admin_voice_path(voice), 
+                    class: "text-gray-300 hover:text-gray-600", 
+                    data: { turbo_frame: "modal" } %>
+
+        <% delete_trigger = button_tag "Delete", type: "button", class: "btn bg-white border border-red-200 text-red-600 font-semibold hover:bg-red-50", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+        <%= modal_dialog delete_trigger, size: "450px", title: "Delete '#{voice.name}'?" do %>
+            <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+            <div class="flex items-center justify-end gap">
+                <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                <%= button_to "Continue", admin_voice_path(voice), method: :delete, class: "btn btn--negative" %>
+            </div>
+        <% end %>
+    </td>
+</tr>

@@ -1,0 +1,11 @@
+<%# 1. Remove the Desktop Table Row %>
+<%= turbo_stream.remove dom_id(@voice, :table_row) %>
+
+<%# 2. Remove the Mobile Card %>
+<%= turbo_stream.remove dom_id(@voice, :card) %>
+
+<%# 3. Update Flash Messages %>
+<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
+
+<%# 4. Close the Dialog (Just in case the delete happened inside an open modal) %>
+<turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>

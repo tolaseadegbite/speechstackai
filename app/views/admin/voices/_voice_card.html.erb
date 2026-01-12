@@ -1,0 +1,72 @@
+<div id="<%= dom_id voice, :card %>" class="bg-surface p-4 border rounded-md shadow-sm flex flex-col gap-3">
+            
+    <%# --- Header: Swatch, Name, Gender --- %>
+    <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+        <div class="relative flex-item-no-shrink">
+            <span class="voice-swatch block rounded-full" 
+                style="--icon-size: 2.5rem; <%= voice_gradient_style(voice) %>" 
+                aria-hidden="true"></span>
+            
+            <!-- Play Button (Overlaid on Swatch) -->
+            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+            <% if voice.s3_key.present? %>
+                <button type="button" class="btn btn--icon rounded-full shadow-sm flex items-center justify-center"
+                        style="width: 2.3rem; height: 2.3rem;"
+                        data-action="click->voice-selector#playPreview click->audio-fetcher#fetch"
+                        data-audio-fetcher-url-param="<%= audio_url_voice_path(voice) %>"
+                        data-audio-fetcher-title-param="<%= voice.name %>"
+                        data-audio-fetcher-author-param="<%= voice.user&.name || 'Community Voice' %>"
+                        data-audio-fetcher-filename-param="<%= "#{voice.name.parameterize}.mp3" %>"
+                        data-audio-fetcher-gradient-start-param="<%= voice.gradient_start %>"
+                        data-audio-fetcher-gradient-end-param="<%= voice.gradient_end %>">
+                <div data-play-icon-url>
+                    <svg style="width: 1rem; height: 1rem; transform: translateX(1px);" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                </div>
+                </button>
+            <% end %>
+            </div>
+        </div>
+        <span class="rounded-full flex-item-no-shrink" style="block-size: 2.5rem; inline-size: 2.5rem; <%= voice_gradient_style(voice) %>"></span>
+        <div>
+            <div class="font-semibold text-lg leading-tight"><%= link_to voice.name, admin_voice_path(voice), class: "text-green-500", data: { turbo_frame: "_top" } %></div>
+            <div class="text-xs text-subtle overflow-hidden overflow-ellipsis whitespace-nowrap" style="max-inline-size: 12rem;">
+            <%= voice.description %>
+            </div>
+        </div>
+        </div>
+        
+        <div>
+        <span class="bg-shade text-subtle font-medium pi-2 pb-1 rounded-md text-sm capitalize">
+            <%= voice.gender %>
+        </span>
+        </div>
+    </div>
+
+    <%# --- Details: Languages --- %>
+    <div class="p-2 bg-shade rounded-md border text-sm text-subtle">
+        <span class="font-semibold text-primary text-xs uppercase block mbe-1">Languages</span>
+        <% if voice.languages.any? %>
+        <%= voice.languages.map(&:name).join(", ") %>
+        <% else %>
+        <span class="italic">None specified</span>
+        <% end %>
+    </div>
+
+    <%# --- Action Footer --- %>
+    <div class="flex items-center justify-end text-xs gap-4 border-t pt-2">
+        <%= link_to "Edit Voice", edit_admin_voice_path(voice), 
+                    class: "text-primary font-semibold p-2", 
+                    data: { turbo_frame: "modal" } %>
+
+        <% delete_trigger = button_tag "Delete", type: "button", class: "btn bg-white text-xs border border-red-200 text-red-600 font-semibold hover:bg-red-50", data: { action: "dialog#showModal", menu_target: "item" }, role: "menuitem" %>
+        <%= modal_dialog delete_trigger, size: "450px", title: "Delete '#{voice.name}'?" do %>
+            <p class="text-sm text-subtle mbe-4">This will permanently delete this voice. This action cannot be undone.</p>
+            <div class="flex items-center justify-end gap">
+                <button type="button" class="btn" data-action="click->dialog#close">Cancel</button>
+                <%= button_to "Continue", admin_voice_path(voice), method: :delete, class: "btn btn--negative" %>
+            </div>
+        <% end %>
+    </div>
+
+</div>

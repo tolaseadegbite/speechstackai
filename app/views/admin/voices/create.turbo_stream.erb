@@ -1,0 +1,7 @@
+<%= turbo_stream.prepend "voices-table", partial: "admin/voices/voice", locals: { voice: @voice } %>
+<%= turbo_stream.prepend "voices-cards", partial: "admin/voices/voice_card", locals: { voice: @voice } %>
+
+<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
+
+<%# Clear the form if it persists, or close modal %>
+<turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>

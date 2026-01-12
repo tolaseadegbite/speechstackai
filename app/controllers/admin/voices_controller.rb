@@ -15,26 +15,54 @@ module Admin
 
     def create
       @voice = current_user.voices.new(voice_params)
-      if @voice.save
-        redirect_to admin_voices_path, notice: "Voice added."
-      else
-        render :new, status: :unprocessable_entity
+
+      respond_to do |format|
+        if @voice.save
+          flash.now[:notice] = "Voice was successfully created."
+          format.turbo_stream
+        else
+          flash.now[:alert] = @voice.errors.full_messages.to_sentence
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
+                  status: :unprocessable_entity
+          end
+        end
       end
     end
 
     def edit; end
 
     def update
-      if @voice.update(voice_params)
-        redirect_to admin_voices_path, notice: "Voice updated."
-      else
-        render :edit, status: :unprocessable_entity
+      respond_to do |format|
+        if @voice.update(voice_params)
+          flash.now[:notice] = "Voice was successfully updated."
+          format.turbo_stream
+        else
+          flash.now[:alert] = @voice.errors.full_messages.to_sentence
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.update("flash_messages", partial: "layouts/shared/flash"),
+                  status: :unprocessable_entity
+          end
+        end
       end
     end
 
     def destroy
-      @voice.destroy
-      redirect_to admin_voices_path, notice: "Voice deleted."
+      @voice.destroy!
+      respond_to do |format|
+        format.turbo_stream
+        flash.now[:notice] = "Voice was successfully deleted."
+        format.html { redirect_to admin_voices_url, status: :see_other, notice: "Voice was successfully destroyed." }
+      end
+    end
+
+    def audio_url
+      if @voice.s3_key.present?
+        url = presigned_s3_url(@voice.s3_key)
+        render json: { url: url }
+      else
+        render json: { error: "No audio file associated with this voice." }, status: :not_found
+      end
     end
 
     private

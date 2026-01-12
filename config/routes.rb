@@ -105,7 +105,9 @@ Rails.application.routes.draw do
     root "dashboard#index"
 
     resources :users, only: [ :index, :show, :edit, :update ]
-    resources :voices
+    resources :voices do
+      get :audio_url, on: :member
+    end
     resources :generated_audio_clips, only: [ :index, :destroy ]
   end
 end

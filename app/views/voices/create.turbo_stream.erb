@@ -1,9 +1,0 @@
-<%= turbo_stream.prepend "voices", @voice %>
-
-<%= turbo_stream.update "flash_messages", partial: "layouts/shared/flash" %>
-
-<%= turbo_stream.update "new_voice_form" do %>
-  <%= render "form", voice: Voice.new %>
-<% end %>
-
-<turbo-stream action="dispatch_event" name="dialog:close"></turbo-stream>
